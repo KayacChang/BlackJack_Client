@@ -1,0 +1,47 @@
+.highlight {
+  animation: move_highlight 1.5s linear 0s infinite forwards;
+}
+
+@keyframes move_highlight {
+  0% {
+    transform: translate(-264px, -264px);
+  }
+  50% {
+    transform: translate(-264px, -264px);
+  }
+  100% {
+    transform: translate(200px, 200px);
+  }
+}
+
+.spark {
+  animation: rotate_spark 1.5s linear 0s infinite forwards;
+  transform-origin: 296px 111.5px;
+}
+
+@keyframes rotate_spark {
+  0% {
+    transform: translate(-140px, -40px) rotate(0deg) scale(0, 0);
+  }
+  20% {
+    transform: translate(-140px, -40px) rotate(180deg) scale(1, 1);
+  }
+  50% {
+    transform: translate(-140px, -40px) rotate(360deg) scale(0, 0);
+  }
+  100% {
+    transform: translate(-140px, -40px) rotate(360deg) scale(0, 0);
+  }
+}
+.cls1 {
+  fill: #001c43;
+}
+.cls2 {
+  fill: url(#Gamatron_Gradient);
+}
+.cls3 {
+  fill: #fff;
+}
+.cls4 {
+  fill: url(#linear-gradient);
+}
