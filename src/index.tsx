@@ -4,11 +4,13 @@ import "./index.scss";
 import App from "./components/App";
 import * as serviceWorker from "./workers/serviceWorker";
 
-export default function() {
+type GameInit = (view: HTMLCanvasElement) => void;
+
+export default function(game: GameInit) {
   //
   ReactDOM.render(
     <React.StrictMode>
-      <App />
+      <App>{game}</App>
     </React.StrictMode>,
     document.getElementById("root")
   );
