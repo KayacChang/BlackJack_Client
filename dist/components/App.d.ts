@@ -1,2 +1,2 @@
-/// <reference types="react" />
-export default function App(): JSX.Element;
+import { PropsWithChildren } from "react";
+export default function App({ children }: PropsWithChildren<{}>): JSX.Element;

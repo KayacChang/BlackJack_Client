@@ -16,7 +16,6 @@ function ___$insertStyle(css) {
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Application } from 'pixi.js';
 
 ___$insertStyle("@import \"~normalize.css\";\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\ncode {\n  font-family: source-code-pro, Menlo, Monaco, Consolas, \"Courier New\", monospace;\n}\n\nhtml,\nbody,\n#root {\n  width: 100%;\n  height: 100%;\n}");
 
@@ -89,31 +88,10 @@ function Main(_a) {
             } }, children)));
 }
 
-// === Export to UI ===
-function Game (view) {
+function App(_a) {
+    var children = _a.children;
     //
-    return new App(view);
-}
-// === Game Client ===
-var App = /** @class */ (function () {
-    //
-    function App(view) {
-        //
-        var app = new Application({
-            width: 1920,
-            height: 1080,
-            view: view
-        });
-        console.log(app);
-        console.log("Init...");
-    }
-    return App;
-}());
-
-function App$1() {
-    //
-    return (React.createElement(React.Fragment, null,
-        React.createElement(Main, null, Game)));
+    return React.createElement(Main, null, children);
 }
 
 // This optional code is used to register a service worker.
@@ -142,10 +120,10 @@ function unregister() {
     }
 }
 
-function index () {
+function index (game) {
     //
     ReactDOM.render(React.createElement(React.StrictMode, null,
-        React.createElement(App$1, null)), document.getElementById("root"));
+        React.createElement(App, null, game)), document.getElementById("root"));
     // If you want your app to work offline and load faster, you can change
     // unregister() to register() below. Note this comes with some pitfalls.
     // Learn more about service workers: https://bit.ly/CRA-PWA
