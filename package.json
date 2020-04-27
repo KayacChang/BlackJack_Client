@@ -41,7 +41,6 @@
     "typescript": "~3.7.2"
   },
   "peerDependencies": {
-    "normalize.css": "^8.0.1",
     "pixi.js": "^5.2.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
