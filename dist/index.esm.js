@@ -1,24 +1,36 @@
-function ___$insertStyle(css) {
-  if (!css) {
-    return;
-  }
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  var style = document.createElement('style');
-
-  style.setAttribute('type', 'text/css');
-  style.innerHTML = css;
-  document.head.appendChild(style);
-  return css;
-}
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'normalize.css';
 
-___$insertStyle("body {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\ncode {\n  font-family: source-code-pro, Menlo, Monaco, Consolas, \"Courier New\", monospace;\n}\n\nhtml,\nbody,\n#root {\n  width: 100%;\n  height: 100%;\n}");
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = "body {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\ncode {\n  font-family: source-code-pro, Menlo, Monaco, Consolas, \"Courier New\", monospace; }\n\nhtml,\nbody,\n#index_root__3s_mB {\n  width: 100%;\n  height: 100%; }\n";
+styleInject(css_248z);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -58,7 +70,9 @@ function __rest(s, e) {
     return t;
 }
 
-var styles = ___$insertStyle(".center {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}");
+var css_248z$1 = ".Flex-module_center__2K9nn {\n  display: flex;\n  justify-content: center;\n  align-items: center; }\n";
+var styles = {"center":"Flex-module_center__2K9nn"};
+styleInject(css_248z$1);
 
 function Center(_a) {
     var children = _a.children, props = __rest(_a, ["children"]);

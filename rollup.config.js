@@ -1,7 +1,7 @@
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import resolve from "rollup-plugin-node-resolve";
 import typescript from "rollup-plugin-typescript2";
-import sass from "rollup-plugin-sass";
+import postcss from "rollup-plugin-postcss";
 import commonjs from "rollup-plugin-commonjs";
 import pkg from "./package.json";
 
@@ -17,7 +17,11 @@ export default {
     resolve({ preferBuiltins: true }),
     commonjs(),
     typescript({ useTsconfigDeclarationDir: true }),
-    sass({ insert: true })
+    postcss({
+      extract: false,
+      modules: true,
+      use: ["sass"]
+    })
   ],
   external: Object.keys(pkg.peerDependencies || {})
 };

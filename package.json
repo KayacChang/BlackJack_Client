@@ -35,15 +35,16 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^3.1.1",
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-typescript2": "^0.27.0",
     "typescript": "~3.7.2"
   },
   "peerDependencies": {
     "normalize.css": "^8.0.1",
+    "pixi.js": "^5.2.3",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "pixi.js": "^5.2.3"
+    "react-dom": "^16.13.1"
   },
   "scripts": {
     "start": "react-scripts start",
