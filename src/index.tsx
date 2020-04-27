@@ -4,14 +4,19 @@ import "./index.scss";
 import App from "./components/App";
 import * as serviceWorker from "./workers/serviceWorker";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+type GameInit = (view: HTMLCanvasElement) => void;
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+export default function(game: GameInit) {
+  //
+  ReactDOM.render(
+    <React.StrictMode>
+      <App>{game}</App>
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: https://bit.ly/CRA-PWA
+  serviceWorker.unregister();
+}

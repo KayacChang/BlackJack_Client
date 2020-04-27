@@ -1,13 +1,7 @@
-import React from "react";
-import Loading from "../pages/Loading";
+import React, { PropsWithChildren } from "react";
 import Main from "../pages/Main";
-import Game from "../templates";
 
-export default function App() {
+export default function App({ children }: PropsWithChildren<{}>) {
   //
-  return (
-    <>
-      <Main>{Game}</Main>
-    </>
-  );
+  return <Main>{children}</Main>;
 }

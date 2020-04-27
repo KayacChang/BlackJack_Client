@@ -8,8 +8,8 @@ export default function Main({ children }: PropsWithChildren<{}>) {
     <Center style={{ height: 100 + "%", width: 100 + "%" }}>
       <Canvas
         style={{
-          maxHeight: 100 + "%",
-          maxWidth: 100 + "%"
+          maxHeight: 100 + "vh",
+          maxWidth: 100 + "vw"
         }}
       >
         {children}
