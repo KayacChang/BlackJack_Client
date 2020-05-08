@@ -6,14 +6,7 @@ export default function Main({ children }: PropsWithChildren<{}>) {
   //
   return (
     <Center style={{ height: 100 + "%", width: 100 + "%" }}>
-      <Canvas
-        style={{
-          maxHeight: 100 + "vh",
-          maxWidth: 100 + "vw"
-        }}
-      >
-        {children}
-      </Canvas>
+      <Canvas>{children}</Canvas>
     </Center>
   );
 }

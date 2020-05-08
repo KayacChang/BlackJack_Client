@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, HTMLProps } from "react";
+import styles from "./Canvas.module.scss";
 
 type Props = PropsWithChildren<HTMLProps<HTMLCanvasElement>>;
 
@@ -13,5 +14,11 @@ export default function Canvas({ children, ...props }: Props) {
     console.error(`Canvas children must be function`);
   }
 
-  return <canvas ref={init} {...props} />;
+  return (
+    <canvas
+      className={`${styles.shadow} ${styles.fitScreen}`}
+      ref={init}
+      {...props}
+    />
+  );
 }
