@@ -1,5 +1,6 @@
-import { Application, Sprite, Loader } from "pixi.js";
+import { Application, Sprite } from "pixi.js";
 import BG_URL from "./bg.jpg";
+import { Package } from "./resource";
 
 // === Game Client ===
 export default async function (view: HTMLCanvasElement) {
@@ -10,23 +11,15 @@ export default async function (view: HTMLCanvasElement) {
     view,
   });
 
-  console.log("Init...");
+  const pkg = new Package("main");
 
-  await load(app);
-
-  console.log(app.loader);
-}
-
-async function load(app: Application) {
-  app.loader.add("background", BG_URL);
-
-  console.log("Load Begin...");
-
-  await new Promise((resolve, reject) => {
-    app.loader.load((_, resources) => resolve(resources));
-
-    app.loader.onError(reject);
+  await pkg.load({
+    background: BG_URL,
   });
 
-  console.log("Load End...");
+  const res = pkg.getRes("background");
+
+  const background = new Sprite(res.texture);
+
+  app.stage.addChild(background);
 }
