@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, HTMLAttributes } from "react";
+import React, { PropsWithChildren, HTMLAttributes, useState } from "react";
 import { Flex } from "../layouts/Flex";
 import {
   Volume2,
@@ -7,8 +7,10 @@ import {
   HelpCircle,
   Maximize,
   Home,
+  Menu,
 } from "react-feather";
 import styles from "./UI.module.scss";
+import { useSpring, animated } from "react-spring";
 
 function PlaceHolder() {
   return <div style={{ height: 100 + "%", width: 100 + "%" }}></div>;
@@ -20,8 +22,12 @@ function Bar({ children, ...props }: BarProps) {
   return <Flex {...props}>{children}</Flex>;
 }
 
-function Button({ children }: PropsWithChildren<{}>) {
-  return <button className={styles.button}>{children}</button>;
+function Button({ children, ...props }: PropsWithChildren<{}>) {
+  return (
+    <button className={styles.button} {...props}>
+      {children}
+    </button>
+  );
 }
 
 function Volume() {
@@ -68,7 +74,7 @@ function Leave() {
   );
 }
 
-function Fullscreen() {
+function FullScreen() {
   return (
     <Button>
       <Maximize
@@ -80,17 +86,48 @@ function Fullscreen() {
   );
 }
 
+function MenuButton({ ...props }) {
+  return (
+    <Button {...props}>
+      <Menu color="white" size={16} />
+    </Button>
+  );
+}
+
+type ButtonGroupProps = {
+  open: boolean;
+};
+
+function ButtonGroup({ open }: ButtonGroupProps) {
+  //
+  const styles = useSpring({
+    pointerEvents: open ? "auto" : "none",
+    opacity: open ? 1 : 0,
+    transform: `translate(${open ? 0 : "100%"}, 0)`,
+    config: { mass: 5, tension: 800, friction: 100 },
+  });
+
+  return (
+    <animated.div style={{ display: "flex", ...styles }}>
+      <Volume />
+      <Setting />
+      <History />
+      <Rule />
+      <FullScreen />
+      <Leave />
+    </animated.div>
+  );
+}
+
 function TopBar() {
+  const [open, setOpen] = useState(false);
+
   return (
     <Bar style={{ height: 16 + "%", alignItems: "center" }}>
       <PlaceHolder />
       <Flex style={{ padding: 16 + "px" }}>
-        <Volume />
-        <Setting />
-        <History />
-        <Rule />
-        <Fullscreen />
-        <Leave />
+        <ButtonGroup open={open} />
+        <MenuButton style={{ zIndex: "1" }} onClick={() => setOpen(!open)} />
       </Flex>
     </Bar>
   );
@@ -108,6 +145,7 @@ export default function UI() {
         flexDirection: "column",
         height: 100 + "%",
         width: 100 + "%",
+        overflow: "hidden",
       }}
     >
       <TopBar />
