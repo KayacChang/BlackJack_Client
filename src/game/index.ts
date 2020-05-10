@@ -21,5 +21,8 @@ export default async function (view: HTMLCanvasElement) {
 
   const background = new Sprite(res.texture);
 
+  background.width = app.screen.width;
+  background.height = app.screen.height;
+
   app.stage.addChild(background);
 }
