@@ -11,3 +11,12 @@ export function Center({ children, ...props }: Props) {
     </div>
   );
 }
+
+export function Flex({ children, ...props }: Props) {
+  //
+  return (
+    <div className={styles.default} {...props}>
+      {children}
+    </div>
+  );
+}

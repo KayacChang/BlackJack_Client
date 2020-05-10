@@ -1,5 +1,9 @@
-.center {
+.default {
   display: flex;
+}
+.center {
+  @extend .default;
+
   justify-content: center;
   align-items: center;
 }
