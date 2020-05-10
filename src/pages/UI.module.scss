@@ -1,0 +1,33 @@
+.shadow {
+  box-shadow: 2px 2px 4px #111;
+
+  transition: box-shadow 0.3s ease-in-out;
+  &:hover {
+    box-shadow: 3px 3px 6px #111;
+  }
+}
+
+.override {
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  height: 32px;
+  width: 32px;
+  margin: 0 6px;
+  background-color: #424242;
+  border-radius: 100%;
+
+  @extend .override;
+  @extend .shadow;
+  @extend .center;
+}
