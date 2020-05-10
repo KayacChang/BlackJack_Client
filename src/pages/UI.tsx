@@ -104,7 +104,7 @@ function ButtonGroup({ open }: ButtonGroupProps) {
     pointerEvents: open ? "auto" : "none",
     opacity: open ? 1 : 0,
     transform: `translate(${open ? 0 : "100%"}, 0)`,
-    config: { mass: 5, tension: 800, friction: 100 },
+    config: { mass: 3, tension: 2000, friction: 100 },
   });
 
   return (
