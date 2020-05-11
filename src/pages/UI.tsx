@@ -11,6 +11,8 @@ import {
 } from "react-feather";
 import { useSpring, animated } from "react-spring";
 import { Button } from "../components/button/Button";
+import { Setting } from "./options";
+import styles from "./UI.module.scss";
 
 function PlaceHolder() {
   return <div style={{ height: 100 + "%", width: 100 + "%" }}></div>;
@@ -22,7 +24,7 @@ type ButtonGroupProps = {
 
 function ButtonGroup({ open }: ButtonGroupProps) {
   //
-  const styles = useSpring({
+  const anim = useSpring({
     pointerEvents: open ? "auto" : "none",
     opacity: open ? 1 : 0,
     transform: `translate(${open ? "0" : "100%"}, 0)`,
@@ -39,7 +41,7 @@ function ButtonGroup({ open }: ButtonGroupProps) {
   ];
 
   return (
-    <animated.div style={{ display: "flex", ...styles }}>
+    <animated.div style={{ display: "flex", ...anim }}>
       {React.Children.map(children, (child) => (
         <Button>{child}</Button>
       ))}
@@ -71,14 +73,12 @@ function BottomBar() {
 export default function UI() {
   return (
     <Flex
+      className={styles.fixedPage}
       style={{
-        position: "absolute",
         flexDirection: "column",
-        height: 100 + "%",
-        width: 100 + "%",
-        overflow: "hidden",
       }}
     >
+      <Setting className={`${styles.fixedPage} ${styles.popup}`} />
       <TopBar />
       <PlaceHolder />
       <BottomBar />

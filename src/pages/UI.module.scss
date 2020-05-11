@@ -1,0 +1,29 @@
+.full {
+  height: 100%;
+  width: 100%;
+}
+
+.fixedPage {
+  @extend .full;
+
+  position: absolute;
+  overflow: hidden;
+}
+
+.popup {
+  background: rgba(0, 0, 0, 0.9);
+  color: #ffffff;
+
+  > div {
+    margin: 0 4vw;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 6vh 0;
+    text-transform: uppercase;
+  }
+}
