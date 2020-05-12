@@ -1,12 +1,3 @@
-import { useState } from "react";
+import useTrigger from "./useTrigger";
 
-export function useTrigger(initState = false): [boolean, () => void] {
-  //
-  const [state, setState] = useState(initState);
-
-  function trigger() {
-    setState(!state);
-  }
-
-  return [state, trigger];
-}
+export { useTrigger };
