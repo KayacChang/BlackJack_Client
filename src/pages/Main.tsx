@@ -6,12 +6,11 @@ import UI from "./UI";
 export default function Main({ children }: PropsWithChildren<{}>) {
   //
   return (
-    <Center style={{ height: 100 + "%", width: 100 + "%" }}>
+    <Center className="full">
       <Flex style={{ position: "relative" }}>
         <Canvas>{children}</Canvas>
-
-        <UI />
       </Flex>
+      <UI />
     </Center>
   );
 }

@@ -2,20 +2,23 @@ import React, { PropsWithChildren, HTMLAttributes } from "react";
 import styles from "./Flex.module.scss";
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
-
-export function Center({ children, ...props }: Props) {
+export function Center({ children, className, ...props }: Props) {
   //
+  const _className = [styles.center, className].filter(Boolean).join(" ");
+
   return (
-    <div className={styles.center} {...props}>
+    <Flex className={_className} {...props}>
       {children}
-    </div>
+    </Flex>
   );
 }
 
-export function Flex({ children, ...props }: Props) {
+export function Flex({ children, className, ...props }: Props) {
   //
+  const _className = [styles.default, className].filter(Boolean).join(" ");
+
   return (
-    <div className={styles.default} {...props}>
+    <div className={_className} {...props}>
       {children}
     </div>
   );
