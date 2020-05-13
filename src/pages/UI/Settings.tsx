@@ -7,7 +7,7 @@ function Volume() {
   return (
     <div className={styles.volume}>
       <VolumeX color="white" />
-      <Slider className={styles.slider} />
+      <Slider className={styles.slider} onValueChange={(value) => console.log(value)} />
       <Volume2 color="white" />
     </div>
   );

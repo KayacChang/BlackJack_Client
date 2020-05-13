@@ -1,29 +1,28 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styles from "./Slider.module.scss";
 
-export default function Slider({ className }: DivProps<{}>) {
-  const min = 0;
-  const max = 100;
+type Props = DivProps<{
+  min?: number;
+  max?: number;
+  onValueChange?: (value: number) => void;
+}>;
 
-  const [value, setValue] = useState(0);
+export default function Slider({
+  min = 0,
+  max = 100,
+  onValueChange,
+  className,
+}: Props) {
+  //
+  const [value, setValue] = useState(min);
 
-  function handle(event: ChangeEvent) {
+  useEffect(() => {
     //
-    const el = event.target as HTMLInputElement;
+    if (!onValueChange) return;
 
-    const value = Number(el.value);
-
-    setValue(value);
-  }
-
-  function getPos(value: number) {
+    onValueChange(value);
     //
-    const percentage = Number(((value - min) * 100) / (max - min));
-
-    const newPosition = 15 - percentage * 0.4;
-
-    return `calc(${percentage}% + (${newPosition}px))`;
-  }
+  }, [value, onValueChange]);
 
   return (
     <div className={`${styles.wrapper} ${className}`}>
@@ -40,4 +39,20 @@ export default function Slider({ className }: DivProps<{}>) {
       </output>
     </div>
   );
+
+  function handle(event: ChangeEvent) {
+    //
+    const el = event.target as HTMLInputElement;
+
+    setValue(Number(el.value));
+  }
+
+  function getPos(value: number) {
+    //
+    const percentage = Number(((value - min) * 100) / (max - min));
+
+    const newPosition = 15 - percentage * 0.4;
+
+    return `calc(${percentage}% + (${newPosition}px))`;
+  }
 }
