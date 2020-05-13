@@ -1,3 +1,4 @@
 import useTrigger from "./useTrigger";
+import useResize from "./useResize";
 
-export { useTrigger };
+export { useTrigger, useResize };

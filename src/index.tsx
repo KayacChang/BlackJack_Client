@@ -5,14 +5,15 @@ import App from "./components/App";
 import * as serviceWorker from "./workers/serviceWorker";
 import Game from "./game";
 
+const Root = (
+  <React.StrictMode>
+    <App>{Game}</App>
+  </React.StrictMode>
+);
+
 function main() {
   //
-  ReactDOM.render(
-    <React.StrictMode>
-      <App>{Game}</App>
-    </React.StrictMode>,
-    document.getElementById("root")
-  );
+  ReactDOM.render(Root, document.getElementById("root"));
 
   serviceWorker.unregister();
 }

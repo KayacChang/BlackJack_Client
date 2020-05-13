@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, HTMLProps } from "react";
+import React, { PropsWithChildren, HTMLProps, memo } from "react";
 import styles from "./Canvas.module.scss";
 
 type Props = PropsWithChildren<HTMLProps<HTMLCanvasElement>>;
 
-export default function Canvas({ children, ...props }: Props) {
+function Canvas({ children, ...props }: Props) {
   //
   function init(canvas: HTMLCanvasElement) {
     //
@@ -22,3 +22,5 @@ export default function Canvas({ children, ...props }: Props) {
     />
   );
 }
+
+export default memo(Canvas);

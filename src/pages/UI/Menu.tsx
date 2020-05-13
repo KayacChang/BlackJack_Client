@@ -37,7 +37,7 @@ function Drawer({ open, options }: DrawerProps) {
     opacity: open ? 1 : 0,
     transform: `translate3d(${open ? 0 : 100}%,0,0)`,
     config: {
-      duration: 240,
+      duration: 120,
       easing: easeExp,
     },
   });
