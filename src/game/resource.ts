@@ -21,7 +21,7 @@ export class Package {
 
     // Fetching
     await new Promise((resolve, reject) => {
-      loader.load((_, res) => resolve(res));
+      loader.load(resolve);
 
       loader.onError.add(reject);
     });

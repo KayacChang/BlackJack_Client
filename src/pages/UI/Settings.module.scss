@@ -17,13 +17,16 @@
       text-align: center;
     }
   }
-  section > * {
-    height: 8vh;
+
+  section > div {
+    margin: 16px 0;
   }
 }
 
 .volume {
   width: 100%;
+
+  margin-top: 36px;
 
   display: flex;
   flex-direction: row;
@@ -33,9 +36,14 @@
   * {
     margin: 0 4px;
   }
+
+  .slider {
+    width: 82%;
+  }
 }
 
-.slider {
-  margin: 0 16px;
-  width: 82%;
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

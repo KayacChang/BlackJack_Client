@@ -1,0 +1,53 @@
+$size: 36px;
+$space: 5px;
+
+$duration: 0.16s;
+
+$thumb-color: #fff;
+$disable-color: grey;
+$active-color: #3071a9;
+
+.toggle {
+  input[type="checkbox"] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+
+  input:checked {
+    & + label {
+      background: $active-color;
+    }
+
+    & + label:after {
+      left: calc(100% - #{$space});
+      transform: translateX(-100%);
+    }
+  }
+
+  label {
+    cursor: pointer;
+    width: ($size * 1.8);
+    height: ($size);
+    background: $disable-color;
+    display: inline-block;
+    border-radius: 100px;
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: $space;
+      left: $space;
+      width: $size - 10px;
+      height: $size - 10px;
+      background: $thumb-color;
+      border-radius: 90px;
+      transition: $duration;
+    }
+  }
+
+  label:active:after {
+    width: $size;
+  }
+}

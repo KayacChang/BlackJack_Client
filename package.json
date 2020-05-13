@@ -17,7 +17,7 @@
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "normalize.css": "^8.0.1",
-    "pixi.js": "^5.2.3",
+    "pixi.js": "^5.2.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
@@ -35,11 +35,6 @@
     "node-sass": "^4.13.1",
     "react-scripts": "3.4.1",
     "typescript": "~3.7.2"
-  },
-  "peerDependencies": {
-    "pixi.js": "^5.2.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
   },
   "scripts": {
     "start": "react-scripts start",
