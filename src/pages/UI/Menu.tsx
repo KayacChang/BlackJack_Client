@@ -4,7 +4,8 @@ import { Button } from "../../components/button/Button";
 import { useTrigger } from "../../states";
 import styles from "./Menu.module.scss";
 import { useSpring, animated } from "react-spring";
-import { easeExp } from "d3-ease";
+import { easeCubic } from "d3-ease";
+import Settings from "./Settings";
 
 // ===== Drawer =====
 
@@ -37,8 +38,8 @@ function Drawer({ open, options }: DrawerProps) {
     opacity: open ? 1 : 0,
     transform: `translate3d(${open ? 0 : 100}%,0,0)`,
     config: {
-      duration: 120,
-      easing: easeExp,
+      duration: 160,
+      easing: easeCubic,
     },
   });
 
@@ -69,12 +70,21 @@ function Trigger({ open, onClick }: TriggerProps) {
   );
 }
 
+function Page() {
+  return (
+    <div className={`fixedPage full ${styles.page}`}>
+      <Settings />
+    </div>
+  );
+}
+
 // ===== Menu =====
 export default function Menu({ options }: { options: Option[] }) {
   const [open, trigger] = useTrigger();
 
   return (
     <>
+      <Page />
       <Trigger open={open} onClick={() => trigger()} />
       <Drawer options={options} open={open} />
     </>

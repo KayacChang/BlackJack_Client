@@ -1,0 +1,41 @@
+.settings {
+  text-transform: uppercase;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 0;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      text-align: center;
+    }
+  }
+  section > * {
+    height: 8vh;
+  }
+}
+
+.volume {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  * {
+    margin: 0 4px;
+  }
+}
+
+.slider {
+  margin: 0 16px;
+  width: 82%;
+}
