@@ -84,7 +84,7 @@ export default function Menu({ options }: { options: Option[] }) {
 
   return (
     <>
-      <Page />
+      {/* <Page /> */}
       <Trigger open={open} onClick={() => trigger()} />
       <Drawer options={options} open={open} />
     </>
