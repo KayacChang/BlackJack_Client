@@ -6,6 +6,8 @@ import styles from "./Menu.module.scss";
 import { useSpring, animated } from "react-spring";
 import { easeCubic } from "d3-ease";
 import Settings from "./Settings";
+import History from "./History";
+import GameRules from "./GameRules";
 
 // ===== Drawer =====
 
@@ -73,7 +75,9 @@ function Trigger({ open, onClick }: TriggerProps) {
 function Page() {
   return (
     <div className={`fixedPage full ${styles.page}`}>
-      <Settings />
+      {/* <Settings /> */}
+      {/* <History /> */}
+      <GameRules />
     </div>
   );
 }
@@ -84,7 +88,7 @@ export default function Menu({ options }: { options: Option[] }) {
 
   return (
     <>
-      {/* <Page /> */}
+      <Page />
       <Trigger open={open} onClick={() => trigger()} />
       <Drawer options={options} open={open} />
     </>

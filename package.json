@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "d3-ease": "^1.0.6",
+    "i18next": "^19.4.4",
+    "i18next-http-backend": "^1.0.10",
     "mobile-detect": "^1.4.4",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
@@ -21,6 +23,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
+    "react-i18next": "^11.4.0",
     "react-spring": "^8.0.27"
   },
   "devDependencies": {

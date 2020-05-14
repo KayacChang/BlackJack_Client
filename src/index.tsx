@@ -4,6 +4,7 @@ import "./index.scss";
 import App from "./components/App";
 import * as serviceWorker from "./workers/serviceWorker";
 import Game from "./game";
+import { i18n } from "./utils";
 
 const Root = (
   <React.StrictMode>
@@ -11,8 +12,10 @@ const Root = (
   </React.StrictMode>
 );
 
-function main() {
+async function main() {
   //
+  await i18n.init();
+
   ReactDOM.render(Root, document.getElementById("root"));
 
   serviceWorker.unregister();
