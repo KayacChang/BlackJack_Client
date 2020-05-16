@@ -1,30 +1,32 @@
-import React, { ReactNode, MouseEvent } from "react";
+import React, { ReactNode, MouseEvent, PropsWithChildren } from "react";
 import { Menu as IconMenu, CornerUpRight } from "react-feather";
 import { Button } from "../../components/button/Button";
 import { useTrigger } from "../../states";
 import styles from "./Menu.module.scss";
 import { useSpring, animated } from "react-spring";
 import { easeCubic } from "d3-ease";
-import Settings from "./Settings";
-import History from "./History";
-import GameRules from "./GameRules";
 
 // ===== Drawer =====
 
 type Option = {
   icon: ReactNode;
   title: string;
+  active: boolean;
   onClick: (event: MouseEvent) => void;
 };
 
-type DrawerProps = DivProps<{
-  options: Option[];
-  open: boolean;
-}>;
+function OptionButton({
+  active,
+  children,
+  onClick,
+}: ButtonProps<{ active: boolean }>) {
+  //
+  const _className = [styles.option, active && styles.active]
+    .filter(Boolean)
+    .join(" ");
 
-function OptionButton({ children, onClick }: ButtonProps<{}>) {
   return (
-    <button className={styles.option} onClick={onClick}>
+    <button className={_className} onClick={onClick}>
       {children}
     </button>
   );
@@ -33,6 +35,11 @@ function OptionButton({ children, onClick }: ButtonProps<{}>) {
 function Logo() {
   return <div className={styles.logo}></div>;
 }
+
+type DrawerProps = DivProps<{
+  options: Option[];
+  open: boolean;
+}>;
 
 function Drawer({ open, options }: DrawerProps) {
   //
@@ -49,8 +56,8 @@ function Drawer({ open, options }: DrawerProps) {
     <animated.div className={styles.drawer} style={anim}>
       <Logo />
 
-      {options.map(({ icon, title, onClick }) => (
-        <OptionButton key={title} onClick={onClick}>
+      {options.map(({ icon, title, onClick, active }) => (
+        <OptionButton key={title} onClick={onClick} active={active}>
           {icon}
           <h4>{title}</h4>
         </OptionButton>
@@ -64,32 +71,30 @@ type TriggerProps = ButtonProps<{
   open: boolean;
 }>;
 
-function Trigger({ open, onClick }: TriggerProps) {
+function Trigger({ open, style, onClick }: TriggerProps) {
   return (
-    <Button className={styles.trigger} onClick={onClick}>
+    <Button className={styles.trigger} onClick={onClick} style={style}>
       {open ? <CornerUpRight color="white" /> : <IconMenu color="white" />}
     </Button>
   );
 }
 
-function Page() {
-  return (
-    <div className={`fixedPage full ${styles.page}`}>
-      {/* <Settings /> */}
-      {/* <History /> */}
-      <GameRules />
-    </div>
-  );
+function Page({ children }: PropsWithChildren<{}>) {
+  return <div className={`fixedPage full ${styles.page}`}>{children}</div>;
 }
 
 // ===== Menu =====
-export default function Menu({ options }: { options: Option[] }) {
+type MenuProps = {
+  page?: ReactNode;
+  options: Option[];
+};
+export default function Menu({ page, options }: MenuProps) {
   const [open, trigger] = useTrigger();
 
   return (
     <>
-      <Page />
-      <Trigger open={open} onClick={() => trigger()} />
+      {page && <Page>{page}</Page>}
+      <Trigger style={{ right: 0 }} open={open} onClick={() => trigger()} />
       <Drawer options={options} open={open} />
     </>
   );

@@ -1,35 +1,56 @@
-import React from "react";
+import React, { useState, ReactNode } from "react";
 import { Flex } from "../../layouts/Flex";
 import Menu from "./Menu";
-import { Settings, Info, Clock, LogOut } from "react-feather";
+import { Play, Settings, Info, Clock, LogOut } from "react-feather";
+import SettingsPage from "./Settings";
+import HistoryPage from "./History";
+import GameRulesPage from "./GameRules";
+
+type Option = "game" | "rules" | "settings" | "history" | "home";
 
 export default function UI() {
   //
+  const [key, setKey] = useState<Option>("game");
+
+  const page = {
+    game: undefined,
+    rules: <GameRulesPage />,
+    settings: <SettingsPage />,
+    history: <HistoryPage />,
+    home: undefined,
+  }[key];
+
   return (
-    <Flex
-      className="fixedPage"
-      style={{
-        flexDirection: "row-reverse",
-      }}
-    >
+    <Flex className="fixedPage">
       <Menu
+        page={page}
         options={[
           {
-            icon: <Info color="white" />,
-            title: "game rules",
-            onClick: () => console.log("game rules"),
+            active: key === "game",
+            icon: <Play color={key === "game" ? "#3071a9" : "white"} />,
+            title: "game",
+            onClick: () => setKey("game"),
           },
           {
-            icon: <Settings color="white" />,
+            active: key === "rules",
+            icon: <Info color={key === "rules" ? "#3071a9" : "white"} />,
+            title: "rules",
+            onClick: () => setKey("rules"),
+          },
+          {
+            active: key === "settings",
+            icon: <Settings color={key === "settings" ? "#3071a9" : "white"} />,
             title: "settings",
-            onClick: () => console.log("settings"),
+            onClick: () => setKey("settings"),
           },
           {
-            icon: <Clock color="white" />,
+            active: key === "history",
+            icon: <Clock color={key === "history" ? "#3071a9" : "white"} />,
             title: "history",
-            onClick: () => console.log("history"),
+            onClick: () => setKey("history"),
           },
           {
+            active: key === "home",
             icon: <LogOut color="white" />,
             title: "home",
             onClick: () => console.log("home"),
