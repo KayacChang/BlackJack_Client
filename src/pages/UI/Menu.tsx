@@ -11,19 +11,12 @@ import { easeCubic } from "d3-ease";
 type Option = {
   icon: ReactNode;
   title: string;
-  active: boolean;
   onClick: (event: MouseEvent) => void;
 };
 
-function OptionButton({
-  active,
-  children,
-  onClick,
-}: ButtonProps<{ active: boolean }>) {
+function OptionButton({ children, onClick }: ButtonProps<{}>) {
   //
-  const _className = [styles.option, active && styles.active]
-    .filter(Boolean)
-    .join(" ");
+  const _className = [styles.option].filter(Boolean).join(" ");
 
   return (
     <button className={_className} onClick={onClick}>
@@ -56,8 +49,8 @@ function Drawer({ open, options }: DrawerProps) {
     <animated.div className={styles.drawer} style={anim}>
       <Logo />
 
-      {options.map(({ icon, title, onClick, active }) => (
-        <OptionButton key={title} onClick={onClick} active={active}>
+      {options.map(({ icon, title, onClick }) => (
+        <OptionButton key={title} onClick={onClick}>
           {icon}
           <h4>{title}</h4>
         </OptionButton>
@@ -94,7 +87,7 @@ export default function Menu({ page, options }: MenuProps) {
   return (
     <>
       {page && <Page>{page}</Page>}
-      <Trigger style={{ right: 0 }} open={open} onClick={() => trigger()} />
+      <Trigger style={{ right: 0 }} open={open} onClick={trigger} />
       <Drawer options={options} open={open} />
     </>
   );
