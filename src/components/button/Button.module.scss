@@ -23,12 +23,12 @@
 }
 
 .button {
+  @extend .override;
+  @extend .shadow;
+  @extend .center;
+
   height: 48px;
   width: 48px;
   background: #424242;
   border-radius: 100%;
-
-  @extend .override;
-  @extend .shadow;
-  @extend .center;
 }

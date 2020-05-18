@@ -4,13 +4,15 @@ import Canvas from "../components/canvas/Canvas";
 import { isMobile } from "../utils";
 import { useResize } from "../states";
 import Menu from "./menu";
+import Status from "./status";
 
 function UI() {
   //
   return (
-    <Flex className="fixedPage">
+    <div className="fixedPage">
       <Menu />
-    </Flex>
+      <Status />
+    </div>
   );
 }
 
