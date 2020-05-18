@@ -9,7 +9,12 @@ export default function Toggle({ id }: Props) {
 
   return (
     <div className={styles.toggle}>
-      <input type="checkbox" id={id} checked={flag} onChange={trigger} />
+      <input
+        type="checkbox"
+        id={id}
+        checked={flag}
+        onChange={() => trigger()}
+      />
       <label htmlFor={id}></label>
     </div>
   );
