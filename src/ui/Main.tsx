@@ -1,12 +1,20 @@
 import React, { PropsWithChildren } from "react";
 import { Center, Flex } from "../layouts/Flex";
 import Canvas from "../components/canvas/Canvas";
-import UI from "./UI";
 import { isMobile } from "../utils";
 import { useResize } from "../states";
+import Menu from "./menu";
+
+function UI() {
+  //
+  return (
+    <Flex className="fixedPage">
+      <Menu />
+    </Flex>
+  );
+}
 
 export default function Main({ children }: PropsWithChildren<{}>) {
-  //
   const mobile = useResize(isMobile);
 
   return (
