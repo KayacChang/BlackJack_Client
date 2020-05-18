@@ -1,33 +1,34 @@
-import React from "react";
+import React, { useState, ReactNode } from "react";
 import { Flex } from "../../layouts/Flex";
 import Menu from "./Menu";
 import { Settings, Info, Clock, LogOut } from "react-feather";
+import SettingsPage from "./Settings";
+import HistoryPage from "./History";
+import GameRulesPage from "./GameRules";
 
 export default function UI() {
   //
+  const [page, setPage] = useState<ReactNode>();
+
   return (
-    <Flex
-      className="fixedPage"
-      style={{
-        flexDirection: "row-reverse",
-      }}
-    >
+    <Flex className="fixedPage">
       <Menu
+        page={page}
         options={[
           {
-            icon: <Info color="white" />,
-            title: "game rules",
-            onClick: () => console.log("game rules"),
+            icon: <Info color={"white"} />,
+            title: "rules",
+            onClick: () => setPage(<GameRulesPage />),
           },
           {
-            icon: <Settings color="white" />,
+            icon: <Settings color={"white"} />,
             title: "settings",
-            onClick: () => console.log("settings"),
+            onClick: () => setPage(<SettingsPage />),
           },
           {
-            icon: <Clock color="white" />,
+            icon: <Clock color={"white"} />,
             title: "history",
-            onClick: () => console.log("history"),
+            onClick: () => setPage(<HistoryPage />),
           },
           {
             icon: <LogOut color="white" />,

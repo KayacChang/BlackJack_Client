@@ -1,11 +1,10 @@
-import React, { ReactNode, MouseEvent } from "react";
+import React, { ReactNode, MouseEvent, PropsWithChildren } from "react";
 import { Menu as IconMenu, CornerUpRight } from "react-feather";
 import { Button } from "../../components/button/Button";
 import { useTrigger } from "../../states";
 import styles from "./Menu.module.scss";
 import { useSpring, animated } from "react-spring";
 import { easeCubic } from "d3-ease";
-import Settings from "./Settings";
 
 // ===== Drawer =====
 
@@ -15,14 +14,12 @@ type Option = {
   onClick: (event: MouseEvent) => void;
 };
 
-type DrawerProps = DivProps<{
-  options: Option[];
-  open: boolean;
-}>;
-
 function OptionButton({ children, onClick }: ButtonProps<{}>) {
+  //
+  const _className = [styles.option].filter(Boolean).join(" ");
+
   return (
-    <button className={styles.option} onClick={onClick}>
+    <button className={_className} onClick={onClick}>
       {children}
     </button>
   );
@@ -31,6 +28,11 @@ function OptionButton({ children, onClick }: ButtonProps<{}>) {
 function Logo() {
   return <div className={styles.logo}></div>;
 }
+
+type DrawerProps = DivProps<{
+  options: Option[];
+  open: boolean;
+}>;
 
 function Drawer({ open, options }: DrawerProps) {
   //
@@ -62,30 +64,30 @@ type TriggerProps = ButtonProps<{
   open: boolean;
 }>;
 
-function Trigger({ open, onClick }: TriggerProps) {
+function Trigger({ open, style, onClick }: TriggerProps) {
   return (
-    <Button className={styles.trigger} onClick={onClick}>
+    <Button className={styles.trigger} onClick={onClick} style={style}>
       {open ? <CornerUpRight color="white" /> : <IconMenu color="white" />}
     </Button>
   );
 }
 
-function Page() {
-  return (
-    <div className={`fixedPage full ${styles.page}`}>
-      <Settings />
-    </div>
-  );
+function Page({ children }: PropsWithChildren<{}>) {
+  return <div className={`fixedPage full ${styles.page}`}>{children}</div>;
 }
 
 // ===== Menu =====
-export default function Menu({ options }: { options: Option[] }) {
+type MenuProps = {
+  page?: ReactNode;
+  options: Option[];
+};
+export default function Menu({ page, options }: MenuProps) {
   const [open, trigger] = useTrigger();
 
   return (
     <>
-      {/* <Page /> */}
-      <Trigger open={open} onClick={() => trigger()} />
+      {page && <Page>{page}</Page>}
+      <Trigger style={{ right: 0 }} open={open} onClick={trigger} />
       <Drawer options={options} open={open} />
     </>
   );

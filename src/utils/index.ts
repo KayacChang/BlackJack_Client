@@ -1,3 +1,5 @@
 import { isMobile } from "./device";
 
-export { isMobile };
+import * as i18n from "./i18n";
+
+export { isMobile, i18n };
