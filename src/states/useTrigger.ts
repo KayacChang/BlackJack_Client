@@ -1,11 +1,18 @@
 import { useState } from "react";
 
-export default function useTrigger(initState = false): [boolean, () => void] {
+type TriggerFunc = (flag?: boolean | undefined) => void;
+
+export default function useTrigger(initState = false): [boolean, TriggerFunc] {
   //
   const [state, setState] = useState(initState);
 
-  function trigger() {
-    setState((state) => !state);
+  function trigger(flag?: boolean) {
+    //
+    if (flag === undefined) {
+      return setState(!state);
+    }
+
+    setState(flag);
   }
 
   return [state, trigger];

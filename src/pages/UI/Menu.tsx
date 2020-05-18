@@ -1,7 +1,6 @@
-import React, { ReactNode, MouseEvent, PropsWithChildren } from "react";
-import { Menu as IconMenu, CornerUpRight } from "react-feather";
+import React, { ReactNode, MouseEvent } from "react";
+import { Menu as IconMenu, CornerUpRight, X } from "react-feather";
 import { Button } from "../../components/button/Button";
-import { useTrigger } from "../../states";
 import styles from "./Menu.module.scss";
 import { useSpring, animated } from "react-spring";
 import { easeCubic } from "d3-ease";
@@ -67,27 +66,54 @@ type TriggerProps = ButtonProps<{
 function Trigger({ open, style, onClick }: TriggerProps) {
   return (
     <Button className={styles.trigger} onClick={onClick} style={style}>
-      {open ? <CornerUpRight color="white" /> : <IconMenu color="white" />}
+      {open ? <CornerUpRight /> : <IconMenu />}
     </Button>
   );
 }
 
-function Page({ children }: PropsWithChildren<{}>) {
-  return <div className={`fixedPage full ${styles.page}`}>{children}</div>;
+function Close({ style, onClick }: ButtonProps<{}>) {
+  return (
+    <Button className={styles.trigger} onClick={onClick} style={style}>
+      <X />
+    </Button>
+  );
 }
 
 // ===== Menu =====
 type MenuProps = {
   page?: ReactNode;
   options: Option[];
+  open: boolean;
+  trigger: (flag?: boolean | undefined) => void;
+  setPage: (page?: ReactNode | undefined) => void;
 };
-export default function Menu({ page, options }: MenuProps) {
-  const [open, trigger] = useTrigger();
-
+export default function Menu({
+  page,
+  setPage,
+  options,
+  open,
+  trigger,
+}: MenuProps) {
   return (
     <>
-      {page && <Page>{page}</Page>}
-      <Trigger style={{ right: 0 }} open={open} onClick={trigger} />
+      {page && (
+        <>
+          <div
+            className={`fixedPage full ${styles.page}`}
+            onClick={() => open && trigger()}
+          >
+            {page}
+          </div>
+          <Close
+            style={{ left: 0 }}
+            onClick={() => {
+              trigger(false);
+              setPage();
+            }}
+          />
+        </>
+      )}
+      <Trigger style={{ right: 0 }} open={open} onClick={() => trigger()} />
       <Drawer options={options} open={open} />
     </>
   );
