@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import Main from "../pages/Main";
+import Main from "../ui/Main";
 
 export default function App({ children }: PropsWithChildren<{}>) {
   //

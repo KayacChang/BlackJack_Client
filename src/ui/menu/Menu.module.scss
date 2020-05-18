@@ -1,0 +1,10 @@
+.page {
+  background: #212121;
+}
+
+.page > div {
+  display: flex;
+  flex-direction: column;
+
+  padding: 16px;
+}
