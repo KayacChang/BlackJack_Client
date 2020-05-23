@@ -1,30 +1,20 @@
-import { Scene } from "../core";
-
-export default class MainScene extends Scene {
+export default {
   //
-  render() {
+  background: {
     //
-    return {
-      background: {
-        transform: {
-          position: {
-            x: 0,
-            y: 0,
-          },
-          rotation: {
-            x: 0,
-            y: 0,
-          },
-          scale: {
-            x: 1,
-            y: 1,
-          },
-        },
-        render: {
-          type: "Sprite",
-          texture: "BG_IMG",
+    components: {
+      //
+      transform: {
+        position: {
+          x: 0,
+          y: 0,
         },
       },
-    };
-  }
-}
+      //
+      render: {
+        type: 'Sprite',
+        texture: 'BG_IMG',
+      },
+    },
+  },
+};

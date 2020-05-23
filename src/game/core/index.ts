@@ -1,5 +1,5 @@
-import Resource from "./Resource";
-import Scene from "./Scene";
-import GameObject from "./GameObject";
+import Resource from './Resource';
+import Entity from './Entity';
+import { initEntities } from './System';
 
-export { Resource, Scene, GameObject };
+export { Resource, Entity, initEntities };
