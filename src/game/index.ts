@@ -1,6 +1,7 @@
-import { Application, Sprite } from "pixi.js";
-import BG_URL from "./bg.jpg";
-import { Package } from "./resource";
+import { Application } from "pixi.js";
+import { Resource } from "./core";
+import BG from "./bg.jpg";
+import Main from "./main";
 
 // === Game Client ===
 export default async function (view: HTMLCanvasElement) {
@@ -12,16 +13,13 @@ export default async function (view: HTMLCanvasElement) {
     resolution: window.devicePixelRatio || 1,
   });
 
-  const pkg = new Package("main");
+  const res = {
+    BG_IMG: BG,
+  };
 
-  await pkg.load({
-    background: BG_URL,
-  });
+  await Resource.load(res);
 
-  const res = pkg.getRes("background");
+  const main = new Main();
 
-  const background = new Sprite(res.texture);
-  background.width = app.screen.width;
-  background.height = app.screen.height;
-  app.stage.addChild(background);
+  app.stage = main.view;
 }
