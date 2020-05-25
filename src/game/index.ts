@@ -1,7 +1,7 @@
 import { Application } from 'pixi.js';
 import { Resource, initEntities, Entity } from './core';
 import Main from './main';
-import { UpdateRenderSystem } from './ systems';
+import { UpdateRenderSystem } from './systems';
 
 // === Game Client ===
 export default async function (view: HTMLCanvasElement) {
