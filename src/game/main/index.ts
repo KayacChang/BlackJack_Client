@@ -1,4 +1,10 @@
-export default {
+import BG from './bg.jpg'
+
+const resources = {
+  BG_IMG: BG,
+}
+
+const stage =  {
   //
   background: {
     //
@@ -18,3 +24,8 @@ export default {
     },
   },
 };
+
+export default {
+  resources,
+  stage
+}

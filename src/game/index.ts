@@ -1,7 +1,7 @@
-import { Application, DisplayObject } from 'pixi.js';
+import { Application } from 'pixi.js';
 import { Resource, initEntities, Entity } from './core';
-import BG from './bg.jpg';
 import Main from './main';
+import { UpdateRenderSystem } from './ systems';
 
 // === Game Client ===
 export default async function (view: HTMLCanvasElement) {
@@ -13,18 +13,14 @@ export default async function (view: HTMLCanvasElement) {
     resolution: window.devicePixelRatio || 1,
   });
 
-  const res = {
-    BG_IMG: BG,
-  };
-
-  await Resource.load(res);
+  await Resource.load(Main.resources);
 
   onInit(app);
 }
 
 function onInit(app: Application) {
   //
-  const [entities, root] = initEntities(Main);
+  const [entities, root] = initEntities(Main.stage);
 
   app.stage = root;
 
@@ -43,18 +39,5 @@ function onStart(app: Application, entities: Entity[]) {
         UpdateRenderSystem(delta, entity);
       }
     }
-    //
   }
-}
-
-function UpdateRenderSystem(delta: number, entity: Entity) {
-  //
-  const transform = entity.components.get('transform') as TransformComponent;
-  const render = entity.components.get('render') as DisplayObject;
-
-  render.x = transform.position.x;
-  render.y = transform.position.y;
-
-  render.scale.x = transform.scale.x;
-  render.scale.y = transform.scale.y;
 }
