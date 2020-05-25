@@ -1,36 +1,16 @@
-import BG from './bg.jpg';
+import { Application, Container } from 'pixi.js';
+import Background from './Background';
 
-const resources = {
-  BG_IMG: BG,
-};
-
-const stage = {
+export default class Main extends Container {
   //
-  background: {
-    //
-    components: {
-      //
-      Transform: {
-        position: {
-          x: 0,
-          y: 0,
-        },
-      },
-      //
-      Render: {
-        type: 'Sprite',
-        texture: 'BG_IMG',
-      },
-      //
-      BoxModel: {
-        width: '100%',
-        height: '100%',
-      },
-    },
-  },
-};
+  constructor(app: Application) {
+    super();
 
-export default {
-  resources,
-  stage,
-};
+    const bg = new Background({
+      width: app.screen.width,
+      height: app.screen.height,
+    });
+
+    this.addChild(bg);
+  }
+}
