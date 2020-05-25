@@ -1,25 +1,25 @@
 import { Application } from 'pixi.js';
 import { Resource, initEntities, Entity } from './core';
 import Main from './main';
-import { UpdateRenderSystem } from './systems';
+import { TransformSystem, System } from './systems';
 
 // === Game Client ===
 export default async function (view: HTMLCanvasElement) {
-  // Init App
+  //
   const app = new Application({
-    width: 2560,
-    height: 1440,
+    width: 1280,
+    height: 720,
     view,
     resolution: window.devicePixelRatio || 1,
   });
 
-  await Resource.load(Main.resources);
-
   onInit(app);
 }
 
-function onInit(app: Application) {
+async function onInit(app: Application) {
   //
+  await Resource.load(Main.resources);
+
   const [entities, root] = initEntities(Main.stage);
 
   app.stage = root;
@@ -29,14 +29,22 @@ function onInit(app: Application) {
 
 function onStart(app: Application, entities: Entity[]) {
   //
-  app.ticker.add(update);
-
-  function update(delta: number) {
+  const systems = [
     //
-    for (const entity of entities) {
+    new TransformSystem(),
+  ];
+
+  app.ticker.add((delta) => onUpdate(delta, systems, entities));
+}
+
+function onUpdate(delta: number, systems: System[], entities: Entity[]) {
+  //
+  for (const entity of entities) {
+    //
+    for (const system of systems) {
       //
-      if (entity.components.has('transform') && entity.components.has('render')) {
-        UpdateRenderSystem(delta, entity);
+      if (system.match(entity)) {
+        system.update(delta, entity);
       }
     }
   }

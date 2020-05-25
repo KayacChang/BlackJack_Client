@@ -14,7 +14,7 @@ function newRenderComponent(type: string, comp: RenderComponent, self: Entity) {
 function newComponent(type: string, comp: any, self: Entity) {
   //
   if (type === 'transform') {
-    return Transform(comp);
+    return new Transform(comp);
   }
 
   if (type === 'render') {

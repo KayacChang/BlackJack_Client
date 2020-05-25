@@ -1,3 +1,5 @@
-import UpdateRenderSystem from './UpdateRenderSystem';
+import System from './Base';
+import TransformSystem from './TransformSystem';
 
-export { UpdateRenderSystem };
+export type { System };
+export { TransformSystem };
