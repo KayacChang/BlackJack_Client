@@ -1,6 +1,6 @@
-import { Entity } from '../core';
+import { Entity } from '..';
 import { DisplayObject } from 'pixi.js';
-import System from './Base';
+import System from './System';
 import { Transform } from '../component';
 
 export default class TransformSystem implements System {

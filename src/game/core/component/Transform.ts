@@ -1,5 +1,5 @@
 //
-import { Vec2 } from '../core';
+import { Vec2 } from '..';
 
 type VProps = {
   x?: number;
