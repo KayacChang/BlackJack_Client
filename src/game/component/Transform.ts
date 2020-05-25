@@ -1,32 +1,38 @@
 //
-type Vec2Props = {
+import { Vec2 } from '../core';
+
+type VProps = {
   x?: number;
   y?: number;
 };
 
-function Vec2(pos?: Vec2Props, defaultVal = 0) {
-  //
-  if (!pos) {
-    return { x: defaultVal, y: defaultVal };
-  }
-
-  return {
-    x: pos.x || defaultVal,
-    y: pos.y || defaultVal,
-  };
-}
-
-type TransformProps = {
-  position?: Vec2Props;
-  rotation?: Vec2Props;
-  scale?: Vec2Props;
+type Props = {
+  position?: VProps;
+  rotation?: VProps;
+  scale?: VProps;
 };
 
-export default function Transform(comp: TransformProps) {
+export default class Transform {
   //
-  return {
-    position: Vec2(comp.position),
-    rotation: Vec2(comp.rotation),
-    scale: Vec2(comp.scale, 1),
-  };
+  position: Vec2;
+  rotation: Vec2;
+  scale: Vec2;
+
+  constructor(comp: Props) {
+    //
+    this.position = new Vec2({
+      x: comp.position?.x || 0,
+      y: comp.position?.y || 0,
+    });
+
+    this.rotation = new Vec2({
+      x: comp.rotation?.x || 0,
+      y: comp.rotation?.y || 0,
+    });
+
+    this.scale = new Vec2({
+      x: comp.scale?.x || 1,
+      y: comp.scale?.y || 1,
+    });
+  }
 }
