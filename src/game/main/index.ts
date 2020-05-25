@@ -1,25 +1,30 @@
-import BG from './bg.jpg'
+import BG from './bg.jpg';
 
 const resources = {
   BG_IMG: BG,
-}
+};
 
-const stage =  {
+const stage = {
   //
   background: {
     //
     components: {
       //
-      transform: {
+      Transform: {
         position: {
           x: 0,
           y: 0,
         },
       },
       //
-      render: {
+      Render: {
         type: 'Sprite',
         texture: 'BG_IMG',
+      },
+      //
+      BoxModel: {
+        width: '100%',
+        height: '100%',
       },
     },
   },
@@ -27,5 +32,5 @@ const stage =  {
 
 export default {
   resources,
-  stage
-}
+  stage,
+};
