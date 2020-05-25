@@ -1,4 +1,4 @@
-import { Sprite, Transform } from '../component';
+import { Sprite, Transform } from './component';
 
 function newRenderComponent(type: string, comp: RenderComponent, self: Entity) {
   //
