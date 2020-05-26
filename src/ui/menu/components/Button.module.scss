@@ -14,9 +14,9 @@
 
 .trigger {
   z-index: 2;
-  margin: 16px;
 
   position: absolute;
+  margin: 16px;
 
   @include icon();
 }
