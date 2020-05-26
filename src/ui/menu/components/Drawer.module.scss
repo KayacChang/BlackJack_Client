@@ -3,9 +3,8 @@
 }
 
 .drawer {
-  width: 28%;
   height: 100%;
-  padding: 16px;
+  padding: 0 16px;
 
   position: absolute;
   right: 0px;
@@ -16,11 +15,20 @@
   flex-direction: column;
 
   @extend .shadow;
+
+  button {
+    margin-top: 16px;
+  }
 }
 
-.logo {
-  height: 16%;
+.placeholder {
+  height: 32px;
+  margin-bottom: 32px;
 
   display: flex;
   align-items: center;
+
+  @media screen and (min-device-width: 1200px) {
+    margin-bottom: 48px;
+  }
 }

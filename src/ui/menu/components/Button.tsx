@@ -1,16 +1,19 @@
-import React from "react";
-import { Menu as IconMenu, CornerUpRight, X } from "react-feather";
-import { Button } from "../../../components/button/Button";
-import styles from "./Button.module.scss";
+import React from 'react';
+import { Menu as IconMenu, CornerUpRight, X } from 'react-feather';
+import { Button } from '../../../components/button/Button';
+import styles from './Button.module.scss';
 
 // ===== Trigger =====
-type TriggerProps = ButtonProps<{
+type Props = ButtonProps<{
   open: boolean;
 }>;
 
-export function Trigger({ open, style, onClick }: TriggerProps) {
+export function Trigger({ open, style, onClick }: Props) {
+  //
+  const _className = [styles.trigger, open && styles.open].filter(Boolean).join(' ');
+
   return (
-    <Button className={styles.trigger} onClick={onClick} style={style}>
+    <Button className={_className} onClick={onClick} style={style}>
       {open ? <CornerUpRight /> : <IconMenu />}
     </Button>
   );
@@ -24,13 +27,19 @@ export function Close({ style, onClick }: ButtonProps<{}>) {
   );
 }
 
-export function Option({ children, onClick }: ButtonProps<{}>) {
+export function Option({ open, children, onClick }: Props) {
   //
-  const _className = [styles.option].filter(Boolean).join(" ");
+  const _className = [
+    //
+    styles.option,
+    open && styles.open,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <button className={_className} onClick={onClick}>
+    <Button className={_className} onClick={onClick}>
       {children}
-    </button>
+    </Button>
   );
 }

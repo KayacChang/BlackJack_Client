@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./Settings.module.scss";
-import { VolumeX, Volume2 } from "react-feather";
-import { Slider, Toggle } from "../../../components/input";
+import React from 'react';
+import styles from './Settings.module.scss';
+import { VolumeX, Volume2 } from 'react-feather';
+import { Slider, Toggle } from '../../../components/input';
 
 function Volume() {
   return (
@@ -21,16 +21,16 @@ export default function Settings() {
           <h3>audio</h3>
         </div>
         <div>
-          <span>volume</span>
+          <h4>volume</h4>
           <Volume />
         </div>
         <div className={styles.toggle}>
-          <span>sound effects</span>
-          <Toggle id={"sound-effects"} />
+          <h4>sound effects</h4>
+          <Toggle id={'sound-effects'} />
         </div>
         <div className={styles.toggle}>
-          <span>ambience sound</span>
-          <Toggle id={"ambience-sound"} />
+          <h4>ambience sound</h4>
+          <Toggle id={'ambience-sound'} />
         </div>
       </section>
     </div>
