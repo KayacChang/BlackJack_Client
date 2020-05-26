@@ -1,23 +1,33 @@
+@mixin icon {
+  svg {
+    width: 8vmin;
+    height: 8vmin;
+  }
+
+  @media screen and (min-device-width: 1200px) {
+    svg {
+      width: 4vmin;
+      height: 4vmin;
+    }
+  }
+}
+
 .trigger {
   z-index: 1;
   margin: 16px;
 
   position: absolute;
+
+  @include icon();
+}
+
+.open {
+  box-shadow: none;
 }
 
 .option {
-  border: none;
-  border-top: 1px solid #a7a9aa;
-
-  padding: 16px;
-  background: transparent;
-  text-transform: uppercase;
-  outline: none;
-
   display: flex;
   align-items: center;
 
-  * {
-    margin: 0 8px;
-  }
+  @include icon();
 }

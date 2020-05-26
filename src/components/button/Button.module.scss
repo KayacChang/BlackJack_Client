@@ -3,6 +3,10 @@
   outline: none;
   border: none;
   text-decoration: none;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .center {
@@ -12,9 +16,11 @@
 }
 
 .shadow {
-  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.6);
 
   @media screen and (min-device-width: 1200px) {
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.6);
+
     transition: box-shadow 0.3s ease-in-out;
     &:hover {
       box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.6);
@@ -27,8 +33,12 @@
   @extend .shadow;
   @extend .center;
 
-  height: 48px;
-  width: 48px;
-  background: #424242;
+  padding: 3vh;
+
+  @media screen and (min-device-width: 1200px) {
+    padding: 16px;
+  }
+
+  background: #212121;
   border-radius: 100%;
 }

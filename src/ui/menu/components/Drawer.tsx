@@ -1,8 +1,8 @@
-import React, { ReactNode, MouseEvent } from "react";
-import styles from "./Drawer.module.scss";
-import { useSpring, animated } from "react-spring";
-import { easeCubic } from "d3-ease";
-import { Option as OptionButton } from "./Button";
+import React, { ReactNode, MouseEvent } from 'react';
+import styles from './Drawer.module.scss';
+import { useSpring, animated } from 'react-spring';
+import { easeCubic } from 'd3-ease';
+import { Option as OptionButton } from './Button';
 
 type Option = {
   icon: ReactNode;
@@ -15,8 +15,8 @@ type DrawerProps = DivProps<{
   open: boolean;
 }>;
 
-function Logo() {
-  return <div className={styles.logo}></div>;
+function Placeholder() {
+  return <div className={styles.placeholder}></div>;
 }
 
 export default function Drawer({ open, options }: DrawerProps) {
@@ -32,12 +32,11 @@ export default function Drawer({ open, options }: DrawerProps) {
 
   return (
     <animated.div className={styles.drawer} style={anim}>
-      <Logo />
+      <Placeholder />
 
       {options.map(({ icon, title, onClick }) => (
-        <OptionButton key={title} onClick={onClick}>
+        <OptionButton open={open} key={title} onClick={onClick}>
           {icon}
-          <h4>{title}</h4>
         </OptionButton>
       ))}
     </animated.div>
