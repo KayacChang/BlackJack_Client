@@ -1,7 +1,8 @@
 import React, { useState, ReactNode } from 'react';
 import style from './Status.module.scss';
 import { currency } from '../../utils';
-import { CreditCard, Database } from 'react-feather';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWallet, faCoins } from '@fortawesome/free-solid-svg-icons';
 
 type FieldProps = ButtonProps<{
   icon: ReactNode;
@@ -28,8 +29,8 @@ export default function Status() {
 
   return (
     <div className={style.status}>
-      <Field title={'balance'} value={currency(balance)} icon={<CreditCard />} />
-      <Field title={'total bet'} value={currency(totalBet)} icon={<Database />} />
+      <Field title={'balance'} value={currency(balance)} icon={<FontAwesomeIcon icon={faWallet} />} />
+      <Field title={'total bet'} value={currency(totalBet)} icon={<FontAwesomeIcon icon={faCoins} />} />
     </div>
   );
 }
