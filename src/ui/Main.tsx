@@ -1,10 +1,11 @@
-import React, { PropsWithChildren } from "react";
-import { Center, Flex } from "../layouts/Flex";
-import Canvas from "../components/canvas/Canvas";
-import { isMobile } from "../utils";
-import { useResize } from "../states";
-import Menu from "./menu";
-import Status from "./status";
+import React, { PropsWithChildren } from 'react';
+import { Center, Flex } from '../layouts/Flex';
+import Canvas from '../components/canvas/Canvas';
+import { isMobile } from '../utils';
+import { useResize } from '../states';
+import Menu from './menu';
+import Status from './status';
+import Detail from './detail';
 
 function UI() {
   //
@@ -12,6 +13,7 @@ function UI() {
     <div className="fixedPage">
       <Menu />
       <Status />
+      <Detail />
     </div>
   );
 }
@@ -21,7 +23,7 @@ export default function Main({ children }: PropsWithChildren<{}>) {
 
   return (
     <Center className="full">
-      <Flex style={{ position: "relative" }}>
+      <Flex style={{ position: 'relative' }}>
         <Canvas>{children}</Canvas>
         {!mobile && <UI />}
       </Flex>
