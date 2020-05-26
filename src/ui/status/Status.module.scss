@@ -19,14 +19,25 @@
 $unit: 48px;
 
 .field {
-  box-shadow: none;
+  display: flex;
+  align-items: center;
 
-  flex-direction: column;
-
-  background: rgba($color: #000000, $alpha: 0.8);
-
+  background: rgba($color: #212121, $alpha: 1);
   height: $unit;
-  width: $unit * 4;
-
+  min-width: $unit * 4;
   border-radius: $unit;
+
+  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.88);
+
+  & > * {
+    margin: 16px;
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    margin: auto 0;
+  }
 }
