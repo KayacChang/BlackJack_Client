@@ -5,11 +5,17 @@ import TABLE_GREEN from './table/green.jpg';
 import TABLE_BLUE from './table/table_blue.jpg';
 import TABLE_RED from './table/table_red.jpg';
 
+import SEAT_NORMAL from './seat/MultiSeat.png';
+import SEAT_ENABLE from './seat/MultiSeat_On.png';
+
 const PKG = {
   TABLE_TITLE,
   TABLE_GREEN,
   TABLE_BLUE,
   TABLE_RED,
+
+  SEAT_NORMAL,
+  SEAT_ENABLE,
 };
 
 const loader = new Loader();

@@ -32,4 +32,13 @@ async function onLoad(app: Application) {
 function onStart(app: Application) {
   //
   app.stage = new Main(app);
+
+  app.ticker.add(() => resize(app));
+}
+
+function resize(app: Application) {
+  const x = app.screen.width / Quad_HD.width;
+  const y = app.screen.height / Quad_HD.height;
+
+  app.stage.scale.set(x, y);
 }

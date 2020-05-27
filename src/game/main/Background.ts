@@ -28,8 +28,8 @@ export default class Background extends Sprite {
     this.textures = textures;
     this.texture = textures.red;
 
-    this.width = width;
-    this.height = height;
+    // this.width = width;
+    // this.height = height;
 
     const title = new Sprite(Res.get('TABLE_TITLE').texture);
     title.x = title.width / 2;
