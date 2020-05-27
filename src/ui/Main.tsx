@@ -7,6 +7,7 @@ import Menu from './menu';
 import Status from './status';
 import Detail from './detail';
 import Bet from './bet';
+import Decision from './decision';
 
 function UI() {
   //
@@ -15,7 +16,8 @@ function UI() {
       <Menu />
       <Status />
       <Detail />
-      <Bet />
+      {/* <Bet /> */}
+      <Decision />
     </div>
   );
 }
