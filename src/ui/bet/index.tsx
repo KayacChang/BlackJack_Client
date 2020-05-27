@@ -2,7 +2,7 @@ import React from 'react';
 import { CornerUpLeft, RotateCw } from 'react-feather';
 import Chip from './components/Chip';
 import Control from './components/Control';
-import Timer from './components/Timer';
+import Timer from '../../components/timer';
 import styles from './Bet.module.scss';
 
 import RED from './assets/normal/red.png';
@@ -15,7 +15,7 @@ import YELLOW from './assets/normal/yellow.png';
 export default function Bet() {
   return (
     <div className={styles.bet}>
-      <h3 className={styles.title}>place your bets</h3>
+      <h3>place your bets</h3>
 
       <div className={styles.section}>
         <Control title={'undo'} icon={<CornerUpLeft />} />
