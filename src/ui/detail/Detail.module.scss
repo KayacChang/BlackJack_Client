@@ -1,7 +1,7 @@
 @mixin icon {
   svg {
-    width: 3vmin;
-    height: 3vmin;
+    width: 5vmin;
+    height: 5vmin;
   }
 
   @media screen and (min-device-width: 1200px) {
@@ -28,6 +28,8 @@
 
 .back {
   @include icon();
+
+  padding: 8px;
 }
 
 $unit: 16px;
