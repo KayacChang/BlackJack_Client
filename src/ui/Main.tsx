@@ -6,6 +6,7 @@ import { useResize } from '../states';
 import Menu from './menu';
 import Status from './status';
 import Detail from './detail';
+import Bet from './bet';
 
 function UI() {
   //
@@ -14,6 +15,7 @@ function UI() {
       <Menu />
       <Status />
       <Detail />
+      <Bet />
     </div>
   );
 }
