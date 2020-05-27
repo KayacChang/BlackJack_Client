@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/BlackJack/static/css/main.d0c21475.chunk.css",
-    "main.js": "/BlackJack/static/js/main.222c8ce5.chunk.js",
-    "main.js.map": "/BlackJack/static/js/main.222c8ce5.chunk.js.map",
-    "runtime-main.js": "/BlackJack/static/js/runtime-main.38f3e842.js",
-    "runtime-main.js.map": "/BlackJack/static/js/runtime-main.38f3e842.js.map",
-    "static/js/2.5383910d.chunk.js": "/BlackJack/static/js/2.5383910d.chunk.js",
-    "static/js/2.5383910d.chunk.js.map": "/BlackJack/static/js/2.5383910d.chunk.js.map",
-    "index.html": "/BlackJack/index.html",
-    "precache-manifest.42ff08e2da09faec76defc41d7bab82c.js": "/BlackJack/precache-manifest.42ff08e2da09faec76defc41d7bab82c.js",
-    "service-worker.js": "/BlackJack/service-worker.js",
-    "static/css/main.d0c21475.chunk.css.map": "/BlackJack/static/css/main.d0c21475.chunk.css.map",
-    "static/js/2.5383910d.chunk.js.LICENSE.txt": "/BlackJack/static/js/2.5383910d.chunk.js.LICENSE.txt",
-    "static/media/blackjack.png": "/BlackJack/static/media/blackjack.6e7fab6e.png",
-    "static/media/getFetch.cjs": "/BlackJack/static/media/getFetch.5e98861f.cjs",
-    "static/media/green.jpg": "/BlackJack/static/media/green.c712edc7.jpg",
-    "static/media/table_blue.jpg": "/BlackJack/static/media/table_blue.c5a28658.jpg",
-    "static/media/table_red.jpg": "/BlackJack/static/media/table_red.94666778.jpg"
+    "main.css": "/blackjack/static/css/main.d0c21475.chunk.css",
+    "main.js": "/blackjack/static/js/main.af11a55a.chunk.js",
+    "main.js.map": "/blackjack/static/js/main.af11a55a.chunk.js.map",
+    "runtime-main.js": "/blackjack/static/js/runtime-main.a52b873a.js",
+    "runtime-main.js.map": "/blackjack/static/js/runtime-main.a52b873a.js.map",
+    "static/js/2.5383910d.chunk.js": "/blackjack/static/js/2.5383910d.chunk.js",
+    "static/js/2.5383910d.chunk.js.map": "/blackjack/static/js/2.5383910d.chunk.js.map",
+    "index.html": "/blackjack/index.html",
+    "precache-manifest.341311c0ec501bdfc95606ab9e7d7713.js": "/blackjack/precache-manifest.341311c0ec501bdfc95606ab9e7d7713.js",
+    "service-worker.js": "/blackjack/service-worker.js",
+    "static/css/main.d0c21475.chunk.css.map": "/blackjack/static/css/main.d0c21475.chunk.css.map",
+    "static/js/2.5383910d.chunk.js.LICENSE.txt": "/blackjack/static/js/2.5383910d.chunk.js.LICENSE.txt",
+    "static/media/blackjack.png": "/blackjack/static/media/blackjack.6e7fab6e.png",
+    "static/media/getFetch.cjs": "/blackjack/static/media/getFetch.5e98861f.cjs",
+    "static/media/green.jpg": "/blackjack/static/media/green.c712edc7.jpg",
+    "static/media/table_blue.jpg": "/blackjack/static/media/table_blue.c5a28658.jpg",
+    "static/media/table_red.jpg": "/blackjack/static/media/table_red.94666778.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.38f3e842.js",
+    "static/js/runtime-main.a52b873a.js",
     "static/js/2.5383910d.chunk.js",
     "static/css/main.d0c21475.chunk.css",
-    "static/js/main.222c8ce5.chunk.js"
+    "static/js/main.af11a55a.chunk.js"
   ]
 }
