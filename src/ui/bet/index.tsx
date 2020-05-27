@@ -1,16 +1,16 @@
 import React from 'react';
 import { CornerUpLeft, RotateCw } from 'react-feather';
-import Chip from './Chip';
-import Control from './Control';
-import Timer from './Timer';
+import Chip from './components/Chip';
+import Control from './components/Control';
+import Timer from './components/Timer';
 import styles from './Bet.module.scss';
 
-import RED from './normal/red.png';
-import GREEN from './normal/green.png';
-import BLUE from './normal/blue.png';
-import BLACK from './normal/black.png';
-import PURPLE from './normal/purple.png';
-import YELLOW from './normal/yellow.png';
+import RED from './assets/normal/red.png';
+import GREEN from './assets/normal/green.png';
+import BLUE from './assets/normal/blue.png';
+import BLACK from './assets/normal/black.png';
+import PURPLE from './assets/normal/purple.png';
+import YELLOW from './assets/normal/yellow.png';
 
 export default function Bet() {
   return (

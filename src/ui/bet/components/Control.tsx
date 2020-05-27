@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import styles from './Control.module.scss';
-import { Button } from '../../components/button/Button';
+import { Button } from '../../../components/button/Button';
 
 type Props = {
   title: string;

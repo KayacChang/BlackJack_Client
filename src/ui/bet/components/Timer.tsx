@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Timer.module.scss';
-import { Triangle } from '../../components/shape';
+import { Triangle } from '../../../components/shape';
 
 export default function Timer() {
   //
