@@ -34,7 +34,7 @@ export default class Main extends Container {
     seatE.x = this.width * (87.5 / 100);
     seatE.y = this.height * (50 / 100);
 
-    this.addChild(seatA, seatB, seatC, seatD, seatE);
+    // this.addChild(seatA, seatB, seatC, seatD, seatE);
   }
 }
 

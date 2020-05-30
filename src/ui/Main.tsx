@@ -16,7 +16,7 @@ function UI() {
       <Menu />
       <Status />
       <Detail />
-      {/* <Bet /> */}
+      <Bet />
       {/* <Decision /> */}
     </div>
   );
