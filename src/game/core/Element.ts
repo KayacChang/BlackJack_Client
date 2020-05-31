@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js';
+import { Container, Sprite, DisplayObject } from 'pixi.js';
 import { setAnchor, setPosition } from '../utils';
 import { Hierarchy, Children } from '.';
 
@@ -16,24 +16,25 @@ export default abstract class Element extends Container {
     this.create(this.view);
   }
 
-  create(children: Hierarchy) {
+  create(hierarchy: Hierarchy) {
     const stage: Children = {};
 
-    for (const [name, data] of Object.entries(children)) {
-      //
-      if (data instanceof Element) {
-        data.name = name;
-        this.addChild(data);
-        stage[name] = data;
+    const addToStage = (name: string, element: Element | Sprite | DisplayObject) => {
+      element.name = name;
+      this.addChild(element);
+      stage[name] = element;
+    };
 
-        continue;
+    Object.entries(hierarchy).forEach(([name, data]) => {
+      //
+      if (data instanceof Element || data instanceof Sprite) {
+        addToStage(name, data);
+        return;
       }
 
       const { element, position, anchor } = data;
 
-      element.name = name;
-      this.addChild(element);
-      stage[name] = element;
+      addToStage(name, element);
 
       if (position) {
         setPosition(position, element);
@@ -41,7 +42,7 @@ export default abstract class Element extends Container {
       if (anchor) {
         setAnchor(anchor, element);
       }
-    }
+    });
 
     this.onCreate(stage);
   }

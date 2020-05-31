@@ -1,4 +1,4 @@
-import { DisplayObject } from 'pixi.js';
+import { DisplayObject, Sprite } from 'pixi.js';
 import Element from './Element';
 
 export type Vec2 = {
@@ -12,6 +12,6 @@ export type MetaData = {
   anchor?: Vec2;
 };
 
-export type Hierarchy = { [name: string]: MetaData | Element };
+export type Hierarchy = { [name: string]: MetaData | Element | Sprite };
 
 export type Children = { [name: string]: PIXI.DisplayObject };

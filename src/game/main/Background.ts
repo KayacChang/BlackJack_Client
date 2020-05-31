@@ -7,9 +7,7 @@ export default class Background extends Element {
   //
   get view() {
     return {
-      table: {
-        element: new Sprite(Res.get('TABLE_BLUE').texture),
-      },
+      table: new Sprite(Res.get('TABLE_BLUE').texture),
       title: {
         element: new Sprite(Res.get('TABLE_TITLE').texture),
         anchor: {
