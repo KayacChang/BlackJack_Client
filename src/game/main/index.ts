@@ -1,35 +1,38 @@
-import { Container } from 'pixi.js';
 import Background from './Background';
 import Seat from './Seat';
+import { Sprite } from 'pixi.js';
+import Element from '../core/Element';
+import { Children } from '../core';
 
-export default class Main extends Container {
+export default class Main extends Element {
   //
-  constructor() {
-    super();
+  get view() {
+    return {
+      background: new Background(),
+      seatA: new Seat(),
+      seatB: new Seat(),
+      seatC: new Seat(),
+      seatD: new Seat(),
+      seatE: new Seat(),
+    };
+  }
 
-    const bg = new Background();
-    this.addChild(bg);
+  onCreate({ background, seatA, seatB, seatC, seatD, seatE }: Children) {
+    const { width, height } = background as Sprite;
 
-    const seatA = new Seat();
-    seatA.x = this.width * (50 / 100);
-    seatA.y = this.height * (82 / 100);
+    seatA.x = width * (50 / 100);
+    seatA.y = height * (82 / 100);
 
-    const seatB = new Seat();
-    seatB.x = this.width * (30 / 100);
-    seatB.y = this.height * (75 / 100);
+    seatB.x = width * (30 / 100);
+    seatB.y = height * (75 / 100);
 
-    const seatC = new Seat();
-    seatC.x = this.width * (70 / 100);
-    seatC.y = this.height * (75 / 100);
+    seatC.x = width * (70 / 100);
+    seatC.y = height * (75 / 100);
 
-    const seatD = new Seat();
-    seatD.x = this.width * (15 / 100);
-    seatD.y = this.height * (58 / 100);
+    seatD.x = width * (15 / 100);
+    seatD.y = height * (58 / 100);
 
-    const seatE = new Seat();
-    seatE.x = this.width * (85 / 100);
-    seatE.y = this.height * (58 / 100);
-
-    this.addChild(seatA, seatB, seatC, seatD, seatE);
+    seatE.x = width * (85 / 100);
+    seatE.y = height * (58 / 100);
   }
 }

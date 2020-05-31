@@ -1,47 +1,36 @@
-import { curry } from 'ramda';
-import { isAnchorable, isContainer } from './type';
-import { isNumber, isString } from 'util';
+import { isContainer, isSprite, isAnimatedSprite, isBitmapText, isText, isPoint } from './type';
+import { Vec2 } from '../core';
 
-export const setAnchor = curry((value: number, children: any[]) => {
+export function setAnchor({ x = 0, y = 0 }: Vec2, ...children: any[]) {
   //
-  for (const child of children) {
+  children.forEach((child) => {
     //
-    if (isAnchorable(child)) {
-      child.anchor.set(value);
+    if (isSprite(child) || isAnimatedSprite(child) || isText(child)) {
+      child.anchor.set(x, y);
+
+      return;
     }
-  }
+
+    if (isBitmapText(child) && isPoint(child.anchor)) {
+      child.anchor.set(x, y);
+
+      return;
+    }
+  });
 
   return children;
-});
-
-function isPercentage(value: string) {
-  return value.endsWith('%');
 }
 
-function toPercentage(value: string) {
-  return Number(value.slice(0, -1)) / 100;
-}
-
-export const setPosition = curry((position: Vec2, children: any[]) => {
+export function setPosition({ x = 0, y = 0 }: Vec2, ...children: any[]) {
   //
-  for (const child of children) {
+  children.forEach((child) => {
     //
     if (!isContainer(child)) {
-      continue;
+      return;
     }
 
-    if (isNumber(position.x)) {
-      child.x = position.x;
-    }
-    if (isNumber(position.y)) {
-      child.y = position.y;
-    }
+    child.position.set(x, y);
+  });
 
-    if (isString(position.x) && isPercentage(position.x)) {
-      child.x = child.width * toPercentage(position.x);
-    }
-    if (isString(position.y) && isPercentage(position.y)) {
-      child.y = child.height * toPercentage(position.y);
-    }
-  }
-});
+  return children;
+}

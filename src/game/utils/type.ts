@@ -1,12 +1,25 @@
-import { curry, anyPass } from 'ramda';
-import { Sprite, AnimatedSprite, BitmapText, Container } from 'pixi.js';
+import { Sprite, AnimatedSprite, BitmapText, Container, Text, Point } from 'pixi.js';
 
-const is = curry(<T>(T: any, element: any): element is T => element instanceof T);
+export function isContainer(element: any): element is Container {
+  return element instanceof Container;
+}
 
-export const isContainer = is(Container);
+export function isSprite(element: any): element is Sprite {
+  return element instanceof Sprite;
+}
 
-export const isSprite = is(Sprite);
-export const isAnimatedSprite = is(AnimatedSprite);
-export const isBitmapText = is(BitmapText);
-export const isText = is(Text);
-export const isAnchorable = anyPass([isSprite, isAnimatedSprite, isBitmapText, isText]);
+export function isAnimatedSprite(element: any): element is AnimatedSprite {
+  return element instanceof AnimatedSprite;
+}
+
+export function isBitmapText(element: any): element is BitmapText {
+  return element instanceof BitmapText;
+}
+
+export function isText(element: any): element is Text {
+  return element instanceof Text;
+}
+
+export function isPoint(element: any): element is Point {
+  return element instanceof Point;
+}

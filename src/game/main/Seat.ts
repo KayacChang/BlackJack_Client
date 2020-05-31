@@ -1,59 +1,75 @@
-import { Container, Sprite } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import Res from '../assets';
-import GameObject from './GameObject';
+import Element from '../core/Element';
 
-class Select extends GameObject {
+class Select extends Element {
   //
-  constructor() {
-    super({
+  get view() {
+    return {
       normal: {
         element: new Sprite(Res.get('SELECT_SEAT_NORMAL').texture),
-        anchor: 0.5,
+        anchor: {
+          x: 0.5,
+          y: 0.5,
+        },
       },
       enable: {
         element: new Sprite(Res.get('SELECT_SEAT_ENABLE').texture),
-        anchor: 0.5,
+        anchor: {
+          x: 0.5,
+          y: 0.5,
+        },
       },
       join: {
         element: new Sprite(Res.get('Join').texture),
         position: {
-          y: '-90%',
+          y: -200,
         },
-        anchor: 0.5,
+        anchor: {
+          x: 0.5,
+          y: 0.5,
+        },
       },
-    });
+    };
   }
+
+  onCreate() {}
 }
 
-class Player extends GameObject {
+class Player extends Element {
   //
-  constructor() {
-    super({
+  get view() {
+    return {
       normal: {
         element: new Sprite(Res.get('SEAT_NORMAL').texture),
-        anchor: 0.5,
+        anchor: {
+          x: 0.5,
+          y: 0.5,
+        },
       },
       enable: {
         element: new Sprite(Res.get('SEAT_ENABLE').texture),
-        anchor: 0.5,
+        anchor: {
+          x: 0.5,
+          y: 0.5,
+        },
       },
-    });
+    };
   }
+
+  onCreate() {}
 }
 
-export default class Seat extends Container {
+export default class Seat extends Element {
   //
-  constructor() {
-    super();
+  get view() {
+    return {
+      player: new Player(),
+      select: new Select(),
+    };
+  }
 
-    const player = new Player();
-    player.visible = true;
-    this.addChild(player);
-
-    const select = new Select();
-    select.visible = false;
-    this.addChild(select);
-
+  onCreate() {
     this.scale.set(0.75);
   }
 }

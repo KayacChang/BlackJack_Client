@@ -1,18 +1,27 @@
-import { Sprite, Container } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import Res from '../assets';
+import Element from '../core/Element';
+import { Children } from '../core';
 
-export default class Background extends Container {
+export default class Background extends Element {
   //
-  constructor() {
-    super();
+  get view() {
+    return {
+      table: {
+        element: new Sprite(Res.get('TABLE_BLUE').texture),
+      },
+      title: {
+        element: new Sprite(Res.get('TABLE_TITLE').texture),
+        anchor: {
+          x: 0.5,
+          y: 0.5,
+        },
+      },
+    };
+  }
 
-    const background = new Sprite(Res.get('TABLE_BLUE').texture);
-    this.addChild(background);
-
-    const title = new Sprite(Res.get('TABLE_TITLE').texture);
-    title.x = this.width / 2;
-    title.y = this.height / 3;
-    title.anchor.set(0.5);
-    this.addChild(title);
+  onCreate({ table, title }: Children) {
+    title.x = (table as Sprite).width / 2;
+    title.y = (table as Sprite).height / 3;
   }
 }
