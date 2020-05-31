@@ -16,7 +16,7 @@
   }
 }
 
-$unit: 48px;
+$unit: 40px;
 
 .field {
   display: flex;
@@ -39,10 +39,6 @@ $unit: 48px;
     flex-direction: column;
 
     margin: auto 0;
-
-    * {
-      margin: 2px 0;
-    }
   }
 
   svg {
