@@ -1,43 +1,18 @@
-import { Sprite, Texture } from 'pixi.js';
+import { Sprite, Container } from 'pixi.js';
 import Res from '../assets';
 
-interface Textures {
-  blue: Texture;
-  red: Texture;
-  green: Texture;
-}
-
-type Props = {
-  width: number;
-  height: number;
-};
-
-export default class Background extends Sprite {
+export default class Background extends Container {
   //
-  textures: Textures;
-
-  constructor({ width, height }: Props) {
+  constructor() {
     super();
 
-    const textures = {
-      blue: Res.get('TABLE_BLUE').texture,
-      red: Res.get('TABLE_RED').texture,
-      green: Res.get('TABLE_GREEN').texture,
-    };
-
-    this.textures = textures;
-    this.texture = textures.red;
-
-    // this.width = width;
-    // this.height = height;
+    const background = new Sprite(Res.get('TABLE_BLUE').texture);
+    this.addChild(background);
 
     const title = new Sprite(Res.get('TABLE_TITLE').texture);
-    title.x = title.width / 2;
-    title.y = title.height / 2;
+    title.x = this.width / 2;
+    title.y = this.height / 3;
+    title.anchor.set(0.5);
     this.addChild(title);
-  }
-
-  change(background: keyof Textures) {
-    //   TODO
   }
 }

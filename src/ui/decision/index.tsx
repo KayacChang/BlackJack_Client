@@ -22,16 +22,18 @@ function Control({ className, title, icon }: Props) {
 export default function Decision() {
   return (
     <div className={styles.decision}>
-      <h3>make your decision</h3>
+      <div>
+        <h3>make your decision</h3>
 
-      <div className={styles.section}>
-        <Control className={styles.double} icon={<h3>2x</h3>} title={'double down'} />
-        <Control className={styles.hit} icon={<Plus />} title={'hit'} />
-        <Control className={styles.stand} icon={<Minus />} title={'stand'} />
-        <Control className={styles.split} icon={<Code />} title={'split'} />
+        <div className={styles.section}>
+          <Control className={styles.double} icon={<h3>2x</h3>} title={'double down'} />
+          <Control className={styles.hit} icon={<Plus />} title={'hit'} />
+          <Control className={styles.stand} icon={<Minus />} title={'stand'} />
+          <Control className={styles.split} icon={<Code />} title={'split'} />
+        </div>
+
+        <Timer />
       </div>
-
-      <Timer />
     </div>
   );
 }

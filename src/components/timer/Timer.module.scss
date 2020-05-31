@@ -4,7 +4,7 @@ $color: rgba(48, 209, 88, 1);
   display: flex;
   align-items: center;
 
-  h4 {
+  h5 {
     display: block;
 
     background: rgba($color: #111, $alpha: 0.6);
@@ -12,7 +12,9 @@ $color: rgba(48, 209, 88, 1);
     border: 2px solid $color;
     border-radius: 48px;
 
-    padding: 12px;
+    padding: 8px;
     margin: 0 8px;
+
+    font-size: 1rem;
   }
 }

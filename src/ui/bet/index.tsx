@@ -36,7 +36,7 @@ export default function Bet() {
         <div className={styles.controls}>
           <Control title={'clear'} icon={<X />} />
           <Control title={'undo'} icon={<CornerUpLeft />} />
-          <Control title={'deal'} icon={<img src={DEAL} alt={DEAL} />} style={{ width: '68px', height: '68px' }} />
+          <Control title={'deal'} icon={<img src={DEAL} alt={DEAL} />} style={{ width: '48px', height: '48px' }} />
           <Control title={'repeat'} icon={<RotateCw />} />
           <Control title={'double bet'} icon={<h3>2x</h3>} />
         </div>

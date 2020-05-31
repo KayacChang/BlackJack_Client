@@ -41,12 +41,6 @@ $unit: 16px;
 
   border-radius: $unit;
 
-  min-width: $unit * 7;
-
-  @media screen and (min-device-width: 1200px) {
-    min-width: $unit * 9;
-  }
-
   padding: 8px;
 
   display: flex;
@@ -54,6 +48,6 @@ $unit: 16px;
   align-items: center;
 
   * {
-    margin: auto;
+    margin: 0 4px;
   }
 }
