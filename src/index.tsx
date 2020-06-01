@@ -1,24 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.scss";
-import App from "./components/App";
-import * as serviceWorker from "./workers/serviceWorker";
-import Game from "./game";
-import { i18n } from "./utils";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+import Game from './game';
+import UI from './ui';
+import { i18n } from './utils';
+import './index.scss';
 
 const Root = (
   <React.StrictMode>
-    <App>{Game}</App>
+    <App game={Game} ui={<UI />} />
   </React.StrictMode>
 );
 
 async function main() {
-  //
   await i18n.init();
 
-  ReactDOM.render(Root, document.getElementById("root"));
-
-  serviceWorker.unregister();
+  ReactDOM.render(Root, document.getElementById('root'));
 }
 
 main();

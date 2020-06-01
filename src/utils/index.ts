@@ -1,7 +1,9 @@
-import { isMobile } from "./device";
+import { isMobile } from './device';
 
-import * as i18n from "./i18n";
+import * as i18n from './i18n';
 
-import { currency } from "./format";
+import { currency } from './format';
 
-export { isMobile, i18n, currency };
+import { useResize, useTrigger } from './hooks';
+
+export { isMobile, i18n, currency, useResize, useTrigger };

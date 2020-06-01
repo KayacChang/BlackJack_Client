@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, HTMLAttributes } from "react";
-import styles from "./Toggle.module.scss";
-import { useTrigger } from "../../states";
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import { useTrigger } from '../../utils';
+import styles from './Toggle.module.scss';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLInputElement>>;
 
@@ -9,12 +9,7 @@ export default function Toggle({ id }: Props) {
 
   return (
     <div className={styles.toggle}>
-      <input
-        type="checkbox"
-        id={id}
-        checked={flag}
-        onChange={() => trigger()}
-      />
+      <input type="checkbox" id={id} checked={flag} onChange={() => trigger()} />
       <label htmlFor={id}></label>
     </div>
   );
