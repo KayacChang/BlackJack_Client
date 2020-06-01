@@ -1,18 +1,15 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
-import styles from "./Slider.module.scss";
+import React, { useState, ChangeEvent, useEffect, PropsWithChildren, HTMLAttributes } from 'react';
+import styles from './Slider.module.scss';
 
-type Props = DivProps<{
+type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
+
+type Props = Div<{
   min?: number;
   max?: number;
   onValueChange?: (value: number) => void;
 }>;
 
-export default function Slider({
-  min = 0,
-  max = 100,
-  onValueChange,
-  className,
-}: Props) {
+export default function Slider({ min = 0, max = 100, onValueChange, className }: Props) {
   //
   const [value, setValue] = useState(min);
 
@@ -26,14 +23,7 @@ export default function Slider({
 
   return (
     <div className={`${styles.wrapper} ${className}`}>
-      <input
-        className={styles.slider}
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={handle}
-      />
+      <input className={styles.slider} type="range" min={min} max={max} value={value} onChange={handle} />
       <output className={styles.output} style={{ left: getPos(value) }}>
         {value}
       </output>

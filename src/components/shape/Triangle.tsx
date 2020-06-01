@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
 
-type Props = DivProps<{
+type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
+
+type Props = Div<{
   direction: 'top' | 'bottom' | 'left' | 'right';
   color: string;
   len: number;

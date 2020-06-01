@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
 import styles from './Control.module.scss';
 import { Button } from '../../../components/button/Button';
 
-type Props = DivProps<{
+type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
+
+type Props = Div<{
   title: string;
   icon: ReactNode;
 }>;

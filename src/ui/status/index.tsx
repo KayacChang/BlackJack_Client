@@ -1,8 +1,10 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
 import style from './Status.module.scss';
 import { currency } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWallet, faCoins } from '@fortawesome/free-solid-svg-icons';
+
+type ButtonProps<T> = PropsWithChildren<T & HTMLAttributes<HTMLButtonElement>>;
 
 type FieldProps = ButtonProps<{
   icon: ReactNode;

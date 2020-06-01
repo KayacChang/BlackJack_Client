@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
 import { Menu as IconMenu, X } from 'react-feather';
 import { Button } from '../../../components/button/Button';
 import styles from './Button.module.scss';
 
 // ===== Trigger =====
+type ButtonProps<T> = PropsWithChildren<T & HTMLAttributes<HTMLButtonElement>>;
+
 type Props = ButtonProps<{
   open: boolean;
 }>;

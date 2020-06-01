@@ -1,8 +1,10 @@
-import React, { ReactNode, MouseEvent } from 'react';
+import React, { ReactNode, MouseEvent, PropsWithChildren, HTMLAttributes } from 'react';
 import styles from './Drawer.module.scss';
 import { useSpring, animated } from 'react-spring';
 import { easeCubic } from 'd3-ease';
 import { Option as OptionButton } from './Button';
+
+type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
 
 type Option = {
   icon: ReactNode;
@@ -10,7 +12,7 @@ type Option = {
   onClick: (event: MouseEvent) => void;
 };
 
-type DrawerProps = DivProps<{
+type DrawerProps = Div<{
   options: Option[];
   open: boolean;
 }>;

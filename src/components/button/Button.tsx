@@ -1,9 +1,11 @@
-import React from "react";
-import styles from "./Button.module.scss";
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import styles from './Button.module.scss';
 
-export function Button({ children, className, ...props }: ButtonProps<{}>) {
+type Props = PropsWithChildren<HTMLAttributes<HTMLButtonElement>>;
+
+export function Button({ children, className, ...props }: Props) {
   //
-  const _className = [styles.button, className].filter(Boolean).join(" ");
+  const _className = [styles.button, className].filter(Boolean).join(' ');
 
   return (
     <button className={_className} {...props}>
