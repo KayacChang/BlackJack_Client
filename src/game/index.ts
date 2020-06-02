@@ -1,10 +1,7 @@
-import * as PIXI from 'pixi.js';
 import { Application } from 'pixi.js';
 import Main from './main';
 import Res from './assets';
 import { isMobile } from '../utils';
-
-window.PIXI = PIXI;
 
 const Quad_HD = Object.freeze({
   width: 2960,

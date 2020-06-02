@@ -12,6 +12,10 @@ export type MetaData = {
   anchor?: Vec2;
 };
 
-export type Hierarchy = { [name: string]: MetaData | Element | Sprite };
+export type Hierarchy = {
+  [name: string]: MetaData | Element | Sprite;
+};
 
-export type Children = { [name: string]: PIXI.DisplayObject };
+export type Children = {
+  [name: string]: PIXI.DisplayObject;
+};
