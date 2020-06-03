@@ -36,10 +36,14 @@ export default class Main extends Element {
     seatE.x = width * (85 / 100);
     seatE.y = height * (58 / 100);
 
-    const card = Card();
-    card.x = width / 2;
-    card.y = height / 2;
+    const card = new Card();
+    card.x = width * (50 / 100);
+    card.y = height * (50 / 100);
 
     this.addChild(card);
+
+    requestAnimationFrame(() => {
+      card.flip(0.5);
+    });
   }
 }

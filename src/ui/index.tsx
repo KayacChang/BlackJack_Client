@@ -8,7 +8,7 @@ import Decision from './decision';
 export default function UI() {
   //
   return (
-    <div className="fixedPage">
+    <div className="fixedPage" style={{ pointerEvents: 'none' }}>
       <Menu />
       <Status />
       <Detail />
