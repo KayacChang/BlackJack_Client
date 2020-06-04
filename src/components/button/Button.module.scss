@@ -33,6 +33,8 @@
   @extend .shadow;
   @extend .center;
 
+  pointer-events: all;
+
   padding: 3vh;
 
   @media screen and (min-device-width: 1200px) {
