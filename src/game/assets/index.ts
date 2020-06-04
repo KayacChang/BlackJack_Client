@@ -3,11 +3,11 @@ import TABLE from './table';
 import SEAT from './seat';
 import POKER from './poker';
 
-const PKG = {
+const PKG = Object.freeze({
   ...TABLE,
   ...SEAT,
   ...POKER,
-};
+});
 
 const loader = new Loader();
 
@@ -31,4 +31,5 @@ function get(res: keyof typeof PKG) {
 export default {
   load,
   get,
+  PKG,
 };

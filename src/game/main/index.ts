@@ -3,7 +3,7 @@ import Seat from './Seat';
 import { Sprite } from 'pixi.js';
 import Element from '../core/Element';
 import { Children } from '../core';
-import Card from './Card';
+import Poker from './Poker';
 
 export default class Main extends Element {
   //
@@ -36,9 +36,9 @@ export default class Main extends Element {
     seatE.x = width * (85 / 100);
     seatE.y = height * (58 / 100);
 
-    const card = Card();
-    card.x = width / 2;
-    card.y = height / 2;
+    const card = new Poker('CLUB', 10);
+    card.x = width * (50 / 100);
+    card.y = height * (50 / 100);
 
     this.addChild(card);
   }
