@@ -16,19 +16,21 @@ export default abstract class Element extends Container {
     this.create(this.view);
   }
 
-  create(hierarchy: Hierarchy) {
+  private create(hierarchy: Hierarchy) {
     const stage: Children = {};
 
-    const addToStage = (name: string, element: Element | Sprite | DisplayObject) => {
-      element.name = name;
+    const addToStage = (name: string, element: DisplayObject) => {
       this.addChild(element);
+
+      element.name = name;
       stage[name] = element;
     };
 
     Object.entries(hierarchy).forEach(([name, data]) => {
       //
-      if (data instanceof Element || data instanceof Sprite) {
+      if (data instanceof DisplayObject) {
         addToStage(name, data);
+
         return;
       }
 

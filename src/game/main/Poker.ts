@@ -34,11 +34,13 @@ export default class Poker extends Container {
     this.front = front;
     this.interactive = true;
     this.buttonMode = true;
+
+    this.on('pointerdown', () => this.onClick());
   }
 
   private fliping = false;
 
-  async click() {
+  async onClick() {
     if (this.fliping) return;
 
     this.fliping = true;
