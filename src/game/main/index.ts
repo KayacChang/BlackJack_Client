@@ -3,6 +3,7 @@ import Seat from './Seat';
 import Element from '../core/Element';
 import { Children } from '../core';
 import Poker from './Poker';
+import Path from './Path';
 
 export default class Main extends Element {
   //
@@ -15,10 +16,11 @@ export default class Main extends Element {
       seatD: new Seat(),
       seatE: new Seat(),
       poker: new Poker('CLUB', 10),
+      path: new Path({}),
     };
   }
 
-  onCreate({ background, seatA, seatB, seatC, seatD, seatE, poker }: Children) {
+  onCreate({ background, seatA, seatB, seatC, seatD, seatE, poker, path }: Children) {
     const { width, height } = background as Element;
 
     // Seat A ~ E, from left to right
@@ -39,5 +41,10 @@ export default class Main extends Element {
 
     poker.x = width * (50 / 100);
     poker.y = height * (50 / 100);
+
+    path.x = width * (50 / 100);
+    path.y = height * (50 / 100);
+
+    (path as Path).attach(poker);
   }
 }

@@ -1,4 +1,4 @@
-import { Container, Sprite, DisplayObject } from 'pixi.js';
+import { Container, DisplayObject } from 'pixi.js';
 import { setAnchor, setPosition } from '../utils';
 import { Hierarchy, Children } from '.';
 

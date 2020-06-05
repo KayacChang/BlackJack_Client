@@ -62,6 +62,7 @@ class Face extends SimpleMesh {
 
     const sprite = new Sprite(Res.get(res).texture);
     this.addChild(sprite);
+    sprite.anchor.set(0.5);
 
     requestAnimationFrame(() => {
       this.vertices = (sprite as any)['vertexData'];

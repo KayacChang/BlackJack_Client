@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import Game from './game';
 import UI from './ui';
-import { i18n } from './utils';
+import { i18n, gsap } from './plugins';
 import './index.scss';
 
 const Root = (
@@ -14,6 +14,7 @@ const Root = (
 
 async function main() {
   await i18n.init();
+  gsap.init();
 
   ReactDOM.render(Root, document.getElementById('root'));
 }
