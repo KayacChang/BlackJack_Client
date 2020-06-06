@@ -113,7 +113,6 @@ export default class Path extends Graphics {
     const type = this.points.length > 2 ? 'cubic' : undefined;
 
     gsap.from(target, { ...path[0] });
-
     gsap.to(target, { motionPath: { type, path }, duration, ease });
   }
 }

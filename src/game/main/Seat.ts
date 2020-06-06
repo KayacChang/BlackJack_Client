@@ -65,7 +65,7 @@ export default class Seat extends Element {
   get view() {
     return {
       player: new Player(),
-      select: new Select(),
+      // select: new Select(),
     };
   }
 

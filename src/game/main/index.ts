@@ -4,26 +4,61 @@ import Element from '../core/Element';
 import { Children } from '../core';
 import Poker from './Poker';
 import Path from './Path';
+import { mapObjIndexed } from 'ramda';
+
+type Point = {
+  x: number;
+  y: number;
+};
 
 export default class Main extends Element {
   //
   get view() {
-    return {
-      background: new Background(),
+    const seats = {
       seatA: new Seat(),
       seatB: new Seat(),
       seatC: new Seat(),
       seatD: new Seat(),
       seatE: new Seat(),
+    };
+
+    const points = {
+      pathA: [
+        { x: 2515, y: 160 },
+        { x: 443, y: 630 },
+      ],
+      pathB: [
+        { x: 2515, y: 160 },
+        { x: 888, y: 880 },
+      ],
+      pathC: [
+        { x: 2515, y: 160 },
+        { x: 1480, y: 980 },
+      ],
+      pathD: [
+        { x: 2515, y: 160 },
+        { x: 2072, y: 880 },
+      ],
+      pathE: [
+        { x: 2515, y: 160 },
+        { x: 2515, y: 630 },
+      ],
+    };
+
+    const paths = mapObjIndexed((data: Point[]) => new Path(data), points);
+
+    return {
+      background: new Background(),
+
+      ...seats,
+
       poker: new Poker('CLUB', 10),
-      path: new Path([
-        { x: 0, y: 0 },
-        { x: -1000, y: 700 },
-      ]),
+
+      ...paths,
     };
   }
 
-  onCreate({ background, seatA, seatB, seatC, seatD, seatE, poker, path }: Children) {
+  onCreate({ background, seatA, seatB, seatC, seatD, seatE, poker, pathC, pathD }: Children) {
     const { width, height } = background as Element;
 
     // Seat A ~ E, from left to right
@@ -45,9 +80,13 @@ export default class Main extends Element {
     poker.x = width * (50 / 100);
     poker.y = height * (50 / 100);
 
-    path.x = width * (85 / 100);
-    path.y = height * (10 / 100);
+    (pathC as Path).attach(poker);
 
-    (path as Path).attach(poker);
+    this.interactive = true;
+    this.on('pointermove', (event: PIXI.interaction.InteractionEvent) => {
+      const pos = this.toLocal(event.data.global);
+
+      console.log(pos);
+    });
   }
 }
