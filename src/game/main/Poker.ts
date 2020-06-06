@@ -1,25 +1,15 @@
 import Res from '../assets';
 import POKER from '../assets/poker';
 import { Sprite, SimpleMesh, Container } from 'pixi.js';
-import { gsap, Power0 } from 'gsap';
+import gsap from 'gsap';
+import { Power0 } from 'gsap/gsap-core';
 
 type Suit = 'SPADE' | 'HEART' | 'CLUB' | 'DIAMOND';
 type Rank = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
 export default class Poker extends Container {
   //
-  back: Face;
-  front: Face;
-
-  private _rank: Rank;
-  get rank() {
-    return this._rank;
-  }
-
-  private _suit: Suit;
-  get suit() {
-    return this._suit;
-  }
+  duration = 0.5;
 
   constructor(suit: Suit, rank: Rank) {
     super();
@@ -28,10 +18,6 @@ export default class Poker extends Container {
     const front = new Face(`${suit}_${rank}` as keyof typeof POKER);
     this.addChild(front, back);
 
-    this._rank = rank;
-    this._suit = suit;
-    this.back = back;
-    this.front = front;
     this.interactive = true;
     this.buttonMode = true;
 
@@ -47,7 +33,7 @@ export default class Poker extends Container {
 
     const [front, back] = this.children as SimpleMesh[];
 
-    await flip(back, front, 0.5);
+    await flip(back, front, this.duration);
 
     this.swapChildren(back, front);
 

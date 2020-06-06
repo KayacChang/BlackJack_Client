@@ -1,4 +1,6 @@
 import { DisplayObject } from 'pixi.js';
+import Element from './Element';
+import Path from './Path';
 
 export type Vec2 = {
   x?: number;
@@ -18,3 +20,5 @@ export type Hierarchy = {
 export type Children = {
   [name: string]: PIXI.DisplayObject;
 };
+
+export { Element, Path };

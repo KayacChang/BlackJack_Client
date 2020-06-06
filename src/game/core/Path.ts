@@ -3,53 +3,13 @@ import { mergeWith, add } from 'ramda';
 import gsap from 'gsap';
 import { Expo } from 'gsap/gsap-core';
 import { isArray } from 'util';
+import { Vec2 } from '.';
+import { circle, line, bezierCurve } from '../utils';
 
-type Point = {
-  x: number;
-  y: number;
-};
-
-function line(start: Point, end: Point, it: Graphics) {
-  const color = 0x000000;
-  const width = 5;
-
-  return (
-    it
-      //
-      .lineStyle(width, color)
-      .moveTo(start.x, start.y)
-      .lineTo(end.x, end.y)
-  );
-}
-
-function circle(center: Point, it: Graphics) {
-  const color = 0x000000;
-  const radius = 5;
-
-  return (
-    it
-      //
-      .beginFill(color)
-      .drawCircle(center.x, center.y, radius)
-      .endFill()
-  );
-}
-
-function bezierCurve(start: Point, controlA: Point, controlB: Point, end: Point, it: Graphics) {
-  const color = 0x000000;
-  const width = 5;
-
-  return (
-    it
-      //
-      .lineStyle(width, color)
-      .moveTo(start.x, start.y)
-      .bezierCurveTo(controlA.x, controlA.y, controlB.x, controlB.y, end.x, end.y)
-  );
-}
+type Points = (Vec2 | Vec2[])[];
 
 /**
- * [
+    [
         { x: 0, y: 0 },
         [
           { x: -1000 * 0.5, y: 0 },
@@ -60,32 +20,32 @@ function bezierCurve(start: Point, controlA: Point, controlB: Point, end: Point,
  */
 export default class Path extends Graphics {
   //
-  points: (Point | Point[])[];
+  points: Points;
 
-  constructor(points: (Point | Point[])[]) {
+  constructor(points: Points) {
     super();
 
     this.points = points;
 
     // Start
-    const start = points[0] as Point;
+    const start = points[0] as Vec2;
     circle(start, this);
 
     // End
-    const end = points[points.length - 1] as Point;
+    const end = points[points.length - 1] as Vec2;
     circle(end, this);
 
     this.drawLine(points);
   }
 
-  drawLine(points: (Point | Point[])[]) {
+  drawLine(points: Points) {
     //
     if (points.length <= 1) {
       return;
     }
 
     if (points.length <= 2) {
-      const [start, end] = points as Point[];
+      const [start, end] = points as Vec2[];
 
       line(start, end, this);
 
@@ -94,12 +54,12 @@ export default class Path extends Graphics {
 
     for (let i = 0; i < points.length; i += 2) {
       //
-      const start = points[i] as Point;
+      const start = points[i] as Vec2;
       const point = points[i + 1];
-      const end = points[i + 2] as Point;
+      const end = points[i + 2] as Vec2;
 
       if (isArray(point)) {
-        const [pointA, pointB] = point as Point[];
+        const [pointA, pointB] = point as Vec2[];
 
         bezierCurve(start, pointA, pointB, end, this);
       }

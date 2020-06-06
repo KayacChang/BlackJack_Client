@@ -1,6 +1,6 @@
 import { Sprite } from 'pixi.js';
 import Res from '../assets';
-import Element from '../core/Element';
+import { Element } from '../core';
 
 class Select extends Element {
   //

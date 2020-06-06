@@ -1,15 +1,8 @@
 import Background from './Background';
 import Seat from './Seat';
-import Element from '../core/Element';
-import { Children } from '../core';
+import { Element, Path, Children, Vec2 } from '../core';
 import Poker from './Poker';
-import Path from './Path';
 import { mapObjIndexed } from 'ramda';
-
-type Point = {
-  x: number;
-  y: number;
-};
 
 export default class Main extends Element {
   //
@@ -45,7 +38,7 @@ export default class Main extends Element {
       ],
     };
 
-    const paths = mapObjIndexed((data: Point[]) => new Path(data), points);
+    const paths = mapObjIndexed((data: Vec2[]) => new Path(data), points);
 
     return {
       background: new Background(),
