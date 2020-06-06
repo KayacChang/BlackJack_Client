@@ -18,10 +18,6 @@ export default class Main extends Element {
       poker: new Poker('CLUB', 10),
       path: new Path([
         { x: 0, y: 0 },
-        [
-          { x: -100, y: 200 },
-          { x: -200, y: 200 },
-        ],
         { x: -1000, y: 700 },
       ]),
     };
