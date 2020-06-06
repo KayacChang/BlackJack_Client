@@ -16,7 +16,14 @@ export default class Main extends Element {
       seatD: new Seat(),
       seatE: new Seat(),
       poker: new Poker('CLUB', 10),
-      path: new Path({}),
+      path: new Path([
+        { x: 0, y: 0 },
+        [
+          { x: -100, y: 200 },
+          { x: -200, y: 200 },
+        ],
+        { x: -1000, y: 700 },
+      ]),
     };
   }
 
@@ -42,8 +49,8 @@ export default class Main extends Element {
     poker.x = width * (50 / 100);
     poker.y = height * (50 / 100);
 
-    path.x = width * (50 / 100);
-    path.y = height * (50 / 100);
+    path.x = width * (85 / 100);
+    path.y = height * (10 / 100);
 
     (path as Path).attach(poker);
   }

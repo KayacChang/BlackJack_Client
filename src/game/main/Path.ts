@@ -1,47 +1,84 @@
 import { Graphics, DisplayObject } from 'pixi.js';
+import { mergeWith, add } from 'ramda';
 import gsap from 'gsap';
+import { isArray } from 'util';
 
-type Props = {
-  width: number;
-  color: number;
+type Point = {
+  x: number;
+  y: number;
 };
-
-const points = [
-  { x: 0, y: 0 },
-  { x: 100, y: 200 },
-  { x: 200, y: 200 },
-  { x: 240, y: 100 },
-];
-
-function Circle({ width, color }: Props, it: Graphics) {
-  it.beginFill(color);
-  it.drawCircle(0, 0, width * 2);
-  it.endFill();
-}
 
 export default class Path extends Graphics {
   //
-  constructor({ width = 5, color = 0x000000 }: Props) {
+  points: (Point | Point[])[];
+
+  constructor(points: (Point | Point[])[]) {
     super();
 
-    Circle({ color, width }, this);
+    this.points = points;
 
-    this.lineStyle(width, color);
-    this.bezierCurveTo(100, 200, 200, 200, 240, 100);
+    // Start
+    const start = points[0];
+    this.circle(start as Point);
 
-    this.beginFill(color);
-    this.drawCircle(240, 100, width * 2);
-    this.endFill();
+    this.drawLine(points);
+
+    // End
+    const end = points[points.length - 1];
+    this.circle(end as Point);
+  }
+
+  drawLine(points: (Point | Point[])[]) {
+    //
+    for (let i = 0; i < points.length; i += 2) {
+      //
+      const start = points[i] as Point;
+      const point = points[i + 1];
+      const end = points[i + 2] as Point;
+
+      if (isArray(point)) {
+        const [pointA, pointB] = point as Point[];
+
+        this.bezierCurve(start, pointA, pointB, end);
+      }
+    }
+  }
+
+  private circle(center: Point) {
+    const color = 0x000000;
+    const radius = 5;
+
+    return (
+      this
+        //
+        .beginFill(color)
+        .drawCircle(center.x, center.y, radius)
+        .endFill()
+    );
+  }
+
+  private bezierCurve(start: Point, controlA: Point, controlB: Point, end: Point) {
+    const color = 0x000000;
+    const width = 5;
+
+    return (
+      this
+        //
+        .lineStyle(width, color)
+        .moveTo(start.x, start.y)
+        .bezierCurveTo(controlA.x, controlA.y, controlB.x, controlB.y, end.x, end.y)
+    );
   }
 
   attach(target: DisplayObject, duration = 10) {
-    //
-    const self = this;
+    const { x, y } = this;
+
+    const path = this.points.flat().map(mergeWith(add, { x, y }));
 
     return gsap.to(target, {
       motionPath: {
         type: 'cubic',
-        path: points.map(({ x, y }) => ({ x: x + self.x, y: y + self.y })),
+        path,
       },
       duration,
     });

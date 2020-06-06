@@ -1,4 +1,4 @@
-import { Sprite, AnimatedSprite, BitmapText, Container, Text, Point } from 'pixi.js';
+import { Sprite, AnimatedSprite, BitmapText, Container, Text, Point, Graphics } from 'pixi.js';
 
 export function isContainer(element: any): element is Container {
   return element instanceof Container;
@@ -22,4 +22,8 @@ export function isText(element: any): element is Text {
 
 export function isPoint(element: any): element is Point {
   return element instanceof Point;
+}
+
+export function isGraphics(element: any): element is Graphics {
+  return element instanceof Graphics;
 }
