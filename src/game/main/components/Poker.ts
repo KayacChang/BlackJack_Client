@@ -6,7 +6,7 @@ import { Power0 } from 'gsap/gsap-core';
 import { Clickable } from '../../core';
 
 type Suit = 'SPADE' | 'HEART' | 'CLUB' | 'DIAMOND';
-type Rank = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
+type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K';
 
 @Clickable
 export default class Poker extends Container {

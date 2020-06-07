@@ -14,7 +14,7 @@ export type MetaData = {
 };
 
 export type Hierarchy = {
-  [name: string]: MetaData | DisplayObject;
+  [name: string]: MetaData | DisplayObject | DisplayObject[];
 };
 
 export type Children = {
