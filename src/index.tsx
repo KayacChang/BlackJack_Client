@@ -4,6 +4,7 @@ import App from './components/App';
 import Game from './game';
 import UI from './ui';
 import { i18n, gsap } from './plugins';
+import service from './service';
 import './index.scss';
 
 const Root = (
@@ -13,10 +14,19 @@ const Root = (
 );
 
 async function main() {
-  await i18n.init();
-  gsap.init();
+  //
+  await Promise.all([
+    //
+    i18n.init(),
+    gsap.init(),
+    service.connect(),
+  ]);
 
   ReactDOM.render(Root, document.getElementById('root'));
+
+  const response = await service.login();
+
+  console.log(response);
 }
 
 main();

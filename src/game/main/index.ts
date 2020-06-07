@@ -46,7 +46,7 @@ export default class Main extends Element {
     this.on('pointermove', (event: PIXI.interaction.InteractionEvent) => {
       const pos = this.toLocal(event.data.global);
 
-      console.log(`pointermove: { x: ${pos.x}, y: ${pos.y} }`);
+      // console.log(`pointermove: { x: ${pos.x}, y: ${pos.y} }`);
     });
   }
 }
