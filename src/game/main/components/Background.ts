@@ -1,6 +1,6 @@
 import { Sprite } from 'pixi.js';
-import Res from '../assets';
-import { Element, Children } from '../core';
+import Res from '../../assets';
+import { Element, Children } from '../../core';
 
 export default class Background extends Element {
   //

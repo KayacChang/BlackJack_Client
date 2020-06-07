@@ -1,9 +1,13 @@
-import Background from './Background';
-import Seat from './Seat';
-import { Element, Path, Children, Vec2 } from '../core';
-import Poker from './Poker';
-import { mapObjIndexed } from 'ramda';
+import Background from './components/Background';
+import Seat from './components/Seat';
+import { Element, Children } from '../core';
+import Game from './Game';
 
+function Test(constructorFunction: Function) {
+  console.log('-- decorator function invoked --');
+}
+
+@Test
 export default class Main extends Element {
   //
   get view() {
@@ -15,43 +19,16 @@ export default class Main extends Element {
       seatE: new Seat(),
     };
 
-    const points = {
-      pathA: [
-        { x: 2515, y: 160 },
-        { x: 443, y: 630 },
-      ],
-      pathB: [
-        { x: 2515, y: 160 },
-        { x: 888, y: 880 },
-      ],
-      pathC: [
-        { x: 2515, y: 160 },
-        { x: 1480, y: 980 },
-      ],
-      pathD: [
-        { x: 2515, y: 160 },
-        { x: 2072, y: 880 },
-      ],
-      pathE: [
-        { x: 2515, y: 160 },
-        { x: 2515, y: 630 },
-      ],
-    };
-
-    const paths = mapObjIndexed((data: Vec2[]) => new Path(data), points);
-
     return {
       background: new Background(),
 
       ...seats,
 
-      poker: new Poker('CLUB', 10),
-
-      ...paths,
+      game: new Game(),
     };
   }
 
-  onCreate({ background, seatA, seatB, seatC, seatD, seatE, poker, pathC, pathD }: Children) {
+  onCreate({ background, seatA, seatB, seatC, seatD, seatE }: Children) {
     const { width, height } = background as Element;
 
     // Seat A ~ E, from left to right
@@ -69,11 +46,6 @@ export default class Main extends Element {
 
     seatE.x = width * (85 / 100);
     seatE.y = height * (58 / 100);
-
-    poker.x = width * (50 / 100);
-    poker.y = height * (50 / 100);
-
-    (pathC as Path).attach(poker);
 
     this.interactive = true;
     this.on('pointermove', (event: PIXI.interaction.InteractionEvent) => {
