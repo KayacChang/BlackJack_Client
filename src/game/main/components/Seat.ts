@@ -32,8 +32,6 @@ class Select extends Element {
       },
     };
   }
-
-  onCreate() {}
 }
 
 class Player extends Element {
@@ -56,8 +54,6 @@ class Player extends Element {
       },
     };
   }
-
-  onCreate() {}
 }
 
 export default class Seat extends Element {

@@ -13,8 +13,12 @@ export type MetaData = {
   anchor?: Vec2;
 };
 
+export function isMetaData(target: any): target is MetaData {
+  return 'element' in target;
+}
+
 export type Hierarchy = {
-  [name: string]: MetaData | DisplayObject | DisplayObject[];
+  [name: string]: MetaData | DisplayObject | DisplayObject[] | Record<string, DisplayObject | DisplayObject[]>;
 };
 
 export type Children = {

@@ -1,12 +1,61 @@
 import { Container, DisplayObject } from 'pixi.js';
 import { setAnchor, setPosition } from './utils';
-import { Hierarchy, Children, MetaData } from '.';
-import { isArray } from 'util';
+import { Hierarchy, Children, isMetaData, MetaData } from '.';
+import { isArray, isObject } from 'util';
+
+function Metadata(data: MetaData) {
+  const { element, position, anchor } = data;
+
+  if (position) {
+    setPosition(position, element);
+  }
+  if (anchor) {
+    setAnchor(anchor, element);
+  }
+
+  return element;
+}
+
+function List(...data: DisplayObject[]) {
+  const list = new Container();
+
+  data.forEach((element, index) => {
+    element.name = String(index);
+
+    list.addChild(element);
+  });
+
+  return list;
+}
+
+function Group(data: Record<string, DisplayObject | DisplayObject[]>) {
+  const group = new Container();
+
+  Object.entries(data)
+    //
+    .forEach(([name, element]) => {
+      //
+      if (isArray(element)) {
+        const list = List(...element);
+
+        group.addChild(list);
+
+        return;
+      }
+
+      element.name = name;
+
+      group.addChild(element);
+    });
+
+  return group;
+}
 
 export default abstract class Element extends Container {
   //
   abstract get view(): Hierarchy;
-  abstract onCreate(children: Children): void;
+
+  stage: Children = {};
 
   constructor() {
     super();
@@ -17,53 +66,45 @@ export default abstract class Element extends Container {
     this.create(this.view);
   }
 
+  protected addStage(name: string, element: DisplayObject) {
+    element.name = name;
+
+    this.addChild(element);
+
+    this.stage[name] = element;
+  }
+
   private create(hierarchy: Hierarchy) {
-    const stage: Children = {};
-
-    const addToStage = (name: string, element: DisplayObject) => {
-      this.addChild(element);
-
-      element.name = name;
-      stage[name] = element;
-    };
-
-    const byType = (name: string, data: MetaData | DisplayObject) => {
-      //
-      if (data instanceof DisplayObject) {
-        addToStage(name, data);
-
-        return;
-      }
-
-      const { element, position, anchor } = data;
-
-      addToStage(name, element);
-
-      if (position) {
-        setPosition(position, element);
-      }
-      if (anchor) {
-        setAnchor(anchor, element);
-      }
-    };
-
+    //
     Object.entries(hierarchy).forEach(([name, data]) => {
       //
-      if (isArray(data)) {
-        const group = new Container();
-
-        if (data.length > 0) {
-          group.addChild(...data);
-        }
-
-        byType(name, group);
+      if (data instanceof DisplayObject) {
+        this.addStage(name, data);
 
         return;
       }
 
-      byType(name, data);
+      if (isMetaData(data)) {
+        this.addStage(name, Metadata(data));
+
+        return;
+      }
+
+      if (isArray(data)) {
+        this.addStage(name, List(...data));
+
+        return;
+      }
+
+      if (isObject(data)) {
+        this.addStage(name, Group(data));
+
+        return;
+      }
     });
 
-    this.onCreate(stage);
+    this.onCreate(this.stage);
   }
+
+  protected onCreate(children: Children) {}
 }
