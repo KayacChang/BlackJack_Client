@@ -22,3 +22,4 @@ export type Children = {
 };
 
 export { Element, Path };
+export * from './utils';

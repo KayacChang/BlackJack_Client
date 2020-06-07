@@ -3,10 +3,12 @@ import POKER from '../../assets/poker';
 import { Sprite, SimpleMesh, Container } from 'pixi.js';
 import gsap from 'gsap';
 import { Power0 } from 'gsap/gsap-core';
+import { Clickable } from '../../core';
 
 type Suit = 'SPADE' | 'HEART' | 'CLUB' | 'DIAMOND';
 type Rank = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
+@Clickable
 export default class Poker extends Container {
   //
   duration = 0.5;
@@ -17,9 +19,6 @@ export default class Poker extends Container {
     const back = new Face('BACK');
     const front = new Face(`${suit}_${rank}` as keyof typeof POKER);
     this.addChild(front, back);
-
-    this.interactive = true;
-    this.buttonMode = true;
 
     this.on('pointerdown', () => this.onClick());
   }

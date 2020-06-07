@@ -1,5 +1,5 @@
 import { isContainer, isSprite, isAnimatedSprite, isBitmapText, isText, isPoint } from './type';
-import { Vec2 } from '../core';
+import { Vec2 } from '..';
 
 export function setAnchor({ x = 0, y = 0 }: Vec2, ...children: any[]) {
   //

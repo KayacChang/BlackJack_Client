@@ -1,5 +1,5 @@
 import { Container, DisplayObject } from 'pixi.js';
-import { setAnchor, setPosition } from '../utils';
+import { setAnchor, setPosition } from './utils';
 import { Hierarchy, Children } from '.';
 
 export default abstract class Element extends Container {

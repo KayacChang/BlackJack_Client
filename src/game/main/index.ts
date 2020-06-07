@@ -1,13 +1,9 @@
 import Background from './components/Background';
 import Seat from './components/Seat';
-import { Element, Children } from '../core';
+import { Element, Children, Interactable } from '../core';
 import Game from './Game';
 
-function Test(constructorFunction: Function) {
-  console.log('-- decorator function invoked --');
-}
-
-@Test
+@Interactable
 export default class Main extends Element {
   //
   get view() {
@@ -47,11 +43,10 @@ export default class Main extends Element {
     seatE.x = width * (85 / 100);
     seatE.y = height * (58 / 100);
 
-    this.interactive = true;
     this.on('pointermove', (event: PIXI.interaction.InteractionEvent) => {
       const pos = this.toLocal(event.data.global);
 
-      console.log(pos);
+      console.log(`pointermove: { x: ${pos.x}, y: ${pos.y} }`);
     });
   }
 }

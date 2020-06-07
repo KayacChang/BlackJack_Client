@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { Expo } from 'gsap/gsap-core';
 import { isArray } from 'util';
 import { Vec2 } from '.';
-import { circle, line, bezierCurve } from '../utils';
+import { circle, line, bezierCurve } from './utils';
 
 type Points = (Vec2 | Vec2[])[];
 

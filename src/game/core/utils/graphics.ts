@@ -1,5 +1,5 @@
 import { Graphics } from 'pixi.js';
-import { Vec2 } from '../core';
+import { Vec2 } from '..';
 
 export function line(start: Vec2, end: Vec2, it: Graphics) {
   const color = 0x000000;
