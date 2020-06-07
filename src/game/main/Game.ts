@@ -6,7 +6,11 @@ import { Container } from 'pixi.js';
 function createPath(point: Vec2) {
   const startPoint = { x: 2515, y: 160 };
 
-  return new Path([startPoint, point]);
+  const path = new Path([startPoint, point]);
+
+  path.visible = false;
+
+  return path;
 }
 
 function setOffset({ x = 0, y = 0 }: Vec2, index: number, array: Vec2[]) {
@@ -33,6 +37,7 @@ function Paths() {
     pathC: gen5Points({ x: 1480, y: 980 }),
     pathD: gen5Points({ x: 2072, y: 880 }),
     pathE: gen5Points({ x: 2515, y: 630 }),
+    pathF: gen5Points({ x: 1480, y: 330 }),
   };
 
   return mapObjIndexed(map(createPath))(endPoints);
@@ -47,9 +52,9 @@ export default class Game extends Element {
     };
   }
 
-  onCreate({ pokers, pathA, pathB, pathC, pathD, pathE }: Children) {
+  onCreate({ pokers, pathA, pathB, pathC, pathD, pathE, pathF }: Children) {
     //
-    for (const paths of [pathA, pathB, pathC, pathD, pathE]) {
+    for (const paths of [pathA, pathB, pathC, pathD, pathE, pathF]) {
       const { children } = paths as Container;
 
       for (const path of children) {
