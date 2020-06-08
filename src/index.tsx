@@ -23,10 +23,6 @@ async function main() {
   ]);
 
   ReactDOM.render(Root, document.getElementById('root'));
-
-  const response = await service.login();
-
-  console.log(response);
 }
 
 main();
