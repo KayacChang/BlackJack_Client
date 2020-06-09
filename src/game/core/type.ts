@@ -18,3 +18,8 @@ export type Hierarchy = {
 export type Children = {
   [name: string]: PIXI.DisplayObject;
 };
+
+export type Node = {
+  children?: Record<string, Node>;
+  components?: Record<string, {}>;
+};

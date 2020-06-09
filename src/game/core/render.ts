@@ -1,35 +1,30 @@
 import { Container, DisplayObject } from 'pixi.js';
-import { isSprite } from '.';
+import { isSprite, Node } from '.';
 
-type Node = {
-  children?: Record<string, Node>;
-  components?: Record<string, {}>;
-};
-
-export default function render(children: Record<string, Node>) {
+export default function byType(name: string, child: Node) {
   //
-  return (
-    Object.entries(children)
-      //
-      .map(byType)
-      .filter(Boolean) as DisplayObject[]
-  );
+  return renderSprite(name, child) || render(name, child);
 }
 
-function byType([name, child]: [string, Node]) {
-  //
-  return renderContainer(name, child) || renderSprite(name, child);
-}
+function render(name: string, child: Node) {
+  const it = new Container();
 
-function renderContainer(name: string, child: Node) {
-  const target = child.children;
-
-  if (target) {
-    const it = new Container();
-
+  if (child.children) {
     it.name = name;
 
-    it.addChild(...render(target));
+    it.addChild(...renderChildren(child.children));
+
+    return it;
+  }
+
+  return it;
+}
+
+function renderSprite(name: string, child: Node) {
+  const it = child.components?.sprite;
+
+  if (it && isSprite(it)) {
+    it.name = name;
 
     return it;
   }
@@ -37,14 +32,11 @@ function renderContainer(name: string, child: Node) {
   return undefined;
 }
 
-function renderSprite(name: string, child: Node) {
-  const target = child.components?.sprite;
-
-  if (target && isSprite(target)) {
-    target.name = name;
-
-    return target;
-  }
-
-  return undefined;
+function renderChildren(children: Record<string, Node>) {
+  return (
+    Object.entries(children)
+      //
+      .map(([name, child]) => byType(name, child))
+      .filter(Boolean) as DisplayObject[]
+  );
 }
