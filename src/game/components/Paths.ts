@@ -1,5 +1,6 @@
 import { mapObjIndexed, map } from 'ramda';
-import { Path, Vec2 } from '../core';
+import { Vec2 } from '../core';
+import Path from './Path';
 
 const paths = {
   //

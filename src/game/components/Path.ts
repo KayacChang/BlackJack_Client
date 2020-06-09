@@ -3,8 +3,8 @@ import { mergeWith, add } from 'ramda';
 import gsap from 'gsap';
 import { Expo } from 'gsap/gsap-core';
 import { isArray } from 'util';
-import { Vec2 } from '.';
-import { circle, line, bezierCurve } from './utils';
+import { Vec2 } from '../core';
+import { circle, line, bezierCurve } from '../core/utils';
 
 type Points = (Vec2 | Vec2[])[];
 

@@ -1,9 +1,9 @@
-import Res from '../../assets';
-import POKER from '../../assets/poker';
+import Res from '../assets';
+import POKER from '../assets/poker';
 import { Sprite, SimpleMesh, Container } from 'pixi.js';
 import gsap from 'gsap';
 import { Power0 } from 'gsap/gsap-core';
-import { Clickable } from '../../core';
+import { Clickable } from '../core';
 
 type Suit = 'SPADE' | 'HEART' | 'CLUB' | 'DIAMOND';
 type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K';

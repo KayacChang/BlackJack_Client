@@ -24,8 +24,13 @@ async function load() {
 }
 
 function get(res: keyof typeof PKG) {
-  //
-  return loader.resources[res];
+  const resource = loader.resources[res];
+
+  if (!resource) {
+    throw new Error(`Can not found resource [${res}]`);
+  }
+
+  return resource;
 }
 
 export default {

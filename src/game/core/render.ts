@@ -1,12 +1,14 @@
-import { Container, DisplayObject } from 'pixi.js';
-import { isSprite, Node } from '.';
+import { Container, DisplayObject, Sprite } from 'pixi.js';
+import { Node } from '.';
+import RES from '../assets';
+import { isNumber } from 'util';
 
-export default function byType(name: string, child: Node) {
+export default function render(name: string, child: Node) {
   //
-  return renderSprite(name, child) || render(name, child);
+  return renderSprite(name, child) || renderContainer(name, child);
 }
 
-function render(name: string, child: Node) {
+function renderContainer(name: string, child: Node) {
   const it = new Container();
 
   if (child.children) {
@@ -21,22 +23,45 @@ function render(name: string, child: Node) {
 }
 
 function renderSprite(name: string, child: Node) {
-  const it = child.components?.sprite;
+  const config = child.components?.sprite as any;
 
-  if (it && isSprite(it)) {
-    it.name = name;
-
-    return it;
+  if (!config) {
+    return;
   }
 
-  return undefined;
+  if (!config.texture) {
+    throw new Error(`Sprite require texture to render`);
+  }
+
+  const it = new Sprite(RES.get(config.texture).texture);
+
+  requestAnimationFrame(() => {
+    //
+    if (config.anchor) {
+      //
+      if (typeof config.anchor === 'number') {
+        it.anchor.set(config.anchor);
+
+        return;
+      }
+
+      const { x = 0, y = 0 } = config.anchor;
+
+      it.anchor.set(x, y);
+    }
+    //
+  });
+
+  it.name = name;
+
+  return it;
 }
 
 function renderChildren(children: Record<string, Node>) {
   return (
     Object.entries(children)
       //
-      .map(([name, child]) => byType(name, child))
+      .map(([name, child]) => render(name, child))
       .filter(Boolean) as DisplayObject[]
   );
 }

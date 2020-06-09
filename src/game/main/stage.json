@@ -13,7 +13,8 @@
         "title": {
           "components": {
             "sprite": {
-              "texture": "TABLE_TITLE"
+              "texture": "TABLE_TITLE",
+              "anchor": 0.5
             }
           }
         }
