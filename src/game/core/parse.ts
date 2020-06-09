@@ -6,22 +6,32 @@ type Node = {
   components?: Record<string, {}>;
 };
 
-export default function serialize(name: string, node: Node) {
+export default function serialize(node: Node) {
   //
+  const it: Node = {};
+
   if (node.components) {
-    node.components = addComponents(node.components);
+    it.components = createComponents(node.components);
   }
 
   if (!node.children) {
-    return;
+    return it;
   }
 
-  for (const [name, child] of Object.entries(node.children)) {
-    serialize(name, child);
-  }
+  it.children = Object.entries(node.children)
+    //
+    .reduce((children, [name, child]) => {
+      //
+      children[name] = serialize(child);
+
+      return children;
+      //
+    }, {} as Record<string, Node>);
+
+  return it;
 }
 
-function addComponents(components: Record<string, {}>) {
+function createComponents(components: Record<string, {}>) {
   const comps: Record<string, any> = {};
 
   for (const [type, component] of Object.entries(components)) {

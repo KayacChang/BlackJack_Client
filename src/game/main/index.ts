@@ -10,10 +10,15 @@ type Node = {
 };
 
 export default function Main() {
-  parse('stage', stage as Node);
+  const _stage = parse(stage as Node);
+
+  console.log(_stage);
 
   const it = new Container();
-  it.addChild(...render(stage.children));
+
+  if (_stage.children) {
+    it.addChild(...render(_stage.children));
+  }
 
   return it;
 }
