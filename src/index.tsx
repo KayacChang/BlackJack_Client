@@ -12,7 +12,7 @@ async function main() {
     //
     i18n.init(),
     gsap.init(),
-    service.connect(),
+    // service.connect(),
   ]);
 
   const Root = (
