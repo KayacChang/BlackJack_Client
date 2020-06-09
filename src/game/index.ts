@@ -31,7 +31,7 @@ async function onLoad(app: Application) {
 
 function onStart(app: Application) {
   //
-  app.stage = new Main();
+  app.stage = Main();
 
   app.ticker.add(() => resize(app));
 }

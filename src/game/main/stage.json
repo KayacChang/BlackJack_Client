@@ -1,0 +1,23 @@
+{
+  "children": {
+    "background": {
+      "children": {
+        "table": {
+          "components": {
+            "sprite": {
+              "texture": "TABLE_BLUE"
+            }
+          }
+        },
+
+        "title": {
+          "components": {
+            "sprite": {
+              "texture": "TABLE_TITLE"
+            }
+          }
+        }
+      }
+    }
+  }
+}
