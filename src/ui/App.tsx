@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { isMobile, useResize } from '../utils';
-import { Center, Flex } from './layouts/Flex';
-import Canvas from './canvas/Canvas';
+import { isMobile } from '../utils';
+import { useResize } from './hooks';
+import { Center, Flex } from './components/layouts/Flex';
+import Canvas from './components/canvas/Canvas';
 
 type Props = {
   game: (canvas: HTMLCanvasElement) => void;
@@ -9,7 +10,6 @@ type Props = {
 };
 
 export default function App({ game, ui }: Props) {
-  //
   const mobile = useResize(isMobile);
 
   return (

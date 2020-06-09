@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, HTMLAttributes } from 'react';
-import { useTrigger } from '../../utils';
+import { useTrigger } from '../../hooks';
 import styles from './Toggle.module.scss';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLInputElement>>;

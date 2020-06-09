@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Home } from 'react-feather';
-import { Button } from '../../components/button/Button';
+import { Button } from '../components/button/Button';
 import styles from './Detail.module.scss';
 
 function Back() {

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, HTMLAttributes } from 'react';
 import { Menu as IconMenu, X } from 'react-feather';
-import { Button } from '../../../components/button/Button';
+import { Button } from '../../components/button/Button';
 import styles from './Button.module.scss';
 
 // ===== Trigger =====
