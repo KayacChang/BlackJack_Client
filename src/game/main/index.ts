@@ -12,8 +12,6 @@ type Node = {
 export default function Main() {
   const _stage = parse(stage as Node);
 
-  console.log(_stage);
-
   const it = new Container();
 
   if (_stage.children) {
