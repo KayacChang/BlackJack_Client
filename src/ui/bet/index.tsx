@@ -2,7 +2,7 @@ import React from 'react';
 import { X, CornerUpLeft, RotateCw } from 'react-feather';
 import Chip from './components/Chip';
 import Control from './components/Control';
-import Timer from '../../components/timer';
+import Timer from '../components/timer';
 import styles from './Bet.module.scss';
 
 import RED from './assets/normal/red.png';

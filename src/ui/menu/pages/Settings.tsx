@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Settings.module.scss';
 import { VolumeX, Volume2 } from 'react-feather';
-import { Slider, Toggle } from '../../../components/input';
+import { Slider, Toggle } from '../../components/input';
 
 function Volume() {
   return (

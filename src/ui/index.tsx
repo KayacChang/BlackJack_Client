@@ -1,19 +1,4 @@
-import React from 'react';
-import Menu from './menu';
-import Status from './status';
-import Detail from './detail';
-import Bet from './bet';
-import Decision from './decision';
+import App from './App';
+import UI from './UI';
 
-export default function UI() {
-  //
-  return (
-    <div className="fixedPage" style={{ pointerEvents: 'none' }}>
-      <Menu />
-      <Status />
-      <Detail />
-      {/* <Bet /> */}
-      {/* <Decision /> */}
-    </div>
-  );
-}
+export { App, UI };

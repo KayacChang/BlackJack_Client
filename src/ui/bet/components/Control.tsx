@@ -1,6 +1,6 @@
 import React, { ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
 import styles from './Control.module.scss';
-import { Button } from '../../../components/button/Button';
+import { Button } from '../../components/button/Button';
 
 type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
 
