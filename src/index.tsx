@@ -12,7 +12,11 @@ async function main() {
     //
     i18n.init(),
     gsap.init(),
-    service.init(),
+    service.init({
+      token: '$2y$10$g27N1Zk/EuqTZQYBkSmWhel0VEOln2ZNmbIvrItEbkyoV77nHhZ6u',
+      gameID: '209B407F0F9751E3B87751FD8C99EDC9',
+      gameToken: '',
+    }),
   ]);
 
   const Root = (
@@ -21,6 +25,10 @@ async function main() {
     </React.StrictMode>
   );
   ReactDOM.render(Root, document.getElementById('root'));
+
+  setTimeout(() => {
+    service.join(1);
+  }, 1000);
 }
 
 main();

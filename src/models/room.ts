@@ -1,18 +1,10 @@
 import { required, mustBe } from '../utils';
-
-export interface Room {
-  history: string[];
-  id: number;
-  maxBet: number;
-  minBet: number;
-  numberOfPlayers: number;
-  numberOfSeats: number;
-}
+import { Room } from './type';
 
 const checkRequire = required(['history', 'id', 'max_bet', 'min_bet', 'occupied', 'seats_num']);
 const checkType = mustBe(Number)(['id', 'max_bet', 'min_bet', 'occupied', 'seats_num']);
 
-export default function (data: any): Room {
+export default function toRoom(data: any): Room {
   //
   if (!checkRequire(data)) {
     throw new Error(`Required properties ... ${JSON.stringify(data)}`);

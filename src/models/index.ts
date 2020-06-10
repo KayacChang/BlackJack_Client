@@ -1,8 +1,5 @@
-import Room from './room';
+import toRoom from './room';
+import toRound from './round';
 
-export interface User {
-  id: number;
-  name: string;
-}
-
-export { Room };
+export * from './type';
+export { toRoom, toRound };
