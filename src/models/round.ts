@@ -1,5 +1,5 @@
 import { required } from '../utils';
-import { Round, RoundState, SERVER, PAIR, SEAT } from './type';
+import { Round, RoundState, PAIR, SEAT, GAME } from './type';
 
 const checkRequire = required(['round', 'seats', 'state', 'shoe_num']);
 
@@ -17,15 +17,15 @@ export default function toRound(data: any): Round {
   };
 }
 
-const allState = [SERVER.NEW_ROUND, SERVER.GAME_START, SERVER.GAME_SETTLE];
-
 function toRoundState([type, seat, pair]: number[]): RoundState {
   //
+  const allState = [GAME.BETTING, GAME.BET_END, GAME.SETTLE];
+
   if (!allState.includes(type)) {
     throw new Error(`RoundState: type must in ${allState} but ... ${type}`);
   }
 
-  if (type === SERVER.NEW_ROUND || type === SERVER.GAME_SETTLE) {
+  if (type === GAME.BETTING || type === GAME.SETTLE) {
     return { type };
   }
 

@@ -9,9 +9,15 @@ export enum SERVER {
   LOBBY = 8003001,
   UPDATE_LOBBY = 8003002,
   JOIN_ROOM = 8003003,
-  NEW_ROUND = 8003020,
-  GAME_START = 8003021,
-  GAME_SETTLE = 8003022,
+}
+
+export enum GAME {
+  BETTING = 8003020,
+  BET_END = 8003021,
+  BEGIN = 8003036,
+  TURN = 8003034,
+  DEAL = 8003033,
+  SETTLE = 8003022,
 }
 
 export interface Room {
@@ -38,7 +44,7 @@ export enum PAIR {
 }
 
 export type RoundState = {
-  type: SERVER.NEW_ROUND | SERVER.GAME_START | SERVER.GAME_SETTLE;
+  type: GAME.BETTING | GAME.BET_END | GAME.SETTLE;
   seat?: SEAT;
   pair?: PAIR;
 };
