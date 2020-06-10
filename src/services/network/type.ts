@@ -13,7 +13,7 @@ export enum SERVER {
   UPDATE_LOBBY = 8003002,
 }
 
-export type Frame = {
+export interface Frame {
   cmd: number;
   data: any;
-};
+}

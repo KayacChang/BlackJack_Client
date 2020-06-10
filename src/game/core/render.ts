@@ -1,7 +1,6 @@
 import { Container, DisplayObject, Sprite } from 'pixi.js';
 import { Node } from '.';
 import RES from '../assets';
-import { isNumber } from 'util';
 
 export default function render(name: string, child: Node) {
   //

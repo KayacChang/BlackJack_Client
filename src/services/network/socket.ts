@@ -1,8 +1,10 @@
 import EventEmitter from 'eventemitter3';
 import { EVENT, SERVER, Frame } from './type';
 import login from './login';
+import RoomService from '../rooms';
+import { Room } from '../../models';
 
-export default class Service extends EventEmitter {
+export default class Socket extends EventEmitter {
   //
   private socket: WebSocket;
 
@@ -20,12 +22,10 @@ export default class Service extends EventEmitter {
 
     this.socket.onmessage = (event) => this.onMessage(event);
 
-    const user = await login(this);
-
-    console.log(user);
+    return await login(this);
   }
 
-  send(data: {}) {
+  send(data: Frame) {
     const message = btoa(JSON.stringify(data));
 
     this.socket.send(message);
@@ -44,11 +44,11 @@ export default class Service extends EventEmitter {
         return;
       //
       case SERVER.LOBBY:
-        console.log(message.data);
+        RoomService.replace(...message.data.map(Room));
         return;
       //
       case SERVER.UPDATE_LOBBY:
-        console.log(message.data);
+        RoomService.update(Room(message.data));
         return;
     }
   }

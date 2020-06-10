@@ -23,6 +23,7 @@
     "i18next": "^19.4.4",
     "i18next-http-backend": "^1.0.10",
     "mobile-detect": "^1.4.4",
+    "mobx": "^5.15.4",
     "normalize.css": "^8.0.1",
     "pixi.js": "^5.2.4",
     "ramda": "^0.27.0",

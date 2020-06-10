@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Game from './game';
 import { App, UI } from './ui';
 import { i18n, gsap } from './plugins';
-import service from './service';
+import service from './services';
 import './index.scss';
 
 async function main() {
@@ -12,7 +12,7 @@ async function main() {
     //
     i18n.init(),
     gsap.init(),
-    // service.connect(),
+    service.init(),
   ]);
 
   const Root = (
