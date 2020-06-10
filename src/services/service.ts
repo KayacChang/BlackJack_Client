@@ -5,6 +5,7 @@ import RoomService from './rooms';
 import { Token, SERVER } from '../models';
 
 export default class Service extends EventEmitter {
+  //
   socket: WebSocket;
 
   token?: Token;
@@ -26,8 +27,9 @@ export default class Service extends EventEmitter {
   }
 
   send(data: Frame) {
+    //
     if (!this.token) {
-      return;
+      throw new Error(`service required token, please call connect first`);
     }
 
     const token = this.token;
@@ -45,14 +47,18 @@ export default class Service extends EventEmitter {
   }
 
   onMessage(event: MessageEvent) {
+    //
+    if (!this.token) {
+      throw new Error(`service required token, please call connect first`);
+    }
+
     const message = JSON.parse(atob(event.data)) as Frame;
 
     switch (message.cmd) {
       //
       case SERVER.LOGIN:
-        if (this.token) {
-          this.token.gameToken = message.data.game_token;
-        }
+        this.token.gameToken = message.data.game_token;
+
         return this.emit(EVENT.LOGIN, message.data);
       //
       case SERVER.INFO:
@@ -60,12 +66,10 @@ export default class Service extends EventEmitter {
         return;
       //
       case SERVER.LOBBY:
-        RoomService.replace(...message.data);
-        return;
+        return RoomService.replace(...message.data);
       //
       case SERVER.UPDATE_LOBBY:
-        RoomService.update(message.data);
-        return;
+        return RoomService.update(message.data);
       //
       case SERVER.JOIN_ROOM:
         return this.emit(EVENT.JOIN_ROOM, message.data);
