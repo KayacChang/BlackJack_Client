@@ -1,13 +1,16 @@
 import EventEmitter from 'eventemitter3';
-import { EVENT } from './type';
 import login from './login';
-import { Rooms, Rounds } from '../states';
-import { Token, User } from '../models';
-import { SERVER, GAME } from '../constants';
+import { Token } from '../models';
+import { SERVER, GAME, CLIENT } from '../constants';
+import { LobbyMUX, RoomMUX } from './mux';
 
 interface Frame {
-  cmd: number;
+  cmd: CLIENT | SERVER | GAME;
   data: any;
+}
+
+interface MUX {
+  [name: number]: (service: Service, data: any) => any;
 }
 
 export default class Service extends EventEmitter {
@@ -62,50 +65,15 @@ export default class Service extends EventEmitter {
 
     const message = JSON.parse(atob(event.data)) as Frame;
 
-    switch (message.cmd) {
-      case SERVER.LOGIN:
-        this.token.gameToken = message.data.game_token;
-
-        const user = new User({
-          id: message.data.user_id,
-          name: message.data.user_name,
-        });
-
-        console.log(user);
-
-        return this.emit(EVENT.LOGIN, user);
-      case SERVER.INFO:
-        console.log(message.data);
-        return;
-      case SERVER.LOBBY:
-        return Rooms.replace(...message.data);
-      case SERVER.UPDATE_LOBBY:
-        return Rooms.update(message.data);
-      case SERVER.JOIN_ROOM:
-        return this.emit(EVENT.JOIN_ROOM, Rounds.start(message.data));
-      //
-      case GAME.BETTING:
-        return Rounds.start({
-          ...message.data,
-          state: [GAME.BETTING],
-        });
-      case GAME.BET_END:
-        console.log(message.data);
-        return;
-      case GAME.BEGIN:
-        console.log(message.data);
-        return;
-      case GAME.DEAL:
-        console.log(message.data);
-        return;
-      case GAME.TURN:
-        const { no, pile } = message.data;
-
-        // console.log(new Turn(no, pile));
-        return;
-      case GAME.SETTLE:
-        console.log(message.data);
-        return;
+    if (message.data.game_token) {
+      this.token.gameToken = message.data.game_token;
     }
+
+    const handler = ({
+      ...LobbyMUX,
+      ...RoomMUX,
+    } as MUX)[message.cmd];
+
+    if (handler) handler(this, message.data);
   }
 }
