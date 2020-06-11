@@ -1,6 +1,7 @@
-import toRoom from './room';
-import toRound from './round';
-import toTurn from './turn';
+import Room from './room';
+import User from './user';
+import Round from './round';
+import Turn from './turn';
 
 export * from './type';
-export { toRoom, toRound, toTurn };
+export { User, Room, Round, Turn };

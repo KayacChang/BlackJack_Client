@@ -1,24 +1,35 @@
 import { required } from '../utils';
-import { Round, RoundState, GAME } from './type';
-import toTurn from './turn';
+import Seat from './seat';
+import { GAME } from '../constants';
+import Turn from './turn';
+import { construct } from 'ramda';
 
+const toSeat = construct(Seat);
 const checkRequire = required(['round', 'seats', 'state', 'shoe_num']);
 
-export default function toRound(data: any): Round {
-  //
-  if (!checkRequire(data)) {
-    throw new Error(`Required properties ... ${JSON.stringify(data)}`);
-  }
+export default class Round {
+  id: string;
+  shoe: number;
+  state: State | Turn;
+  seats: Seat[];
 
-  return {
-    id: String(data.round),
-    shoe: Number(data.shoe_num),
-    state: toRoundState(data.state),
-    seats: data.seats,
-  };
+  constructor(data: any) {
+    if (!checkRequire(data)) {
+      throw new Error(`Required properties ... ${JSON.stringify(data)}`);
+    }
+
+    this.id = String(data.round);
+    this.shoe = Number(data.shoe_num);
+    this.state = toState(data.state);
+    this.seats = data.seats.map(toSeat);
+  }
 }
 
-function toRoundState([type, seat, pair]: number[]): RoundState {
+type State = {
+  type: GAME.BETTING | GAME.BET_END | GAME.SETTLE;
+};
+
+function toState([type, seat, pair]: number[]): State {
   //
   const allState = [GAME.BETTING, GAME.BET_END, GAME.SETTLE];
 
@@ -32,6 +43,6 @@ function toRoundState([type, seat, pair]: number[]): RoundState {
 
   return {
     type,
-    ...toTurn(seat, pair),
+    ...new Turn(seat, pair),
   };
 }

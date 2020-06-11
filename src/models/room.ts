@@ -1,25 +1,32 @@
 import { required, mustBe } from '../utils';
-import { Room } from './type';
 
 const checkRequire = required(['history', 'id', 'max_bet', 'min_bet', 'occupied', 'seats_num']);
 const checkType = mustBe(Number)(['id', 'max_bet', 'min_bet', 'occupied', 'seats_num']);
 
-export default function toRoom(data: any): Room {
+export default class Room {
   //
-  if (!checkRequire(data)) {
-    throw new Error(`Required properties ... ${JSON.stringify(data)}`);
-  }
+  history: string[];
+  id: number;
+  maxBet: number;
+  minBet: number;
+  numberOfPlayers: number;
+  numberOfSeats: number;
 
-  if (!checkType(data)) {
-    throw new Error(`Properties must be number ... ${JSON.stringify(data)}`);
-  }
+  constructor(data: any) {
+    //
+    if (!checkRequire(data)) {
+      throw new Error(`Required properties ... ${JSON.stringify(data)}`);
+    }
 
-  return {
-    history: data.history.map(String),
-    id: Number(data.id),
-    maxBet: Number(data.max_bet),
-    minBet: Number(data.min_bet),
-    numberOfPlayers: Number(data.occupied),
-    numberOfSeats: Number(data.seats_num),
-  };
+    if (!checkType(data)) {
+      throw new Error(`Properties must be number ... ${JSON.stringify(data)}`);
+    }
+
+    this.history = data.history.map(String);
+    this.id = Number(data.id);
+    this.maxBet = Number(data.max_bet);
+    this.minBet = Number(data.min_bet);
+    this.numberOfPlayers = Number(data.occupied);
+    this.numberOfSeats = Number(data.seats_num);
+  }
 }

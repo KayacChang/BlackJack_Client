@@ -1,6 +1,7 @@
 import { EVENT } from './type';
 import Service from './service';
-import { CLIENT, toRound } from '../models';
+import { Round } from '../models';
+import { CLIENT } from '../constants';
 
 export default async function (service: Service, id: number) {
   console.groupCollapsed('Join Room');
@@ -17,7 +18,7 @@ export default async function (service: Service, id: number) {
     service.once(EVENT.JOIN_ROOM, resolve);
   });
 
-  const round = toRound(response);
+  const round = new Round(response);
   console.log(round);
   console.groupEnd();
 

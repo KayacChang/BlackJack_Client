@@ -1,5 +1,8 @@
 import { observable, observe, IArraySplice, IArrayChange } from 'mobx';
-import { toRoom, Room } from '../models';
+import { Room } from '../models';
+import { construct } from 'ramda';
+
+const toRoom = construct(Room);
 
 const rooms = observable([] as Room[], { deep: false });
 
@@ -18,12 +21,7 @@ function onSplice({ added }: IArraySplice<Room>) {
   console.groupEnd();
 }
 
-function onUpdate({ newValue, oldValue }: IArrayChange<Room>) {
-  // console.groupCollapsed(`Room Update: ${newValue.id}`);
-  // console.log('Old', oldValue);
-  // console.log('New', newValue);
-  // console.groupEnd();
-}
+function onUpdate({ newValue, oldValue }: IArrayChange<Room>) {}
 
 function replace(...data: any[]) {
   const newRooms = data.map(toRoom).sort((a, b) => a.id - b.id);

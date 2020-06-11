@@ -1,8 +1,14 @@
 import EventEmitter from 'eventemitter3';
-import { EVENT, Frame } from './type';
+import { EVENT } from './type';
 import login from './login';
-import { Rooms } from '../data';
-import { Token, SERVER, GAME, toTurn } from '../models';
+import { Rooms } from '../states';
+import { Token, Turn } from '../models';
+import { SERVER, GAME } from '../constants';
+
+interface Frame {
+  cmd: number;
+  data: any;
+}
 
 export default class Service extends EventEmitter {
   //
@@ -84,7 +90,7 @@ export default class Service extends EventEmitter {
       case GAME.TURN:
         const { no, pile } = message.data;
 
-        console.log(toTurn(no, pile));
+        console.log(new Turn(no, pile));
         return;
       case GAME.SETTLE:
         console.log(message.data);
