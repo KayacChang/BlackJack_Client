@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3';
 import { EVENT, Frame } from './type';
 import login from './login';
 import RoomService from './rooms';
-import { Token, SERVER } from '../models';
+import { Token, SERVER, GAME, toTurn } from '../models';
 
 export default class Service extends EventEmitter {
   //
@@ -55,24 +55,40 @@ export default class Service extends EventEmitter {
     const message = JSON.parse(atob(event.data)) as Frame;
 
     switch (message.cmd) {
-      //
       case SERVER.LOGIN:
         this.token.gameToken = message.data.game_token;
 
         return this.emit(EVENT.LOGIN, message.data);
-      //
       case SERVER.INFO:
         console.log(message.data);
         return;
-      //
       case SERVER.LOBBY:
         return RoomService.replace(...message.data);
-      //
       case SERVER.UPDATE_LOBBY:
         return RoomService.update(message.data);
-      //
       case SERVER.JOIN_ROOM:
         return this.emit(EVENT.JOIN_ROOM, message.data);
+      //
+      case GAME.BETTING:
+        console.log(message.data);
+        return;
+      case GAME.BET_END:
+        // console.log(message.data);
+        return;
+      case GAME.BEGIN:
+        console.log(message.data);
+        return;
+      case GAME.DEAL:
+        console.log(message.data);
+        return;
+      case GAME.TURN:
+        const { no, pile } = message.data;
+
+        console.log(toTurn(no, pile));
+        return;
+      case GAME.SETTLE:
+        console.log(message.data);
+        return;
     }
   }
 }

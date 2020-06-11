@@ -43,11 +43,16 @@ export enum PAIR {
   R = 1,
 }
 
-export type RoundState = {
-  type: GAME.BETTING | GAME.BET_END | GAME.SETTLE;
-  seat?: SEAT;
-  pair?: PAIR;
+export type Turn = {
+  seat: SEAT;
+  pair: PAIR;
 };
+
+export type RoundState =
+  | {
+      type: GAME.BETTING | GAME.BET_END | GAME.SETTLE;
+    }
+  | Turn;
 
 export interface Round {
   id: string;

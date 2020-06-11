@@ -1,5 +1,6 @@
 import { required } from '../utils';
-import { Round, RoundState, PAIR, SEAT, GAME } from './type';
+import { Round, RoundState, GAME } from './type';
+import toTurn from './turn';
 
 const checkRequire = required(['round', 'seats', 'state', 'shoe_num']);
 
@@ -29,46 +30,8 @@ function toRoundState([type, seat, pair]: number[]): RoundState {
     return { type };
   }
 
-  switch (seat) {
-    case -1:
-      seat = SEAT.DEALER;
-      break;
-    case 0:
-      seat = SEAT.A;
-      break;
-    case 1:
-      seat = SEAT.B;
-      break;
-    case 2:
-      seat = SEAT.C;
-      break;
-    case 3:
-      seat = SEAT.D;
-      break;
-    case 4:
-      seat = SEAT.E;
-      break;
-    default:
-      throw new Error(`RoundState: seat must in ${[-1, 0, 1, 2, 3, 4]} but ... ${seat}`);
-  }
-
-  switch (pair) {
-    case -1:
-      pair = PAIR.L;
-      break;
-    case 0:
-      pair = PAIR.L;
-      break;
-    case 1:
-      pair = PAIR.R;
-      break;
-    default:
-      throw new Error(`RoundState: pair must in ${[-1, 0, 1]} but ... ${pair}`);
-  }
-
   return {
     type,
-    seat,
-    pair,
+    ...toTurn(seat, pair),
   };
 }
