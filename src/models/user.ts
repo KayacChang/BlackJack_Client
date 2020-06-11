@@ -1,20 +1,18 @@
-import { required } from '../utils';
-
-const checkRequire = required(['user_name']);
+type Props = {
+  id?: any;
+  name: any;
+};
 
 export default class User {
   id?: number;
   name: string;
 
-  constructor(data: any) {
-    if (!checkRequire(data)) {
-      throw new Error(`Required properties ... ${JSON.stringify(data)}`);
+  constructor({ name, id }: Props) {
+    //
+    if (id) {
+      this.id = Number(id);
     }
 
-    if (data.user_id) {
-      this.id = Number(data.user_id);
-    }
-
-    this.name = String(data.user_name);
+    this.name = String(name);
   }
 }

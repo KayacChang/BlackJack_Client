@@ -1,8 +1,8 @@
 import EventEmitter from 'eventemitter3';
 import { EVENT } from './type';
 import login from './login';
-import { Rooms } from '../states';
-import { Token, Turn } from '../models';
+import { Rooms, Rounds } from '../states';
+import { Token, User } from '../models';
 import { SERVER, GAME } from '../constants';
 
 interface Frame {
@@ -38,6 +38,8 @@ export default class Service extends EventEmitter {
       throw new Error(`service required token, please call connect first`);
     }
 
+    console.log('Send: ', data);
+
     const token = this.token;
 
     const message = btoa(
@@ -64,7 +66,14 @@ export default class Service extends EventEmitter {
       case SERVER.LOGIN:
         this.token.gameToken = message.data.game_token;
 
-        return this.emit(EVENT.LOGIN, message.data);
+        const user = new User({
+          id: message.data.user_id,
+          name: message.data.user_name,
+        });
+
+        console.log(user);
+
+        return this.emit(EVENT.LOGIN, user);
       case SERVER.INFO:
         console.log(message.data);
         return;
@@ -73,13 +82,15 @@ export default class Service extends EventEmitter {
       case SERVER.UPDATE_LOBBY:
         return Rooms.update(message.data);
       case SERVER.JOIN_ROOM:
-        return this.emit(EVENT.JOIN_ROOM, message.data);
+        return this.emit(EVENT.JOIN_ROOM, Rounds.start(message.data));
       //
       case GAME.BETTING:
-        console.log(message.data);
-        return;
+        return Rounds.start({
+          ...message.data,
+          state: [GAME.BETTING],
+        });
       case GAME.BET_END:
-        // console.log(message.data);
+        console.log(message.data);
         return;
       case GAME.BEGIN:
         console.log(message.data);
@@ -90,7 +101,7 @@ export default class Service extends EventEmitter {
       case GAME.TURN:
         const { no, pile } = message.data;
 
-        console.log(new Turn(no, pile));
+        // console.log(new Turn(no, pile));
         return;
       case GAME.SETTLE:
         console.log(message.data);

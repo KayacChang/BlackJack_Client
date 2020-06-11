@@ -6,18 +6,13 @@ import { CLIENT } from '../constants';
 export default async function (service: Service): Promise<User> {
   console.groupCollapsed('Login');
 
-  const request = {
+  service.send({
     cmd: CLIENT.LOGIN,
     data: undefined,
-  };
+  });
 
-  console.log(request);
-  service.send(request);
+  const user = await new Promise<User>((resolve) => service.once(EVENT.LOGIN, resolve));
 
-  const response = await new Promise((resolve) => service.once(EVENT.LOGIN, resolve));
-  const user = new User(response);
-
-  console.log(user);
   console.groupEnd();
 
   return user;

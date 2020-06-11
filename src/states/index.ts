@@ -1,3 +1,4 @@
 import Rooms from './rooms';
+import Rounds from './rounds';
 
-export { Rooms };
+export { Rooms, Rounds };

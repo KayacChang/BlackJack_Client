@@ -9,7 +9,6 @@ import './index.scss';
 async function main() {
   //
   await Promise.all([
-    //
     i18n.init(),
     gsap.init(),
     service.init({
@@ -26,8 +25,8 @@ async function main() {
   );
   ReactDOM.render(Root, document.getElementById('root'));
 
-  setTimeout(() => {
-    service.join(1);
+  setTimeout(async () => {
+    await service.join(1);
   }, 1000);
 }
 
