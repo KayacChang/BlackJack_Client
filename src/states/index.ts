@@ -1,4 +1,4 @@
-import Rooms from './rooms';
-import Rounds from './rounds';
+import Lobby from './lobby';
+import Room from './room';
 
-export { Rooms, Rounds };
+export { Lobby, Room };

@@ -10,11 +10,9 @@ export default async function (service: Service, id: number) {
     data: { id },
   });
 
-  const round = await new Promise((resolve) => {
-    service.once(EVENT.JOIN_ROOM, resolve);
-  });
-
   console.groupEnd();
 
-  return round;
+  return new Promise((resolve) => {
+    service.once(EVENT.JOIN_ROOM, resolve);
+  });
 }

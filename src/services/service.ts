@@ -65,7 +65,7 @@ export default class Service extends EventEmitter {
 
     const message = JSON.parse(atob(event.data)) as Frame;
 
-    if (message.data.game_token) {
+    if (message.data?.game_token) {
       this.token.gameToken = message.data.game_token;
     }
 
