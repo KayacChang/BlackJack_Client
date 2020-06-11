@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import { EVENT, Frame } from './type';
 import login from './login';
-import RoomService from './rooms';
+import { Rooms } from '../data';
 import { Token, SERVER, GAME, toTurn } from '../models';
 
 export default class Service extends EventEmitter {
@@ -63,9 +63,9 @@ export default class Service extends EventEmitter {
         console.log(message.data);
         return;
       case SERVER.LOBBY:
-        return RoomService.replace(...message.data);
+        return Rooms.replace(...message.data);
       case SERVER.UPDATE_LOBBY:
-        return RoomService.update(message.data);
+        return Rooms.update(message.data);
       case SERVER.JOIN_ROOM:
         return this.emit(EVENT.JOIN_ROOM, message.data);
       //

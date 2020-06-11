@@ -1,5 +1,4 @@
 import Service from './service';
-import RoomService from './rooms';
 import joinRoom from './join_room';
 import { Token } from '../models';
 
@@ -13,4 +12,4 @@ function join(roomID: number) {
   return joinRoom(service, roomID);
 }
 
-export default { init, join, RoomService };
+export default { init, join };
