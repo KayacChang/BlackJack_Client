@@ -1,6 +1,5 @@
 import EventEmitter from 'eventemitter3';
 import login from './login';
-import { Token } from '../models';
 import { SERVER, GAME, CLIENT } from '../constants';
 import { LobbyMUX, RoomMUX } from './mux';
 
@@ -17,7 +16,7 @@ export default class Service extends EventEmitter {
   //
   socket: WebSocket;
 
-  token?: Token;
+  token?: any;
 
   constructor(host: string) {
     super();
@@ -25,7 +24,7 @@ export default class Service extends EventEmitter {
     this.socket = new WebSocket(host);
   }
 
-  async connect(token: Token) {
+  async connect(token: any) {
     this.token = token;
 
     await new Promise((resolve) => (this.socket.onopen = resolve));
