@@ -1,4 +1,5 @@
-import { Room, RoomAction, ROOM } from './types';
+import { RoomAction, ROOM } from './types';
+import { Room } from '../../models';
 
 const initialState: Room[] = [];
 

@@ -1,4 +1,5 @@
-import { User, UserAction, USER } from './types';
+import { UserAction, USER } from './types';
+import { User } from '../../models';
 
 const initialState: User = {
   id: 0,

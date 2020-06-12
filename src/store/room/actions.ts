@@ -1,4 +1,5 @@
-import { Props, Room, RoomAction, ROOM } from './types';
+import { Props, RoomAction, ROOM } from './types';
+import { Room } from '../../models';
 
 function toRoom({ id, max_bet, min_bet, history }: Props): Room {
   return {

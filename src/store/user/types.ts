@@ -1,9 +1,5 @@
 import { Action } from '../types';
-
-export interface User {
-  id: number;
-  name: string;
-}
+import { User } from '../../models';
 
 export enum USER {
   LOGIN = 'USER_LOGIN',

@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import login from './login';
-import { SERVER, GAME, CLIENT } from '../constants';
+import { SERVER, GAME, CLIENT } from '../models';
 import { LobbyMUX, RoomMUX } from './mux';
 
 interface Frame {

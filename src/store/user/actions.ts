@@ -1,4 +1,5 @@
-import { Props, User, UserAction, USER } from './types';
+import { Props, UserAction, USER } from './types';
+import { User } from '../../models';
 
 function toUser({ user_id, user_name }: Props): User {
   return {

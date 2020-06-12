@@ -1,4 +1,4 @@
-import { SERVER } from '../constants';
+import { SERVER } from '../models';
 import Service from './service';
 import { EVENT } from './type';
 
@@ -7,9 +7,9 @@ import { addRoom, editRoom } from '../store/room';
 import { login } from '../store/user';
 
 function onLogin(service: Service, data: any) {
-  store.dispatch(login(data));
+  const res = store.dispatch(login(data));
 
-  return service.emit(EVENT.LOGIN, data);
+  return service.emit(EVENT.LOGIN, res.payload);
 }
 
 function joinRoom(service: Service, data: any) {

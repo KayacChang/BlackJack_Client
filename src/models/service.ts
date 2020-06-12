@@ -19,20 +19,3 @@ export enum GAME {
   DEAL = 8003033,
   SETTLE = 8003022,
 }
-
-export enum SEAT {
-  DEALER = -1,
-  A = 0,
-  B = 1,
-  C = 2,
-  D = 3,
-  E = 4,
-}
-
-export enum PAIR {
-  L = 0,
-  R = 1,
-}
-
-export type RANK = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K';
-export type SUIT = 'SPADE' | 'HEART' | 'DIAMOND' | 'CLUB';

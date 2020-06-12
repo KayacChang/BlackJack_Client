@@ -1,15 +1,9 @@
 import { Action } from '../types';
+import { Room } from '../../models';
 
 export enum ROOM {
   ADD = 'ADD_ROOM',
   EDIT = 'EDIT_ROOM',
-}
-
-export interface Room {
-  id: number;
-  history: string[];
-  maxBet: number;
-  minBet: number;
 }
 
 export interface AddRoomAction extends Action<Room[]> {
