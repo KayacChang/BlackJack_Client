@@ -1,9 +1,8 @@
 import { EVENT } from './type';
 import Service from './service';
-import { User } from '../models';
 import { CLIENT } from '../constants';
 
-export default async function (service: Service): Promise<User> {
+export default async function (service: Service): Promise<any> {
   console.groupCollapsed('Login');
 
   service.send({
@@ -11,7 +10,7 @@ export default async function (service: Service): Promise<User> {
     data: undefined,
   });
 
-  const user = await new Promise<User>((resolve) => service.once(EVENT.LOGIN, resolve));
+  const user = await new Promise<any>((resolve) => service.once(EVENT.LOGIN, resolve));
 
   console.groupEnd();
 

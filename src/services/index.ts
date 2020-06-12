@@ -1,10 +1,9 @@
 import Service from './service';
 import joinRoom from './join_room';
-import { Token } from '../models';
 
 const service = new Service('wss://blackjack-stg.ulgplay.com:8881/ws');
 
-function init(token: Token) {
+function init(token: any) {
   return service.connect(token);
 }
 
