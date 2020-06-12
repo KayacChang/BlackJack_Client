@@ -1,3 +1,6 @@
+import { SUIT, RANK } from './poker';
+import { GAME } from './service';
+
 export * from './poker';
 export * from './service';
 
@@ -16,7 +19,7 @@ export enum PAIR {
 }
 
 export interface User {
-  id: number;
+  id?: number;
   name: string;
 }
 
@@ -25,4 +28,32 @@ export interface Room {
   history: string[];
   maxBet: number;
   minBet: number;
+}
+
+export interface Card {
+  suit: SUIT;
+  rank: RANK;
+}
+
+export interface Pair {
+  action: string;
+  bet: number;
+  cards: Card[];
+}
+
+export interface Seat {
+  id: SEAT;
+  player: User;
+  totalBet: number;
+  pairs: Pair[];
+}
+
+export interface Game {
+  round: string;
+  state: {
+    type: GAME;
+    seat?: SEAT;
+    pair?: PAIR;
+  };
+  seats: Seat[];
 }

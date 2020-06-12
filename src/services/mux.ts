@@ -5,6 +5,7 @@ import { EVENT } from './type';
 import store from '../store';
 import { addRoom, editRoom } from '../store/room';
 import { login } from '../store/user';
+import { joinGame } from '../store/game';
 
 function onLogin(service: Service, data: any) {
   const res = store.dispatch(login(data));
@@ -13,8 +14,9 @@ function onLogin(service: Service, data: any) {
 }
 
 function joinRoom(service: Service, data: any) {
-  // const round = Room.join(data);
-  // service.emit(EVENT.JOIN_ROOM, round);
+  const action = store.dispatch(joinGame(data));
+
+  return service.emit(EVENT.JOIN_ROOM, action.payload);
 }
 
 export const LobbyMUX = {

@@ -4,8 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import room from './room';
 import user from './user';
+import game from './game';
 
 const rootReducer = combineReducers({
+  game,
   user,
   room,
 });
