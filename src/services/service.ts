@@ -1,7 +1,7 @@
-import EventEmitter from 'eventemitter3';
-import login from './login';
-import { SERVER, GAME, CLIENT } from '../models';
-import { LobbyMUX, RoomMUX } from './mux';
+import EventEmitter from "eventemitter3";
+import login from "./login";
+import { SERVER, GAME, CLIENT } from "../models";
+import { LobbyMUX, RoomMUX } from "./mux";
 
 interface Frame {
   cmd: CLIENT | SERVER | GAME;
@@ -40,7 +40,7 @@ export default class Service extends EventEmitter {
       throw new Error(`service required token, please call connect first`);
     }
 
-    console.log('Send: ', data);
+    console.log("Send: ", data);
 
     const token = this.token;
 
@@ -65,7 +65,7 @@ export default class Service extends EventEmitter {
     const message = JSON.parse(atob(event.data)) as Frame;
 
     if (message.data?.game_token) {
-      this.token.gameToken = message.data.game_token;
+      // this.token.gameToken = message.data.game_token;
     }
 
     const handler = ({
