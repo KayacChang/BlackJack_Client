@@ -1,8 +1,8 @@
-import { SUIT, RANK } from "./poker";
-import { GAME } from "./service";
+import { SUIT, RANK } from './poker';
+import { GAME } from './service';
 
-export * from "./poker";
-export * from "./service";
+export * from './poker';
+export * from './service';
 
 export enum SEAT {
   DEALER = -1,
@@ -48,12 +48,14 @@ export interface Seat {
   pairs: Pair[];
 }
 
+export interface GameState {
+  type: GAME;
+  seat?: SEAT;
+  pair?: PAIR;
+}
+
 export interface Game {
   round: string;
-  state: {
-    type: GAME;
-    seat?: SEAT;
-    pair?: PAIR;
-  };
+  state: GameState;
   seats: Seat[];
 }

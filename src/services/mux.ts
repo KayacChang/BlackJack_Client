@@ -1,11 +1,11 @@
-import { SERVER, USER } from '../models';
+import { SERVER, USER, GAME } from '../models';
 import Service from './service';
 import { EVENT } from './type';
 
 import store from '../store';
 import { addRoom, editRoom } from '../store/room';
 import { login, update } from '../store/user';
-import { joinGame } from '../store/game';
+import { joinGame, betting, betend, settle } from '../store/game';
 
 function onLogin(service: Service, data: any) {
   const res = store.dispatch(login(data));
@@ -28,10 +28,10 @@ export const LobbyMUX = {
 };
 
 export const RoomMUX = {
-  // [GAME.BETTING]: (service: Service, data: any) => Room.betting(data),
-  // [GAME.BET_END]: (service: Service, data: any) => Room.setState(data.state[0]),
+  [GAME.BETTING]: (service: Service, data: any) => store.dispatch(betting(data)),
+  [GAME.BET_END]: (service: Service, data: any) => store.dispatch(betend(data)),
   // [GAME.BEGIN]: (service: Service, data: any) => Room.deal(...data),
   // [GAME.DEAL]: (service: Service, data: any) => Room.deal(data),
   // [GAME.TURN]: (service: Service, data: any) => console.log(data),
-  // [GAME.SETTLE]: (service: Service, data: any) => Room.settle(data),
+  [GAME.SETTLE]: (service: Service, data: any) => store.dispatch(settle(data)),
 };
