@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-import Game from "./game";
-import { App, UI } from "./ui";
-import { i18n, gsap } from "./plugins";
-import service from "./services";
-import "./index.scss";
+import Game from './game';
+import { App, UI } from './ui';
+import { i18n, gsap } from './plugins';
+import service from './services';
+import './index.scss';
 
-import store from "./store";
-import { getURLParam } from "./utils";
+import store from './store';
+import { getURLParam } from './utils';
 
 async function main() {
   //
@@ -17,7 +17,7 @@ async function main() {
     i18n.init(),
     gsap.init(),
     service.init({
-      token: `Bearer ${getURLParam("token")}`,
+      token: `Bearer ${getURLParam('token')}`,
     }),
   ]);
 
@@ -28,7 +28,7 @@ async function main() {
       </Provider>
     </React.StrictMode>
   );
-  ReactDOM.render(Root, document.getElementById("root"));
+  ReactDOM.render(Root, document.getElementById('root'));
 
   setTimeout(async () => {
     // const game = await service.join(1)

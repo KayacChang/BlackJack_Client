@@ -1,7 +1,8 @@
-import EventEmitter from "eventemitter3";
-import login from "./login";
-import { SERVER, GAME, CLIENT } from "../models";
-import { LobbyMUX, RoomMUX } from "./mux";
+import EventEmitter from 'eventemitter3';
+import login from './login';
+import { SERVER, GAME, CLIENT } from '../models';
+import { LobbyMUX, RoomMUX } from './mux';
+import { Token } from './type';
 
 interface Frame {
   cmd: CLIENT | SERVER | GAME;
@@ -16,7 +17,7 @@ export default class Service extends EventEmitter {
   //
   socket: WebSocket;
 
-  token?: any;
+  token?: Token;
 
   constructor(host: string) {
     super();
@@ -24,7 +25,7 @@ export default class Service extends EventEmitter {
     this.socket = new WebSocket(host);
   }
 
-  async connect(token: any) {
+  async connect(token: Token) {
     this.token = token;
 
     await new Promise((resolve) => (this.socket.onopen = resolve));
@@ -40,15 +41,13 @@ export default class Service extends EventEmitter {
       throw new Error(`service required token, please call connect first`);
     }
 
-    console.log("Send: ", data);
+    console.log('Send: ', data);
 
     const token = this.token;
 
     const message = btoa(
       JSON.stringify({
-        token: token.token,
-        game_id: token.gameID,
-        game_token: token.gameToken,
+        ...token,
         ...data,
       })
     );
@@ -63,10 +62,6 @@ export default class Service extends EventEmitter {
     }
 
     const message = JSON.parse(atob(event.data)) as Frame;
-
-    if (message.data?.game_token) {
-      // this.token.gameToken = message.data.game_token;
-    }
 
     const handler = ({
       ...LobbyMUX,

@@ -1,10 +1,13 @@
 import { RoomAction, ROOM } from './types';
 import { Room } from '../../models';
+import { sort, ascend, prop } from 'ramda';
 
 const initialState: Room[] = [];
 
 export * from './types';
 export * from './actions';
+
+const sortRoomAscByID = sort<Room>(ascend(prop('id')));
 
 export default function rooms(state = initialState, action: RoomAction): Room[] {
   const { type, payload } = action;
@@ -12,7 +15,7 @@ export default function rooms(state = initialState, action: RoomAction): Room[] 
   if (type === ROOM.ADD) {
     const rooms = payload as Room[];
 
-    return [...state, ...rooms];
+    return sortRoomAscByID([...state, ...rooms]);
   }
 
   if (type === ROOM.EDIT) {

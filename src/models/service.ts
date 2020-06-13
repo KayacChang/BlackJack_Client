@@ -3,13 +3,15 @@ export enum CLIENT {
   JOIN_ROOM = 8003103,
 }
 
-export enum SERVER {
+export enum USER {
   LOGIN = 8003050,
-  INFO = 8003095,
+  UPDATE = 8003095,
+}
+
+export enum SERVER {
   LOBBY = 8003001,
   UPDATE_LOBBY = 8003002,
   JOIN_ROOM = 8003003,
-  UPDATE_USER = 8003095,
 }
 
 export enum GAME {
