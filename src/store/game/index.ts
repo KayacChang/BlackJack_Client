@@ -4,7 +4,7 @@ import { GameAction, GAME_ACTION } from './types';
 const dealer: Seat = {
   id: SEAT.DEALER,
   player: {
-    name: typeof SEAT.DEALER,
+    name: 'dealer',
   },
   totalBet: 0,
   pairs: [],
