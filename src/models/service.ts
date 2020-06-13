@@ -11,10 +11,10 @@ export enum USER {
 export enum SERVER {
   LOBBY = 8003001,
   UPDATE_LOBBY = 8003002,
-  JOIN_ROOM = 8003003,
 }
 
 export enum GAME {
+  JOIN = 8003003,
   BETTING = 8003020,
   BET_END = 8003021,
   BEGIN = 8003036,

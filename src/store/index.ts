@@ -1,26 +1,15 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import room from './room';
-import user from './user';
-import game from './game';
+import reducer from './reducers';
 
-const rootReducer = combineReducers({
-  game,
-  user,
-  room,
-});
+const middlewares = [thunkMiddleware];
 
-const middlewares = [
-  //
-  thunkMiddleware,
-];
-
-export type AppState = ReturnType<typeof rootReducer>;
+export type AppState = ReturnType<typeof reducer>;
 
 export default createStore(
   //
-  rootReducer,
+  reducer,
   composeWithDevTools(applyMiddleware(...middlewares))
 );

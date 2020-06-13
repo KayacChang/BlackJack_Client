@@ -1,6 +1,6 @@
 import Service from './service';
 import joinRoom from './join_room';
-import { Token } from './type';
+import { Token } from '../models';
 
 const service = new Service('ws://35.184.168.53:8881/ws');
 

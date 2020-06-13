@@ -1,13 +1,10 @@
-import { RoomAction, ROOM } from './types';
 import { Room } from '../../models';
 import { sort, ascend, prop } from 'ramda';
-
-const initialState: Room[] = [];
-
-export * from './types';
-export * from './actions';
+import { RoomAction, ROOM } from '../types';
 
 const sortRoomAscByID = sort<Room>(ascend(prop('id')));
+
+const initialState: Room[] = [];
 
 export default function rooms(state = initialState, action: RoomAction): Room[] {
   const { type, payload } = action;

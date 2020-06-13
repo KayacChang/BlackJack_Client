@@ -1,16 +1,11 @@
 import EventEmitter from 'eventemitter3';
 import login from './login';
-import { SERVER, GAME, CLIENT } from '../models';
-import { LobbyMUX, RoomMUX } from './mux';
-import { Token } from './type';
+import { SERVER, GAME, CLIENT, Token } from '../models';
+import MUX from './mux';
 
 interface Frame {
   cmd: CLIENT | SERVER | GAME;
   data: any;
-}
-
-interface MUX {
-  [name: number]: (service: Service, data: any) => any;
 }
 
 export default class Service extends EventEmitter {
@@ -63,10 +58,7 @@ export default class Service extends EventEmitter {
 
     const message = JSON.parse(atob(event.data)) as Frame;
 
-    const handler = ({
-      ...LobbyMUX,
-      ...RoomMUX,
-    } as MUX)[message.cmd];
+    const handler = MUX[message.cmd];
 
     if (handler) handler(this, message.data);
   }

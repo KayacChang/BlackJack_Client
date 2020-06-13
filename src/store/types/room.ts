@@ -1,4 +1,4 @@
-import { Action } from '../types';
+import { Action } from './base';
 import { Room } from '../../models';
 
 export enum ROOM {
@@ -17,10 +17,3 @@ export interface EditRoomAction extends Action<Room> {
 }
 
 export type RoomAction = AddRoomAction | EditRoomAction;
-
-export interface Props {
-  id: number;
-  max_bet: number;
-  min_bet: number;
-  history: (number | string)[];
-}

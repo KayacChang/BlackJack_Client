@@ -23,6 +23,10 @@ export interface User {
   balance?: number;
 }
 
+export interface Token {
+  token: string;
+}
+
 export interface Room {
   id: number;
   history: string[];
@@ -36,16 +40,15 @@ export interface Card {
 }
 
 export interface Pair {
-  action: string;
+  action?: string;
   bet: number;
   cards: Card[];
 }
 
 export interface Seat {
   id: SEAT;
-  player: User;
+  player: string;
   totalBet: number;
-  pairs: Pair[];
 }
 
 export interface GameState {
@@ -57,5 +60,4 @@ export interface GameState {
 export interface Game {
   round: string;
   state: GameState;
-  seats: Seat[];
 }

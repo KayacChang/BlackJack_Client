@@ -1,9 +1,9 @@
-import { Action } from "../types";
-import { User } from "../../models";
+import { Action } from './base';
+import { User } from '../../models';
 
 export enum USER {
-  LOGIN = "USER_LOGIN",
-  UPDATE = "USER_UPDATE",
+  LOGIN = 'USER_LOGIN',
+  UPDATE = 'USER_UPDATE',
 }
 
 export interface LoginAction extends Action<User> {

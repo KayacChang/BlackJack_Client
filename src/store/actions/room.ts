@@ -1,5 +1,12 @@
-import { Props, RoomAction, ROOM } from './types';
 import { Room } from '../../models';
+import { RoomAction, ROOM } from '../types';
+
+interface Props {
+  id: number;
+  max_bet: number;
+  min_bet: number;
+  history: (number | string)[];
+}
 
 function toRoom({ id, max_bet, min_bet, history }: Props): Room {
   return {
