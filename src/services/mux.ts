@@ -1,11 +1,11 @@
-import { SERVER } from '../models';
-import Service from './service';
-import { EVENT } from './type';
+import { SERVER } from "../models";
+import Service from "./service";
+import { EVENT } from "./type";
 
-import store from '../store';
-import { addRoom, editRoom } from '../store/room';
-import { login } from '../store/user';
-import { joinGame } from '../store/game';
+import store from "../store";
+import { addRoom, editRoom } from "../store/room";
+import { login, update } from "../store/user";
+import { joinGame } from "../store/game";
 
 function onLogin(service: Service, data: any) {
   const res = store.dispatch(login(data));
@@ -21,9 +21,13 @@ function joinRoom(service: Service, data: any) {
 
 export const LobbyMUX = {
   [SERVER.LOGIN]: onLogin,
-  [SERVER.LOBBY]: (service: Service, data: any) => store.dispatch(addRoom(...data)),
-  [SERVER.UPDATE_LOBBY]: (service: Service, data: any) => store.dispatch(editRoom(data)),
+  [SERVER.LOBBY]: (service: Service, data: any) =>
+    store.dispatch(addRoom(...data)),
+  [SERVER.UPDATE_LOBBY]: (service: Service, data: any) =>
+    store.dispatch(editRoom(data)),
   [SERVER.JOIN_ROOM]: joinRoom,
+  [SERVER.UPDATE_USER]: (service: Service, data: any) =>
+    store.dispatch(update(data)),
 };
 
 export const RoomMUX = {

@@ -1,8 +1,8 @@
-import { SUIT, RANK } from './poker';
-import { GAME } from './service';
+import { SUIT, RANK } from "./poker";
+import { GAME } from "./service";
 
-export * from './poker';
-export * from './service';
+export * from "./poker";
+export * from "./service";
 
 export enum SEAT {
   DEALER = -1,
@@ -19,8 +19,8 @@ export enum PAIR {
 }
 
 export interface User {
-  id?: number;
   name: string;
+  balance?: number;
 }
 
 export interface Room {

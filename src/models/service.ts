@@ -9,6 +9,7 @@ export enum SERVER {
   LOBBY = 8003001,
   UPDATE_LOBBY = 8003002,
   JOIN_ROOM = 8003003,
+  UPDATE_USER = 8003095,
 }
 
 export enum GAME {

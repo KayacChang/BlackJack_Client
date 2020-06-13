@@ -1,8 +1,9 @@
-import { Action } from '../types';
-import { User } from '../../models';
+import { Action } from "../types";
+import { User } from "../../models";
 
 export enum USER {
-  LOGIN = 'USER_LOGIN',
+  LOGIN = "USER_LOGIN",
+  UPDATE = "USER_UPDATE",
 }
 
 export interface LoginAction extends Action<User> {
@@ -10,9 +11,9 @@ export interface LoginAction extends Action<User> {
   payload: User;
 }
 
-export type UserAction = LoginAction;
-
-export interface Props {
-  user_id: number;
-  user_name: string;
+export interface UpdateAction extends Action<User> {
+  type: typeof USER.UPDATE;
+  payload: User;
 }
+
+export type UserAction = LoginAction | UpdateAction;

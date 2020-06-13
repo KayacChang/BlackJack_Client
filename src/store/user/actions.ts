@@ -1,16 +1,29 @@
-import { Props, UserAction, USER } from './types';
-import { User } from '../../models';
+import { UserAction, USER } from "./types";
 
-function toUser({ user_id, user_name }: Props): User {
+interface LoginProp {
+  user_name: string;
+}
+
+export function login({ user_name }: LoginProp): UserAction {
   return {
-    id: Number(user_id),
-    name: String(user_name),
+    type: USER.LOGIN,
+    payload: {
+      name: String(user_name),
+    },
   };
 }
 
-export function login(props: Props): UserAction {
+interface UpdateProp {
+  name: string;
+  balance: number;
+}
+
+export function update({ name, balance }: UpdateProp): UserAction {
   return {
-    type: USER.LOGIN,
-    payload: toUser(props),
+    type: USER.UPDATE,
+    payload: {
+      name: String(name),
+      balance: Number(balance),
+    },
   };
 }
