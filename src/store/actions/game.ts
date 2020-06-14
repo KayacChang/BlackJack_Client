@@ -6,7 +6,7 @@ export function join(payload: Game): GameAction {
 }
 
 export function betting(payload: Game): GameAction {
-  return { type: GAME.BETTING, payload };
+  return { type: GAME.BET_START, payload };
 }
 
 export function betend(payload: Game): GameAction {

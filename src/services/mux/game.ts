@@ -6,7 +6,7 @@ import Service from '../service';
 import store from '../../store';
 import { betting, join, betend, settle, dealCard, turn, addSeats } from '../../store/actions';
 
-import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT, TurnProp } from '../types';
+import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT, TurnProp, CountDownProp } from '../types';
 
 function onJoinRoom(service: Service, data: GameProp) {
   const action = store.dispatch(join(toGame(data)));
@@ -16,12 +16,12 @@ function onJoinRoom(service: Service, data: GameProp) {
   return service.emit(EVENT.JOIN_ROOM, action.payload);
 }
 
-function onBetting(service: Service, data: GameProp) {
+function onBetStart(service: Service, data: GameProp) {
   return store.dispatch(
     betting(
       toGame({
         ...data,
-        state: [GAME.BETTING],
+        state: [GAME.BET_START],
       })
     )
   );
@@ -78,7 +78,8 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
 
 export default {
   [GAME.JOIN]: onJoinRoom,
-  [GAME.BETTING]: onBetting,
+  [GAME.BETTING]: (service: Service, { expire }: CountDownProp) => console.log(expire),
+  [GAME.BET_START]: onBetStart,
   [GAME.BET_END]: onBetEnd,
   [GAME.BEGIN]: onBegin,
   [GAME.DEAL]: onDeal,

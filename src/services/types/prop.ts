@@ -13,6 +13,10 @@ export interface GameProp {
   shoe_num: number;
 }
 
+export interface CountDownProp {
+  expire: number;
+}
+
 export interface DealProp {
   card: string;
   cards: string[];

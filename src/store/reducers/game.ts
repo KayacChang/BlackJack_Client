@@ -13,7 +13,7 @@ const initialState: Game = {
 export default function gameReducer(state = initialState, action: GameAction): Game {
   const { type, payload } = action;
 
-  if ([GAME.JOIN, GAME.SETTLE, GAME.BETTING, GAME.BET_END, GAME.TURN].includes(type)) {
+  if ([GAME.JOIN, GAME.SETTLE, GAME.BET_START, GAME.BET_END, GAME.TURN].includes(type)) {
     const game = payload as Game;
 
     return {
