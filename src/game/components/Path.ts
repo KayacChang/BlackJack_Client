@@ -1,51 +1,39 @@
-import { Graphics, DisplayObject } from 'pixi.js';
+import { Graphics, DisplayObject, Point } from 'pixi.js';
 import { mergeWith, add } from 'ramda';
 import gsap from 'gsap';
 import { Expo } from 'gsap/gsap-core';
 import { isArray } from 'util';
-import { Vec2 } from '../core';
 import { circle, line, bezierCurve } from '../core/utils';
+import { Vec2 } from './types';
 
-type Points = (Vec2 | Vec2[])[];
-
-/**
-    [
-        { x: 0, y: 0 },
-        [
-          { x: -1000 * 0.5, y: 0 },
-          { x: -1000 * 0.5, y: 700 },
-        ],
-        { x: -1000, y: 700 },
-    ]
- */
 export default class Path extends Graphics {
   //
-  points: Points;
+  points: Vec2[];
 
-  constructor(points: Points) {
+  constructor(points: Vec2[]) {
     super();
 
     this.points = points;
 
     // Start
-    const start = points[0] as Vec2;
+    const start = points[0] as Point;
     circle(start, this);
 
     // End
-    const end = points[points.length - 1] as Vec2;
+    const end = points[points.length - 1] as Point;
     circle(end, this);
 
     this.drawLine(points);
   }
 
-  drawLine(points: Points) {
+  drawLine(points: Vec2[]) {
     //
     if (points.length <= 1) {
       return;
     }
 
     if (points.length <= 2) {
-      const [start, end] = points as Vec2[];
+      const [start, end] = points as Point[];
 
       line(start, end, this);
 
@@ -54,12 +42,12 @@ export default class Path extends Graphics {
 
     for (let i = 0; i < points.length; i += 2) {
       //
-      const start = points[i] as Vec2;
+      const start = points[i] as Point;
       const point = points[i + 1];
-      const end = points[i + 2] as Vec2;
+      const end = points[i + 2] as Point;
 
       if (isArray(point)) {
-        const [pointA, pointB] = point as Vec2[];
+        const [pointA, pointB] = point as Point[];
 
         bezierCurve(start, pointA, pointB, end, this);
       }

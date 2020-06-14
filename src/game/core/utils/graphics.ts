@@ -1,7 +1,6 @@
-import { Graphics } from 'pixi.js';
-import { Vec2 } from '..';
+import { Graphics, Point } from 'pixi.js';
 
-export function line(start: Vec2, end: Vec2, it: Graphics) {
+export function line(start: Point, end: Point, it: Graphics) {
   const color = 0x000000;
   const width = 5;
 
@@ -14,7 +13,7 @@ export function line(start: Vec2, end: Vec2, it: Graphics) {
   );
 }
 
-export function circle(center: Vec2, it: Graphics) {
+export function circle(center: Point, it: Graphics) {
   const color = 0x000000;
   const radius = 5;
 
@@ -27,7 +26,7 @@ export function circle(center: Vec2, it: Graphics) {
   );
 }
 
-export function bezierCurve(start: Vec2, controlA: Vec2, controlB: Vec2, end: Vec2, it: Graphics) {
+export function bezierCurve(start: Point, controlA: Point, controlB: Point, end: Point, it: Graphics) {
   const color = 0x000000;
   const width = 5;
 

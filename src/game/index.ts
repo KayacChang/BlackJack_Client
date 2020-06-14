@@ -1,5 +1,5 @@
 import Res from './assets';
-import Game, { load } from './core/game';
+import Game from './core/game';
 import Main from './main';
 
 export default async function (view: HTMLCanvasElement) {
@@ -7,5 +7,5 @@ export default async function (view: HTMLCanvasElement) {
 
   await Res.load();
 
-  load(app, Main);
+  app.stage.addChild(Main(app));
 }

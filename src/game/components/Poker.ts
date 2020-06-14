@@ -3,17 +3,13 @@ import POKER from '../assets/poker';
 import { Sprite, SimpleMesh, Container } from 'pixi.js';
 import gsap from 'gsap';
 import { Power0 } from 'gsap/gsap-core';
-import { Clickable } from '../core';
+import { SUIT, RANK } from '../../models';
 
-type Suit = 'SPADE' | 'HEART' | 'CLUB' | 'DIAMOND';
-type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K';
-
-@Clickable
 export default class Poker extends Container {
   //
   duration = 0.5;
 
-  constructor(suit: Suit, rank: Rank) {
+  constructor(suit: SUIT, rank: RANK) {
     super();
 
     const back = new Face('BACK');
