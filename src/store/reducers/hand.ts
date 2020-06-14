@@ -1,13 +1,12 @@
 import { Hand } from '../../models';
-import { SeatAction } from '../types/seat';
-import { GameAction, GAME } from '../types';
+import { HAND, HandAction, GAME } from '../types';
 
 const initialState: Hand[] = [];
 
-export default function handReducer(state = initialState, action: GameAction | SeatAction): Hand[] {
+export default function handReducer(state = initialState, action: HandAction): Hand[] {
   const { type, payload } = action;
 
-  if (type === GAME.DEAL) {
+  if (type === HAND.DEAL) {
     const hands = payload as Hand[];
 
     return hands.map((newHand) => {

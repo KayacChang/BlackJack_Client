@@ -1,7 +1,7 @@
-import { Game, Hand } from '../../models';
-import { GAME, GameAction, GameWithSeats } from '../types';
+import { Game } from '../../models';
+import { GAME, GameAction } from '../types';
 
-export function joinGame(payload: GameWithSeats): GameAction {
+export function join(payload: Game): GameAction {
   return { type: GAME.JOIN, payload };
 }
 
@@ -13,12 +13,12 @@ export function betend(payload: Game): GameAction {
   return { type: GAME.BET_END, payload };
 }
 
-export function settle(payload: GameWithSeats): GameAction {
+export function settle(payload: Game): GameAction {
   return { type: GAME.SETTLE, payload };
 }
 
-export function deal(...hands: Hand[]): GameAction {
-  return { type: GAME.DEAL, payload: hands };
+export function deal(payload: Game): GameAction {
+  return { type: GAME.DEAL, payload };
 }
 
 export function turn(payload: Game): GameAction {

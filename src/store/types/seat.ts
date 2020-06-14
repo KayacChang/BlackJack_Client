@@ -1,13 +1,13 @@
-import { Action } from './base';
 import { Seat } from '../../models';
+import { Action } from 'redux';
+import { Payload } from './base';
 
-export enum SEAT {
-  ADD = 'ADD_SEAT',
-}
+const PREFIX = `[SEAT]`;
 
-export interface AddSeatAction extends Action<Seat> {
-  type: typeof SEAT.ADD;
-  payload: Seat;
-}
+export const SEAT = Object.freeze({
+  ADD: `${PREFIX} ADD`,
+});
+
+type AddSeatAction = Action<typeof SEAT.ADD> & Payload<Seat[]>;
 
 export type SeatAction = AddSeatAction;

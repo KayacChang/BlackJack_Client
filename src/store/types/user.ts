@@ -1,5 +1,6 @@
-import { Action } from './base';
 import { User } from '../../models';
+import { Action } from 'redux';
+import { Payload } from './base';
 
 const PREFIX = '[USER]';
 
@@ -8,14 +9,7 @@ export const USER = Object.freeze({
   UPDATE: `${PREFIX} UPDATE`,
 });
 
-export interface LoginAction extends Action<User> {
-  type: typeof USER.LOGIN;
-  payload: User;
-}
-
-export interface UpdateAction extends Action<User> {
-  type: typeof USER.UPDATE;
-  payload: User;
-}
+export type LoginAction = Action<typeof USER.LOGIN> & Payload<User>;
+export type UpdateAction = Action<typeof USER.UPDATE> & Payload<User>;
 
 export type UserAction = LoginAction | UpdateAction;

@@ -1,5 +1,5 @@
 import { GAME as GAME_STATE, SEAT, PAIR, Game } from '../../models';
-import { GameAction, GAME, GameWithSeats } from '../types';
+import { GameAction, GAME } from '../types';
 
 const initialState: Game = {
   round: '',
@@ -13,16 +13,7 @@ const initialState: Game = {
 export default function gameReducer(state = initialState, action: GameAction): Game {
   const { type, payload } = action;
 
-  if ([GAME.JOIN, GAME.SETTLE].includes(type)) {
-    const { game } = payload as GameWithSeats;
-
-    return {
-      ...state,
-      ...game,
-    };
-  }
-
-  if ([GAME.BETTING, GAME.BET_END, GAME.TURN].includes(type)) {
+  if ([GAME.JOIN, GAME.SETTLE, GAME.BETTING, GAME.BET_END, GAME.TURN].includes(type)) {
     const game = payload as Game;
 
     return {

@@ -1,5 +1,6 @@
-import { Action } from './base';
-import { Game, Seat, Hand } from '../../models';
+import { Game } from '../../models';
+import { Action } from 'redux';
+import { Payload } from './base';
 
 const PREFIX = '[GAME]';
 
@@ -12,40 +13,12 @@ export const GAME = Object.freeze({
   TURN: `${PREFIX} TURN`,
 });
 
-export interface GameWithSeats {
-  game: Game;
-  seats: Seat[];
-}
-
-export interface GameJoinAction extends Action<GameWithSeats> {
-  type: typeof GAME.JOIN;
-  payload: GameWithSeats;
-}
-
-export interface GameBettingAction extends Action<Game> {
-  type: typeof GAME.BETTING;
-  payload: Game;
-}
-
-export interface GameBetEndAction extends Action<Game> {
-  type: typeof GAME.BET_END;
-  payload: Game;
-}
-
-export interface GameSettleAction extends Action<GameWithSeats> {
-  type: typeof GAME.SETTLE;
-  payload: GameWithSeats;
-}
-
-export interface GameDealAction extends Action<Hand[]> {
-  type: typeof GAME.DEAL;
-  payload: Hand[];
-}
-
-interface GameTurnAction extends Action<Game> {
-  type: typeof GAME.TURN;
-  payload: Game;
-}
+export type GameJoinAction = Action<typeof GAME.JOIN> & Payload<Game>;
+export type GameBettingAction = Action<typeof GAME.BETTING> & Payload<Game>;
+export type GameBetEndAction = Action<typeof GAME.BET_END> & Payload<Game>;
+export type GameSettleAction = Action<typeof GAME.SETTLE> & Payload<Game>;
+export type GameDealAction = Action<typeof GAME.DEAL> & Payload<Game>;
+export type GameTurnAction = Action<typeof GAME.TURN> & Payload<Game>;
 
 export type GameAction =
   | GameJoinAction

@@ -4,17 +4,14 @@ import { GAME } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betting, joinGame, betend, settle, deal, turn } from '../../store/actions';
+import { betting, join, betend, settle, dealCard, turn, addSeats } from '../../store/actions';
 
 import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT, TurnProp } from '../types';
 
 function onJoinRoom(service: Service, data: GameProp) {
-  const action = store.dispatch(
-    joinGame({
-      game: toGame(data),
-      seats: toSeats(data),
-    })
-  );
+  const action = store.dispatch(join(toGame(data)));
+
+  store.dispatch(addSeats(toSeats(data)));
 
   return service.emit(EVENT.JOIN_ROOM, action.payload);
 }
@@ -43,9 +40,13 @@ function onBetEnd(service: Service, { state }: GameProp) {
 
 function onSettle(service: Service, prop: GameProp) {
   const { game } = store.getState();
-  const seats = toSeats(prop);
 
-  return store.dispatch(settle({ game, seats }));
+  return store.dispatch(
+    settle({
+      ...game,
+      state: toGameState([GAME.SETTLE]),
+    })
+  );
 }
 
 function prefix(prop: DealProp) {
@@ -57,11 +58,11 @@ function prefix(prop: DealProp) {
 function onBegin(service: Service, prop: DealProp[]) {
   const hands = prop.map(pipe(prefix, toHand));
 
-  return store.dispatch(deal(...hands));
+  return store.dispatch(dealCard(...hands));
 }
 
 function onDeal(service: Service, prop: DealProp) {
-  return store.dispatch(deal(toHand(prop)));
+  return store.dispatch(dealCard(toHand(prop)));
 }
 
 function onTurn(service: Service, { no, pile }: TurnProp) {

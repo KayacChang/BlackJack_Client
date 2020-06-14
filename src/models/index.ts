@@ -14,8 +14,8 @@ export enum SEAT {
 }
 
 export enum PAIR {
-  L = 0,
-  R = 1,
+  L = 'L',
+  R = 'R',
 }
 
 export interface User {

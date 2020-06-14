@@ -1,5 +1,6 @@
-import { Action } from './base';
 import { Room } from '../../models';
+import { Action } from 'redux';
+import { Payload } from './base';
 
 const PREFIX = '[ROOM]';
 
@@ -8,14 +9,7 @@ export const ROOM = Object.freeze({
   EDIT: `${PREFIX} EDIT`,
 });
 
-export interface AddRoomAction extends Action<Room[]> {
-  type: typeof ROOM.ADD;
-  payload: Room[];
-}
-
-export interface EditRoomAction extends Action<Room> {
-  type: typeof ROOM.EDIT;
-  payload: Room;
-}
+export type AddRoomAction = Action<typeof ROOM.ADD> & Payload<Room[]>;
+export type EditRoomAction = Action<typeof ROOM.EDIT> & Payload<Room>;
 
 export type RoomAction = AddRoomAction | EditRoomAction;
