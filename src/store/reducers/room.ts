@@ -4,9 +4,15 @@ import { RoomAction, ROOM } from '../types';
 
 const sortRoomAscByID = sort<Room>(ascend(prop('id')));
 
+function update(newRoom: Room, rooms: Room[]) {
+  return rooms.map((room) => {
+    return room.id === newRoom.id ? { ...room, ...newRoom } : room;
+  });
+}
+
 const initialState: Room[] = [];
 
-export default function rooms(state = initialState, action: RoomAction): Room[] {
+export default function roomReducer(state = initialState, action: RoomAction): Room[] {
   const { type, payload } = action;
 
   if (type === ROOM.ADD) {
@@ -18,9 +24,7 @@ export default function rooms(state = initialState, action: RoomAction): Room[] 
   if (type === ROOM.EDIT) {
     const newRoom = payload as Room;
 
-    return state.map((room) => {
-      return room.id === newRoom.id ? { ...room, ...newRoom } : room;
-    });
+    return update(newRoom, state);
   }
 
   return state;

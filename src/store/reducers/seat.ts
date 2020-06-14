@@ -9,7 +9,7 @@ const dealer: Seat = {
 
 const initialState: Seat[] = [dealer];
 
-export default function seat(state = initialState, action: SeatAction): Seat[] {
+export default function seatReducer(state = initialState, action: SeatAction): Seat[] {
   const { type, payload } = action;
 
   return state;

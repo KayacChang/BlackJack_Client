@@ -1,10 +1,12 @@
 import { Action } from './base';
 import { User } from '../../models';
 
-export enum USER {
-  LOGIN = 'USER_LOGIN',
-  UPDATE = 'USER_UPDATE',
-}
+const PREFIX = '[USER]';
+
+export const USER = Object.freeze({
+  LOGIN: `${PREFIX} LOGIN`,
+  UPDATE: `${PREFIX} UPDATE`,
+});
 
 export interface LoginAction extends Action<User> {
   type: typeof USER.LOGIN;

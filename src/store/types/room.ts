@@ -1,7 +1,7 @@
 import { Action } from './base';
 import { Room } from '../../models';
 
-const PREFIX = '[Room]';
+const PREFIX = '[ROOM]';
 
 export const ROOM = Object.freeze({
   ADD: `${PREFIX} ADD`,

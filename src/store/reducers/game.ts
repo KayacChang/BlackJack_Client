@@ -10,7 +10,7 @@ const initialState: Game = {
   },
 };
 
-export default function game(state = initialState, action: GameAction): Game {
+export default function gameReducer(state = initialState, action: GameAction): Game {
   const { type, payload } = action;
 
   if ([GAME.JOIN, GAME.SETTLE].includes(type)) {
