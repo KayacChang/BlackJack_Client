@@ -9,6 +9,11 @@ interface LoginProp {
   user_name: string;
 }
 
+interface UpdateProp {
+  name: string;
+  balance: number;
+}
+
 function onLogin(service: Service, { user_name }: LoginProp) {
   const res = store.dispatch(
     login({
@@ -17,11 +22,6 @@ function onLogin(service: Service, { user_name }: LoginProp) {
   );
 
   return service.emit(EVENT.LOGIN, res.payload);
-}
-
-interface UpdateProp {
-  name: string;
-  balance: number;
 }
 
 function onUpdate(service: Service, { name, balance }: UpdateProp) {
