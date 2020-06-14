@@ -1,5 +1,5 @@
 import { Action } from './base';
-import { Game, Seat } from '../../models';
+import { Game, Seat, Hand } from '../../models';
 
 const PREFIX = '[GAME]';
 
@@ -8,7 +8,7 @@ export const GAME = Object.freeze({
   BETTING: `${PREFIX} BETTING`,
   BET_END: `${PREFIX} BET_END`,
   SETTLE: `${PREFIX} SETTLE`,
-  BEGIN: `${PREFIX} BEGIN`,
+  DEAL: `${PREFIX} DEAL`,
 });
 
 export interface GameWithSeats {
@@ -16,7 +16,7 @@ export interface GameWithSeats {
   seats: Seat[];
 }
 
-export interface JoinGameAction extends Action<GameWithSeats> {
+export interface GameJoinAction extends Action<GameWithSeats> {
   type: typeof GAME.JOIN;
   payload: GameWithSeats;
 }
@@ -36,9 +36,9 @@ export interface GameSettleAction extends Action<GameWithSeats> {
   payload: GameWithSeats;
 }
 
-export interface GameBeginAction extends Action<Seat[]> {
-  type: typeof GAME.BEGIN;
-  payload: Seat[];
+export interface GameDealAction extends Action<Hand[]> {
+  type: typeof GAME.DEAL;
+  payload: Hand[];
 }
 
-export type GameAction = JoinGameAction | GameBettingAction | GameBetEndAction | GameSettleAction | GameBeginAction;
+export type GameAction = GameJoinAction | GameBettingAction | GameBetEndAction | GameSettleAction | GameDealAction;

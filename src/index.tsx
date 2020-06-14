@@ -31,7 +31,7 @@ async function main() {
   ReactDOM.render(Root, document.getElementById('root'));
 
   setTimeout(async () => {
-    const game = await service.join(1);
+    await service.join(1);
     // console.log(game);
   }, 1000);
 }

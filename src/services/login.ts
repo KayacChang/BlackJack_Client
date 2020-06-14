@@ -1,4 +1,4 @@
-import { EVENT } from './type';
+import { EVENT } from './types';
 import Service from './service';
 import { CLIENT, User } from '../models';
 

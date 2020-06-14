@@ -5,12 +5,12 @@ export * from './poker';
 export * from './service';
 
 export enum SEAT {
-  DEALER = -1,
-  A = 0,
-  B = 1,
-  C = 2,
-  D = 3,
-  E = 4,
+  DEALER = 'DEALER',
+  A = 'A',
+  B = 'B',
+  C = 'C',
+  D = 'D',
+  E = 'E',
 }
 
 export enum PAIR {
@@ -32,6 +32,11 @@ export interface Room {
   history: string[];
   maxBet: number;
   minBet: number;
+}
+
+export interface Hand {
+  id: SEAT;
+  cards: Card[];
 }
 
 export interface Card {

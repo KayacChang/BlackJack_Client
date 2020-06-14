@@ -1,55 +1,12 @@
-import { GAME, SEAT, PAIR, Game, Seat, GameState } from '../../models';
+import { pipe } from 'ramda';
+
+import { GAME } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betting, joinGame, betend, settle } from '../../store/actions';
-import { EVENT } from '../type';
+import { betting, joinGame, betend, settle, deal } from '../../store/actions';
 
-interface SeatProp {
-  no: number;
-  player: string;
-  total_bet: number;
-}
-
-type GameStateProp = [number, number?, number?];
-
-interface GameProp {
-  round: string;
-  state: GameStateProp;
-  seats: SeatProp[];
-  shoe_num: number;
-}
-
-function toGameState([type, seat, pair]: GameStateProp): GameState {
-  return {
-    type: type as GAME,
-    seat: seat as SEAT,
-    pair: pair as PAIR,
-  };
-}
-
-function toGame({ round, state }: GameProp): Game {
-  return {
-    round: String(round),
-    state: toGameState(state),
-  };
-}
-
-function toSeat({ no, player, total_bet }: SeatProp): Seat {
-  return {
-    id: Number(no),
-    player: String(player),
-    totalBet: Number(total_bet),
-  };
-}
-
-function isPlayerExist({ player }: SeatProp) {
-  return Boolean(player);
-}
-
-function toSeats({ seats }: GameProp) {
-  return seats.filter(isPlayerExist).map(toSeat);
-}
+import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT } from '../types';
 
 function onJoinRoom(service: Service, data: GameProp) {
   const action = store.dispatch(
@@ -63,12 +20,14 @@ function onJoinRoom(service: Service, data: GameProp) {
 }
 
 function onBetting(service: Service, data: GameProp) {
-  const game = toGame({
-    ...data,
-    state: [GAME.BETTING],
-  });
-
-  return store.dispatch(betting(game));
+  return store.dispatch(
+    betting(
+      toGame({
+        ...data,
+        state: [GAME.BETTING],
+      })
+    )
+  );
 }
 
 function onBetEnd(service: Service, { state }: GameProp) {
@@ -89,12 +48,24 @@ function onSettle(service: Service, prop: GameProp) {
   return store.dispatch(settle({ game, seats }));
 }
 
+function prefix(prop: DealProp) {
+  const cards = [...(prop.cards || []), prop.card];
+
+  return { ...prop, cards };
+}
+
+function onBegin(service: Service, prop: DealProp[]) {
+  const hands = prop.map(pipe(prefix, toHand));
+
+  return store.dispatch(deal(...hands));
+}
+
 export default {
   [GAME.JOIN]: onJoinRoom,
   [GAME.BETTING]: onBetting,
   [GAME.BET_END]: onBetEnd,
-  // [GAME.BEGIN]: (service: Service, data: any) => console.log(data),
-  // [GAME.DEAL]: (service: Service, data: any) => console.log(data),
-  // [GAME.TURN]: (service: Service, data: any) => console.log(data),
+  [GAME.BEGIN]: onBegin,
+  [GAME.DEAL]: (service: Service, data: any) => console.log(data),
+  [GAME.TURN]: (service: Service, data: any) => console.log(data),
   [GAME.SETTLE]: onSettle,
 };

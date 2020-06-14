@@ -1,6 +1,6 @@
 import { USER } from '../../models';
 import Service from '../service';
-import { EVENT } from '../type';
+import { EVENT } from '../types';
 
 import store from '../../store';
 import { login, update } from '../../store/actions';
