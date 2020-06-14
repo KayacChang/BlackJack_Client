@@ -1,8 +1,8 @@
-import { EVENT } from './types';
-import Service from './service';
-import { CLIENT, User } from '../models';
+import { EVENT } from '../types';
+import Service from '../service';
+import { CLIENT, User } from '../../models';
 
-export default async function login(service: Service): Promise<User> {
+export default async function (service: Service): Promise<User> {
   console.groupCollapsed('Login');
 
   service.send({

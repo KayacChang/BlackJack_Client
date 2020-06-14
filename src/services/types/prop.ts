@@ -7,6 +7,7 @@ export interface SeatProp {
 export type GameStateProp = [number, number?, number?];
 
 export interface GameProp {
+  id: number;
   round: string;
   state: GameStateProp;
   seats: SeatProp[];

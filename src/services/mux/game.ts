@@ -78,6 +78,7 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
 
 export default {
   [GAME.JOIN]: onJoinRoom,
+  [GAME.JOIN_SEAT]: (service: Service, data: any) => console.log(data),
   [GAME.BETTING]: (service: Service, { expire }: CountDownProp) => console.log(expire),
   [GAME.BET_START]: onBetStart,
   [GAME.BET_END]: onBetEnd,

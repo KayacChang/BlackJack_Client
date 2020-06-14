@@ -33,8 +33,9 @@ export function toGameState([type, seat, pair]: GameStateProp): GameState {
   };
 }
 
-export function toGame({ round, state }: GameProp): Game {
+export function toGame({ id, round, state }: GameProp): Game {
   return {
+    room: Number(id),
     round: String(round),
     state: toGameState(state),
   };

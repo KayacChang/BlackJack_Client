@@ -2,17 +2,8 @@ import { SEAT, Seat } from '../../models';
 import { SeatProp, GameProp } from './prop';
 
 export function toSeatNum(no: number): SEAT {
-  const mapping: { [key: number]: SEAT } = {
-    [-1]: SEAT.DEALER,
-    0: SEAT.A,
-    1: SEAT.B,
-    2: SEAT.C,
-    3: SEAT.D,
-    4: SEAT.E,
-  };
-
-  if (mapping[no]) {
-    return mapping[no];
+  if (no in SEAT) {
+    return no as SEAT;
   }
 
   throw new Error(`Not support seat type: ${no}`);

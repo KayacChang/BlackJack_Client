@@ -2,6 +2,7 @@ import { GAME as GAME_STATE, SEAT, PAIR, Game } from '../../models';
 import { GameAction, GAME } from '../types';
 
 const initialState: Game = {
+  room: 0,
   round: '',
   state: {
     type: GAME_STATE.BETTING,

@@ -5,12 +5,12 @@ export * from './poker';
 export * from './service';
 
 export enum SEAT {
-  DEALER = 'DEALER',
-  A = 'A',
-  B = 'B',
-  C = 'C',
-  D = 'D',
-  E = 'E',
+  DEALER = -1,
+  A = 0,
+  B = 1,
+  C = 2,
+  D = 3,
+  E = 4,
 }
 
 export enum PAIR {
@@ -63,6 +63,7 @@ export interface GameState {
 }
 
 export interface Game {
+  room: number;
   round: string;
   state: GameState;
 }

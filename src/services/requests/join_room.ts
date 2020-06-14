@@ -1,6 +1,6 @@
-import { EVENT } from './types';
-import Service from './service';
-import { CLIENT } from '../models';
+import { EVENT } from '../types';
+import Service from '../service';
+import { CLIENT } from '../../models';
 
 export default async function (service: Service, id: number) {
   console.groupCollapsed('Join Room');

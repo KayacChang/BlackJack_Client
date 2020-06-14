@@ -2,6 +2,7 @@ import { Container, Sprite } from 'pixi.js';
 import RES from '../assets';
 import { createMachine, interpret } from 'xstate';
 import { SEAT } from '../../models';
+import service from '../../services';
 
 const toggleMachine = createMachine({
   id: 'toggle',
@@ -44,7 +45,7 @@ export default function Seats() {
   it.once('added', ({ width, height }: Container) => {
     for (const { name, x, y } of seats) {
       const seat = Seat();
-      seat.name = name;
+      seat.name = SEAT[name];
 
       seat.x = width * x;
       seat.y = height * y;
@@ -54,7 +55,7 @@ export default function Seats() {
       const toggleService = interpret(toggleMachine)
         .onTransition((state) => {
           if (state.value === 'active') {
-            console.log(name);
+            service.joinSeat(name);
           }
         })
         .start();

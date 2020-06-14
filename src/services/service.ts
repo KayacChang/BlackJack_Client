@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import login from './login';
+import { login } from './requests';
 import { SERVER, GAME, CLIENT, Token } from '../models';
 import MUX from './mux';
 

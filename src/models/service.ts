@@ -1,6 +1,7 @@
 export enum CLIENT {
   LOGIN = 8003150,
   JOIN_ROOM = 8003103,
+  JOIN_SEAT = 8003105,
 }
 
 export enum USER {
@@ -15,6 +16,8 @@ export enum SERVER {
 
 export enum GAME {
   JOIN = 8003003,
+  JOIN_SEAT = 8003005,
+
   BETTING = 8003006,
   BET_START = 8003020,
   BET_END = 8003021,
