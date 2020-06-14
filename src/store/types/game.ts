@@ -9,6 +9,7 @@ export const GAME = Object.freeze({
   BET_END: `${PREFIX} BET_END`,
   SETTLE: `${PREFIX} SETTLE`,
   DEAL: `${PREFIX} DEAL`,
+  TURN: `${PREFIX} TURN`,
 });
 
 export interface GameWithSeats {
@@ -41,4 +42,15 @@ export interface GameDealAction extends Action<Hand[]> {
   payload: Hand[];
 }
 
-export type GameAction = GameJoinAction | GameBettingAction | GameBetEndAction | GameSettleAction | GameDealAction;
+interface GameTurnAction extends Action<Game> {
+  type: typeof GAME.TURN;
+  payload: Game;
+}
+
+export type GameAction =
+  | GameJoinAction
+  | GameBettingAction
+  | GameBetEndAction
+  | GameSettleAction
+  | GameDealAction
+  | GameTurnAction;

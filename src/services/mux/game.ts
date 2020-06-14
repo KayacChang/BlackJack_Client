@@ -4,7 +4,7 @@ import { GAME } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betting, joinGame, betend, settle, deal } from '../../store/actions';
+import { betting, joinGame, betend, settle, deal, turn } from '../../store/actions';
 
 import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT } from '../types';
 
@@ -64,12 +64,28 @@ function onDeal(service: Service, prop: DealProp) {
   return store.dispatch(deal(toHand(prop)));
 }
 
+interface TurnProp {
+  no: number;
+  pile: number;
+}
+
+function onTurn(service: Service, { no, pile }: TurnProp) {
+  const { game } = store.getState();
+
+  return store.dispatch(
+    turn({
+      ...game,
+      state: toGameState([GAME.TURN, no, pile]),
+    })
+  );
+}
+
 export default {
   [GAME.JOIN]: onJoinRoom,
   [GAME.BETTING]: onBetting,
   [GAME.BET_END]: onBetEnd,
   [GAME.BEGIN]: onBegin,
   [GAME.DEAL]: onDeal,
-  [GAME.TURN]: (service: Service, data: any) => console.log(data),
+  [GAME.TURN]: onTurn,
   [GAME.SETTLE]: onSettle,
 };

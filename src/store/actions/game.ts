@@ -20,3 +20,7 @@ export function settle(payload: GameWithSeats): GameAction {
 export function deal(...hands: Hand[]): GameAction {
   return { type: GAME.DEAL, payload: hands };
 }
+
+export function turn(payload: Game): GameAction {
+  return { type: GAME.TURN, payload };
+}

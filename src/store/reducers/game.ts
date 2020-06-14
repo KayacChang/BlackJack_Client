@@ -22,7 +22,7 @@ export default function gameReducer(state = initialState, action: GameAction): G
     };
   }
 
-  if ([GAME.BETTING, GAME.BET_END].includes(type)) {
+  if ([GAME.BETTING, GAME.BET_END, GAME.TURN].includes(type)) {
     const game = payload as Game;
 
     return {
