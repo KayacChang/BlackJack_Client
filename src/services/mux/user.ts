@@ -1,18 +1,9 @@
 import { USER } from '../../models';
 import Service from '../service';
-import { EVENT } from '../types';
+import { EVENT, LoginProp, UpdateProp } from '../types';
 
 import store from '../../store';
 import { login, update } from '../../store/actions';
-
-interface LoginProp {
-  user_name: string;
-}
-
-interface UpdateProp {
-  name: string;
-  balance: number;
-}
 
 function onLogin(service: Service, { user_name }: LoginProp) {
   const res = store.dispatch(

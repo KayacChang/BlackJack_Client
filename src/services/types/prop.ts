@@ -21,3 +21,17 @@ export interface DealProp {
   points: number;
   shoe_num: number;
 }
+
+export interface LoginProp {
+  user_name: string;
+}
+
+export interface UpdateProp {
+  name: string;
+  balance: number;
+}
+
+export interface TurnProp {
+  no: number;
+  pile: number;
+}

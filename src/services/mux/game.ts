@@ -6,7 +6,7 @@ import Service from '../service';
 import store from '../../store';
 import { betting, joinGame, betend, settle, deal, turn } from '../../store/actions';
 
-import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT } from '../types';
+import { GameProp, toGame, toSeats, toGameState, DealProp, toHand, EVENT, TurnProp } from '../types';
 
 function onJoinRoom(service: Service, data: GameProp) {
   const action = store.dispatch(
@@ -62,11 +62,6 @@ function onBegin(service: Service, prop: DealProp[]) {
 
 function onDeal(service: Service, prop: DealProp) {
   return store.dispatch(deal(toHand(prop)));
-}
-
-interface TurnProp {
-  no: number;
-  pile: number;
 }
 
 function onTurn(service: Service, { no, pile }: TurnProp) {
