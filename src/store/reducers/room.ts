@@ -6,7 +6,15 @@ const sortRoomAscByID = sort<Room>(ascend(prop('id')));
 
 function update(newRoom: Room, rooms: Room[]) {
   return rooms.map((room) => {
-    return room.id === newRoom.id ? { ...room, ...newRoom } : room;
+    if (room.id === newRoom.id) {
+      return {
+        ...room,
+        ...newRoom,
+        history: newRoom.history,
+      };
+    }
+
+    return room;
   });
 }
 

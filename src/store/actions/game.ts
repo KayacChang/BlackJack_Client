@@ -17,10 +17,6 @@ export function settle(payload: Game): GameAction {
   return { type: GAME.SETTLE, payload };
 }
 
-export function deal(payload: Game): GameAction {
-  return { type: GAME.DEAL, payload };
-}
-
 export function turn(payload: Game): GameAction {
   return { type: GAME.TURN, payload };
 }
