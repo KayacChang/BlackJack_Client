@@ -1,13 +1,15 @@
 import { Action } from './base';
 import { Game, Seat } from '../../models';
 
-export enum GAME {
-  JOIN = 'JOIN_GAME',
-  BETTING = 'GAME_BETTING',
-  BET_END = 'GAME_BET_END',
-  SETTLE = 'GAME_SETTLE',
-  BEGIN = 'GAME_BEGIN',
-}
+const PREFIX = '[GAME]';
+
+export const GAME = Object.freeze({
+  JOIN: `${PREFIX} JOIN`,
+  BETTING: `${PREFIX} BETTING`,
+  BET_END: `${PREFIX} BET_END`,
+  SETTLE: `${PREFIX} SETTLE`,
+  BEGIN: `${PREFIX} BEGIN`,
+});
 
 export interface GameWithSeats {
   game: Game;

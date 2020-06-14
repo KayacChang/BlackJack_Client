@@ -11,14 +11,16 @@ interface SeatProp {
   total_bet: number;
 }
 
+type GameStateProp = [number, number?, number?];
+
 interface GameProp {
   round: string;
-  state: [number, number?, number?];
+  state: GameStateProp;
   seats: SeatProp[];
   shoe_num: number;
 }
 
-function toGameState([type, seat, pair]: [number, number?, number?]): GameState {
+function toGameState([type, seat, pair]: GameStateProp): GameState {
   return {
     type: type as GAME,
     seat: seat as SEAT,
@@ -41,11 +43,15 @@ function toSeat({ no, player, total_bet }: SeatProp): Seat {
   };
 }
 
-function toSeats({ seats }: GameProp) {
-  return seats.filter((player) => Boolean(player)).map(toSeat);
+function isPlayerExist({ player }: SeatProp) {
+  return Boolean(player);
 }
 
-function joinRoom(service: Service, data: GameProp) {
+function toSeats({ seats }: GameProp) {
+  return seats.filter(isPlayerExist).map(toSeat);
+}
+
+function onJoinRoom(service: Service, data: GameProp) {
   const action = store.dispatch(
     joinGame({
       game: toGame(data),
@@ -84,7 +90,7 @@ function onSettle(service: Service, prop: GameProp) {
 }
 
 export default {
-  [GAME.JOIN]: joinRoom,
+  [GAME.JOIN]: onJoinRoom,
   [GAME.BETTING]: onBetting,
   [GAME.BET_END]: onBetEnd,
   // [GAME.BEGIN]: (service: Service, data: any) => console.log(data),
