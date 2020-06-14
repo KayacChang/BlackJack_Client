@@ -32,7 +32,7 @@ async function main() {
 
   setTimeout(async () => {
     const game = await service.join(1);
-    console.log(game);
+    // console.log(game);
   }, 1000);
 }
 
