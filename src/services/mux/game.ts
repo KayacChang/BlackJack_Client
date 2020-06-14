@@ -60,12 +60,16 @@ function onBegin(service: Service, prop: DealProp[]) {
   return store.dispatch(deal(...hands));
 }
 
+function onDeal(service: Service, prop: DealProp) {
+  return store.dispatch(deal(toHand(prop)));
+}
+
 export default {
   [GAME.JOIN]: onJoinRoom,
   [GAME.BETTING]: onBetting,
   [GAME.BET_END]: onBetEnd,
   [GAME.BEGIN]: onBegin,
-  [GAME.DEAL]: (service: Service, data: any) => console.log(data),
+  [GAME.DEAL]: onDeal,
   [GAME.TURN]: (service: Service, data: any) => console.log(data),
   [GAME.SETTLE]: onSettle,
 };

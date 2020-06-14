@@ -10,7 +10,11 @@ export default function handReducer(state = initialState, action: GameAction | S
   if (type === GAME.DEAL) {
     const hands = payload as Hand[];
 
-    return [...state, ...hands];
+    return hands.map((newHand) => {
+      const hand = state.find((hand) => newHand.id === hand.id);
+
+      return hand ? { ...hand, ...newHand } : newHand;
+    });
   }
 
   if (type === GAME.SETTLE) {
