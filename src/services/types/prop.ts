@@ -40,3 +40,8 @@ export interface TurnProp {
   no: number;
   pile: number;
 }
+
+export interface JoinSeatProp {
+  id: number;
+  no: number;
+}

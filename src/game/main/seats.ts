@@ -2,6 +2,7 @@ import { Container, Sprite } from 'pixi.js';
 import RES from '../assets';
 import { SEAT } from '../../models';
 import { wait, throttleBy } from '../../utils';
+import services from '../../services';
 
 const seats = [
   { name: SEAT.A, x: 15 / 100, y: 58 / 100 },
@@ -35,8 +36,8 @@ export default function Seats() {
   it.once('added', ({ width, height }: Container) => {
     for (const { name, x, y } of seats) {
       const seat = Seat();
-      seat.name = SEAT[name];
 
+      seat.name = SEAT[name];
       seat.x = width * x;
       seat.y = height * y;
 
@@ -45,9 +46,9 @@ export default function Seats() {
       seat.on(
         'pointerdown',
         throttleBy(async () => {
-          await wait(5000);
+          const seats = await services.joinSeat(name);
 
-          console.log('fetched');
+          console.log(seats);
         })
       );
     }
