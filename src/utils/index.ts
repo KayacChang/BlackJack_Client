@@ -1,5 +1,5 @@
-import { isMobile } from "./device";
-import { currency } from "./format";
+import { isMobile } from './device';
+import { currency } from './format';
 
 export function getURLParam(key: string) {
   const url = new URL(window.location.href);
@@ -7,5 +7,24 @@ export function getURLParam(key: string) {
   return url.searchParams.get(key);
 }
 
-export * from "./check";
+export function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function throttleBy<T>(func: () => Promise<T>) {
+  //
+  let fetching = false;
+
+  return async function () {
+    if (fetching) return;
+
+    fetching = true;
+
+    await func();
+
+    fetching = false;
+  };
+}
+
+export * from './check';
 export { isMobile, currency };

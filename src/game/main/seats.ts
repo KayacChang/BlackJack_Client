@@ -1,17 +1,7 @@
 import { Container, Sprite } from 'pixi.js';
 import RES from '../assets';
-import { createMachine, interpret } from 'xstate';
 import { SEAT } from '../../models';
-import service from '../../services';
-
-const toggleMachine = createMachine({
-  id: 'toggle',
-  initial: 'inactive',
-  states: {
-    inactive: { on: { TOGGLE: 'active' } },
-    active: { on: { TOGGLE: 'inactive' } },
-  },
-});
+import { wait, throttleBy } from '../../utils';
 
 const seats = [
   { name: SEAT.A, x: 15 / 100, y: 58 / 100 },
@@ -52,15 +42,14 @@ export default function Seats() {
 
       it.addChild(seat);
 
-      const toggleService = interpret(toggleMachine)
-        .onTransition((state) => {
-          if (state.value === 'active') {
-            service.joinSeat(name);
-          }
-        })
-        .start();
+      seat.on(
+        'pointerdown',
+        throttleBy(async () => {
+          await wait(5000);
 
-      seat.on('pointerdown', () => toggleService.send('TOGGLE'));
+          console.log('fetched');
+        })
+      );
     }
   });
 
