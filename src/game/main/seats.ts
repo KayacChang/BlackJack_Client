@@ -36,17 +36,19 @@ function Seat({ id, x, y }: Prop) {
   it.x = x;
   it.y = y;
 
-  it.on('pointerdown', throttleBy(onSeatClick(id)));
+  it.on('pointerdown', throttleBy(onSeatClick(id, sprite)));
 
   return it;
 }
 
-function onSeatClick(seat: SEAT) {
+function onSeatClick(seat: SEAT, self: Sprite) {
   //
   return async function () {
     const seats = await services.joinSeat(seat);
 
     console.log(seats);
+
+    self.texture = RES.get('SELECT_SEAT_ENABLE').texture;
   };
 }
 

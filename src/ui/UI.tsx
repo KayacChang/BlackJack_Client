@@ -9,13 +9,19 @@ import { AppState } from '../store';
 import { GAME } from '../models';
 
 function Control() {
-  const { state } = useSelector((state: AppState) => state.game);
+  const { game, user, seat } = useSelector((state: AppState) => state);
 
-  if (state.type === GAME.BET_START) {
+  const isUserJoin = seat.some(({ player }) => user.name === player);
+
+  if (!isUserJoin) {
+    return <></>;
+  }
+
+  if (game.state.type === GAME.BET_START) {
     return <Bet />;
   }
 
-  if (state.type === GAME.TURN) {
+  if (game.state.type === GAME.TURN) {
     return <Decision />;
   }
 
@@ -28,7 +34,7 @@ export default function UI() {
       <Menu />
       <Status />
       <Detail />
-      {/* <Control /> */}
+      <Control />
     </div>
   );
 }
