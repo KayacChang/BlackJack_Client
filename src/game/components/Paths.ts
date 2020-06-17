@@ -1,10 +1,11 @@
 import { mapObjIndexed, map } from 'ramda';
 import Path from './Path';
 import { Vec2 } from './types';
+import { SEAT } from '../../models';
 
 const paths = {
   //
-  A: [
+  [SEAT.A]: [
     [
       { x: 2515, y: 160 },
       { x: 443 - 100, y: 630 },
@@ -27,7 +28,7 @@ const paths = {
     ],
   ],
   //
-  B: [
+  [SEAT.B]: [
     [
       { x: 2515, y: 160 },
       { x: 888 - 100, y: 880 },
@@ -50,7 +51,7 @@ const paths = {
     ],
   ],
   //
-  C: [
+  [SEAT.C]: [
     [
       { x: 2515, y: 160 },
       { x: 1480 - 100, y: 980 },
@@ -73,7 +74,7 @@ const paths = {
     ],
   ],
   //
-  D: [
+  [SEAT.D]: [
     [
       { x: 2515, y: 160 },
       { x: 2072 - 100, y: 880 },
@@ -96,7 +97,7 @@ const paths = {
     ],
   ],
   //
-  E: [
+  [SEAT.E]: [
     [
       { x: 2515, y: 160 },
       { x: 2515 - 100, y: 630 },
@@ -119,7 +120,7 @@ const paths = {
     ],
   ],
   //
-  F: [
+  [SEAT.DEALER]: [
     [
       { x: 2515, y: 160 },
       { x: 1480 - 100, y: 330 },
