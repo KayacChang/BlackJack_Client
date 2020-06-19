@@ -39,9 +39,9 @@ function init(container: Container) {
       })
     );
 
-    observe((state) => state.seat, update(seats));
-
     container.addChild(...seats);
+
+    observe((state) => state.seat, update(seats));
   };
 }
 
