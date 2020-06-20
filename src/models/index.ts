@@ -27,9 +27,16 @@ export enum CHIP {
   YELLOW,
 }
 
+export interface Bet {
+  type: CHIP;
+  seat: SEAT;
+  amount: number;
+}
+
 export interface User {
   name: string;
-  balance?: number;
+  balance: number;
+  totalBet: number;
 }
 
 export interface Token {

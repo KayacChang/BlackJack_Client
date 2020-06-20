@@ -32,3 +32,8 @@ $size: 42px;
     height: $size;
   }
 }
+
+.chosen {
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px #fff, 0 0 2px 2px #ff4;
+}

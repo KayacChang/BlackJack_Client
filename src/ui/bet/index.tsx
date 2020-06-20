@@ -1,20 +1,14 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { X, CornerUpLeft, RotateCw } from 'react-feather';
 import Chip from './components/Chip';
 import Control from './components/Control';
 import Timer from '../components/timer';
 import styles from './Bet.module.scss';
-
 import { CHIP } from '../../models';
-
-import RED from './assets/normal/red.png';
-import GREEN from './assets/normal/green.png';
-import BLUE from './assets/normal/blue.png';
-import BLACK from './assets/normal/black.png';
-import PURPLE from './assets/normal/purple.png';
-import YELLOW from './assets/normal/yellow.png';
-
+import CHIP_IMG from './assets/chips';
 import DEAL from './assets/icon/on_deal.png';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
 
 type Props = {
   max: number;
@@ -23,27 +17,23 @@ type Props = {
 
 type ChipMeta = {
   type: CHIP;
-  src: string;
+  normal: string;
   bet: number;
 };
 
 const chips: ChipMeta[] = [
   //
-  { type: CHIP.RED, src: RED, bet: 1 },
-  { type: CHIP.GREEN, src: GREEN, bet: 5 },
-  { type: CHIP.BLUE, src: BLUE, bet: 10 },
-  { type: CHIP.BLACK, src: BLACK, bet: 50 },
-  { type: CHIP.PURPLE, src: PURPLE, bet: 100 },
-  { type: CHIP.YELLOW, src: YELLOW, bet: 500 },
+  { type: CHIP.RED, normal: CHIP_IMG.NORMAL_RED, bet: 1 },
+  { type: CHIP.GREEN, normal: CHIP_IMG.NORMAL_GREEN, bet: 5 },
+  { type: CHIP.BLUE, normal: CHIP_IMG.NORMAL_BLUE, bet: 10 },
+  { type: CHIP.BLACK, normal: CHIP_IMG.NORMAL_BLACK, bet: 50 },
+  { type: CHIP.PURPLE, normal: CHIP_IMG.NORMAL_PURPLE, bet: 100 },
+  { type: CHIP.YELLOW, normal: CHIP_IMG.NORMAL_YELLOW, bet: 500 },
 ];
 
-function setChipClick(meta: ChipMeta) {
-  return function onChipClick() {
-    console.log(meta);
-  };
-}
-
 export default function Bet({ min, max }: Props) {
+  const { chosen } = useSelector((state: AppState) => state.bet);
+
   return (
     <div className={styles.bet}>
       <div>
@@ -51,8 +41,8 @@ export default function Bet({ min, max }: Props) {
 
         <div className={styles.section}>
           <div className={styles.field}>
-            {chips.map(({ type, src, bet }) => (
-              <Chip key={type} src={src} bet={bet * min} onClick={setChipClick({ type, src, bet })} />
+            {chips.map(({ type, normal, bet }) => (
+              <Chip type={type} selected={type === chosen} key={type} src={normal} bet={bet * min} />
             ))}
           </div>
         </div>

@@ -31,22 +31,22 @@ export default function Seat({ id, x, y }: Prop) {
 
 function onStateChange(it: Sprite, id: SEAT) {
   //
-  const disable = RES.get('SELECT_SEAT_NORMAL').texture;
-  const enable = RES.get('SELECT_SEAT_ENABLE').texture;
-
-  const onClick = join(id);
+  const select_normal = RES.get('SELECT_SEAT_NORMAL').texture;
+  const select_enable = RES.get('SELECT_SEAT_ENABLE').texture;
+  const seat_normal = RES.get('SEAT_NORMAL').texture;
+  const seat_enable = RES.get('SEAT_ENABLE').texture;
 
   return function (state: boolean) {
     //
     if (state) {
-      it.texture = enable;
+      it.texture = seat_enable;
 
       return;
     }
 
-    it.texture = disable;
+    it.texture = select_normal;
 
-    it.once('pointerdown', throttleBy(onClick));
+    it.once('pointerdown', throttleBy(join(id)));
   };
 }
 

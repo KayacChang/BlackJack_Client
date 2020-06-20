@@ -3,6 +3,8 @@ import { UserAction, USER } from '../types';
 
 const initialState: User = {
   name: '',
+  balance: 0,
+  totalBet: 0,
 };
 
 export default function userReducer(state = initialState, action: UserAction): User {

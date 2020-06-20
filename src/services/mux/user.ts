@@ -9,6 +9,8 @@ function onLogin(service: Service, { user_name }: LoginProp) {
   const res = store.dispatch(
     login({
       name: String(user_name),
+      balance: 0,
+      totalBet: 0,
     })
   );
 
@@ -16,8 +18,11 @@ function onLogin(service: Service, { user_name }: LoginProp) {
 }
 
 function onUpdate(service: Service, { name, balance }: UpdateProp) {
+  const { user } = store.getState();
+
   return store.dispatch(
     update({
+      ...user,
       name: String(name),
       balance: Number(balance),
     })

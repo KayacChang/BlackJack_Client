@@ -1,5 +1,5 @@
 import { SEAT as SEAT_ID, Seat } from '../../models';
-import { SeatAction, SEAT } from '../types';
+import { SeatAction, SEAT, UserAction } from '../types';
 
 const dealer: Seat = {
   id: SEAT_ID.DEALER,
@@ -9,7 +9,7 @@ const dealer: Seat = {
 
 const initialState: Seat[] = [dealer];
 
-export default function seatReducer(state = initialState, action: SeatAction): Seat[] {
+export default function seatReducer(state = initialState, action: SeatAction | UserAction): Seat[] {
   const { type, payload } = action;
 
   if (type === SEAT.ADD) {
