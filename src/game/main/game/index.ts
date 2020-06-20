@@ -22,9 +22,8 @@ export default function Game() {
   return container;
 }
 
-function state(paths: Container, pokers: Container) {
-  //
-  let pre: Record<SEAT, Card[]> = {
+function Hands(): Record<SEAT, Card[]> {
+  return {
     [SEAT.A]: [],
     [SEAT.B]: [],
     [SEAT.C]: [],
@@ -32,18 +31,14 @@ function state(paths: Container, pokers: Container) {
     [SEAT.E]: [],
     [SEAT.DEALER]: [],
   };
+}
 
-  function Hands(hands: Hand[]) {
-    const config = {
-      [SEAT.A]: [],
-      [SEAT.B]: [],
-      [SEAT.C]: [],
-      [SEAT.D]: [],
-      [SEAT.E]: [],
-      [SEAT.DEALER]: [],
-    } as Record<SEAT, Card[]>;
+function state(paths: Container, pokers: Container) {
+  //
+  let pre = Hands();
 
-    return hands.reduce((config, { id, cards }) => ((config[id] = cards), config), config);
+  function toHands(hands: Hand[]) {
+    return hands.reduce((config, { id, cards }) => ((config[id] = cards), config), Hands());
   }
 
   function getPath(id: SEAT) {
@@ -71,6 +66,6 @@ function state(paths: Container, pokers: Container) {
       }
     }
 
-    pre = Hands(hands);
+    pre = toHands(hands);
   };
 }
