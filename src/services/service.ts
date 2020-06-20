@@ -58,6 +58,10 @@ export default class Service extends EventEmitter {
 
     const message = JSON.parse(atob(event.data)) as Frame;
 
+    if (message.data.game_token) {
+      this.token.game_token = message.data.game_token;
+    }
+
     const handler = MUX[message.cmd];
 
     if (handler) handler(this, message.data);

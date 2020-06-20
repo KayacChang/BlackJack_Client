@@ -9,7 +9,6 @@ import service from './services';
 import './index.scss';
 
 import store from './store';
-import { getURLParam } from './utils';
 
 async function main() {
   //
@@ -17,7 +16,10 @@ async function main() {
     i18n.init(),
     gsap.init(),
     service.init({
-      token: `Bearer ${getURLParam('token')}`,
+      token: `$2y$10$g27N1Zk/EuqTZQYBkSmWhel0VEOln2ZNmbIvrItEbkyoV77nHhZ6u`,
+      // `Bearer ${getURLParam('token')}`,
+      game_token: ``,
+      game_id: `209B407F0F9751E3B87751FD8C99EDC9`,
     }),
   ]);
 
