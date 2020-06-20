@@ -51,6 +51,8 @@ function state(paths: Container, pokers: Container) {
 
     const next = pre[id].length;
 
+    console.log(next);
+
     return found.children[next] as Path;
   }
 

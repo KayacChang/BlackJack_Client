@@ -18,6 +18,15 @@ export enum PAIR {
   R = 'R',
 }
 
+export enum CHIP {
+  RED,
+  GREEN,
+  BLUE,
+  BLACK,
+  PURPLE,
+  YELLOW,
+}
+
 export interface User {
   name: string;
   balance?: number;
@@ -68,6 +77,8 @@ export interface Game {
   room: number;
   round: string;
   state: GameState;
+  maxBet: number;
+  minBet: number;
 }
 
 export interface Vec2 {

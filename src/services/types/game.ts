@@ -33,10 +33,12 @@ export function toGameState([type, seat, pair]: GameStateProp): GameState {
   };
 }
 
-export function toGame({ id, round, state }: GameProp): Game {
+export function toGame({ id, round, state, max_bet, min_bet }: GameProp): Game {
   return {
     room: Number(id),
     round: String(round),
     state: toGameState(state),
+    maxBet: Number(max_bet),
+    minBet: Number(min_bet),
   };
 }

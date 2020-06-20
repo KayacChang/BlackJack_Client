@@ -27,6 +27,7 @@
 $unit: 32px;
 
 .field {
+  display: flex;
   background: rgba($color: #111, $alpha: 0.6);
   box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
   border-radius: $unit;

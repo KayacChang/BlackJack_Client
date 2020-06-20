@@ -12,6 +12,8 @@ export interface GameProp {
   state: GameStateProp;
   seats: SeatProp[];
   shoe_num: number;
+  max_bet: number;
+  min_bet: number;
 }
 
 export interface CountDownProp {

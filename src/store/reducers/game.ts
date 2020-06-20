@@ -4,6 +4,8 @@ import { GameAction, GAME } from '../types';
 const initialState: Game = {
   room: 0,
   round: '',
+  maxBet: 0,
+  minBet: 0,
   state: {
     type: GAME_STATE.BETTING,
     seat: SEAT.DEALER,
