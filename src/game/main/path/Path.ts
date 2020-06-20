@@ -3,8 +3,8 @@ import { mergeWith, add } from 'ramda';
 import gsap from 'gsap';
 import { Expo } from 'gsap/gsap-core';
 import { isArray } from 'util';
-import { circle, line, bezierCurve } from '../core/utils';
-import { Vec2 } from './types';
+import { circle, line, bezierCurve } from '../../core/utils';
+import { Vec2 } from '../../components/types';
 
 export default class Path extends Graphics {
   //

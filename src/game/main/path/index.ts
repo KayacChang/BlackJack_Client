@@ -1,9 +1,11 @@
-import { mapObjIndexed, map } from 'ramda';
+import { Container } from 'pixi.js';
+import { SEAT } from '../../../models';
+import { toPairs, map } from 'ramda';
+import { compose } from 'redux';
+import { Vec2 } from '../../components/types';
 import Path from './Path';
-import { Vec2 } from './types';
-import { SEAT } from '../../models';
 
-const paths = {
+const config: Record<SEAT, Vec2[][]> = {
   //
   [SEAT.A]: [
     [
@@ -145,8 +147,24 @@ const paths = {
 };
 
 export default function Paths() {
-  //
-  const genPath = ([start, end]: Vec2[]) => new Path([start, end]);
+  const container = new Container();
+  container.name = 'paths';
 
-  return mapObjIndexed(map(genPath))(paths);
+  const paths = compose(map(genPath), toPairs)(config) as Container[];
+
+  container.addChild(...paths);
+
+  return container;
+}
+
+function genPath([name, config]: [SEAT, Vec2[][]]) {
+  const group = new Container();
+
+  group.name = SEAT[name];
+
+  const paths = config.map((path) => new Path(path));
+
+  group.addChild(...paths);
+
+  return group;
 }
