@@ -7,4 +7,8 @@ export function Functor(x: any) {
   };
 }
 
-export const addChild = curry((children, parent) => (parent.addChild(...children), parent));
+export const addChild = curry((children, parent) => {
+  parent.addChild(...children);
+
+  return parent;
+});

@@ -12,7 +12,7 @@ export default function Game() {
   container.name = 'game';
 
   const paths = Paths();
-  container.addChild(paths);
+  // container.addChild(paths);
 
   const pokers = Pokers();
   container.addChild(pokers);
@@ -38,7 +38,12 @@ function state(paths: Container, pokers: Container) {
   let pre = Hands();
 
   function toHands(hands: Hand[]) {
-    return hands.reduce((config, { id, cards }) => ((config[id] = cards), config), Hands());
+    //
+    return hands.reduce((config, { id, cards }) => {
+      config[id] = cards;
+
+      return config;
+    }, Hands());
   }
 
   function getPath(id: SEAT) {
@@ -51,11 +56,16 @@ function state(paths: Container, pokers: Container) {
 
   return function update(hands: Hand[]) {
     //
+    if (hands.length === 0) {
+      pokers.removeChildren();
+    }
+
     for (const { id, cards } of hands) {
       //
       const diff = without(pre[id], cards);
 
       for (const { suit, rank } of diff) {
+        //
         const path = getPath(id);
 
         const poker = new Poker(suit, rank);

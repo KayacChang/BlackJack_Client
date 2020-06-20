@@ -16,7 +16,7 @@ export default function handReducer(state = initialState, action: HandAction): H
     });
   }
 
-  if (type === GAME.SETTLE) {
+  if (type === GAME.BET_START) {
     return initialState;
   }
 
