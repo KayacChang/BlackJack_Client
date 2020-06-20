@@ -14,7 +14,7 @@ export default class Poker extends Container {
 
     const back = new Face('BACK');
     const front = new Face(`${suit}_${rank}` as keyof typeof POKER);
-    this.addChild(front, back);
+    this.addChild(back, front);
 
     this.on('pointerdown', () => this.onClick());
   }
