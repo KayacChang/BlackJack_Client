@@ -1,6 +1,5 @@
 import { Container } from 'pixi.js';
 import Paths from '../path';
-import Pokers from './pokers';
 import { observe } from '../../../store';
 import { Hand, Card, SEAT } from '../../../models';
 import { propEq, without } from 'ramda';
@@ -14,7 +13,8 @@ export default function Game() {
   const paths = Paths();
   // container.addChild(paths);
 
-  const pokers = Pokers();
+  const pokers = new Container();
+  pokers.name = 'pokers';
   container.addChild(pokers);
 
   observe((state) => state.hand, state(paths, pokers));
@@ -66,13 +66,11 @@ function state(paths: Container, pokers: Container) {
 
       for (const { suit, rank } of diff) {
         //
-        const path = getPath(id);
-
         const poker = new Poker(suit, rank);
 
         pokers.addChild(poker);
 
-        path.attach(poker);
+        getPath(id).attach(poker);
       }
     }
 
