@@ -4,7 +4,7 @@ import { observe } from '../../../store';
 import { Hand, Card, SEAT } from '../../../models';
 import { propEq, without } from 'ramda';
 import Path from '../path/Path';
-import Poker from '../../components/Poker';
+import Poker from './Poker';
 
 export default function Game() {
   const container = new Container();

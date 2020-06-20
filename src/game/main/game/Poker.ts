@@ -1,9 +1,9 @@
-import Res from '../assets';
-import POKER from '../assets/poker';
+import Res from '../../assets';
+import POKER from '../../assets/poker';
 import { Sprite, SimpleMesh, Container } from 'pixi.js';
 import gsap from 'gsap';
 import { Power0 } from 'gsap/gsap-core';
-import { SUIT, RANK } from '../../models';
+import { SUIT, RANK } from '../../../models';
 
 export default class Poker extends Container {
   //

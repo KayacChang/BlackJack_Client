@@ -1,7 +1,6 @@
 import { Container } from 'pixi.js';
-import { SEAT } from '../../../models';
+import { SEAT, Vec2 } from '../../../models';
 import { toPairs, map, construct, assoc } from 'ramda';
-import { Vec2 } from '../../components/types';
 import Path from './Path';
 import { Functor, addChild } from '../../../utils/func';
 

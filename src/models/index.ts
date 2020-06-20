@@ -69,3 +69,8 @@ export interface Game {
   round: string;
   state: GameState;
 }
+
+export interface Vec2 {
+  x: number;
+  y: number;
+}
