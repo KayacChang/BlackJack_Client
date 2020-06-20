@@ -1,9 +1,9 @@
 import { Container } from 'pixi.js';
 import { SEAT } from '../../../models';
-import { toPairs, map } from 'ramda';
-import { compose } from 'redux';
+import { toPairs, map, construct, assoc } from 'ramda';
 import { Vec2 } from '../../components/types';
 import Path from './Path';
+import { Functor, addChild } from '../../../utils/func';
 
 const config: Record<SEAT, Vec2[][]> = {
   //
@@ -150,21 +150,20 @@ export default function Paths() {
   const container = new Container();
   container.name = 'paths';
 
-  const paths = compose(map(genPath), toPairs)(config) as Container[];
+  const paths = map(genPath)(toPairs(config));
 
   container.addChild(...paths);
 
   return container;
 }
 
-function genPath([name, config]: [SEAT, Vec2[][]]) {
-  const group = new Container();
+function genPath([name, config]: [string, Vec2[][]]) {
+  const children = config.map(construct(Path));
 
-  group.name = SEAT[name];
-
-  const paths = config.map((path) => new Path(path));
-
-  group.addChild(...paths);
-
-  return group;
+  return (
+    Functor(new Container())
+      //
+      .map(assoc('name', name))
+      .flod(addChild(children))
+  );
 }
