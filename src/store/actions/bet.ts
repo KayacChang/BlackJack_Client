@@ -1,6 +1,10 @@
 import { BetAction, BET } from '../types';
-import { CHIP } from '../../models';
+import { Bet } from '../../models';
 
-export function choose(payload: { chip: CHIP }): BetAction {
+export function choose(payload: Bet): BetAction {
   return { type: BET.CHOOSE, payload };
+}
+
+export function addBet(payload: Bet): BetAction {
+  return { type: BET.ADD, payload };
 }

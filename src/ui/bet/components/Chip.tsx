@@ -1,15 +1,11 @@
-import React from 'react';
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
 import styles from './Chip.module.scss';
-import { useDispatch } from 'react-redux';
-import { choose } from '../../../store/actions';
-import { CHIP } from '../../../models';
 
 type Props = {
   src: string;
   bet: number;
   selected: boolean;
-  type: CHIP;
-};
+} & PropsWithChildren<HTMLAttributes<HTMLButtonElement>>;
 
 function format(bet: number) {
   if (bet / 1000 >= 1) {
@@ -19,11 +15,7 @@ function format(bet: number) {
   return String(bet);
 }
 
-export default function Chip({ selected, src, bet, type }: Props) {
-  const dispatch = useDispatch();
-
-  const onClick = () => dispatch(choose({ chip: type }));
-
+export default function Chip({ selected, src, bet, onClick }: Props) {
   const className = [
     //
     styles.chip,

@@ -7,8 +7,9 @@ import styles from './Bet.module.scss';
 import { CHIP } from '../../models';
 import CHIP_IMG from './assets/chips';
 import DEAL from './assets/icon/on_deal.png';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
+import { choose } from '../../store/actions';
 
 type Props = {
   max: number;
@@ -17,22 +18,22 @@ type Props = {
 
 type ChipMeta = {
   type: CHIP;
-  normal: string;
-  bet: number;
+  src: string;
 };
 
 const chips: ChipMeta[] = [
-  //
-  { type: CHIP.RED, normal: CHIP_IMG.NORMAL_RED, bet: 1 },
-  { type: CHIP.GREEN, normal: CHIP_IMG.NORMAL_GREEN, bet: 5 },
-  { type: CHIP.BLUE, normal: CHIP_IMG.NORMAL_BLUE, bet: 10 },
-  { type: CHIP.BLACK, normal: CHIP_IMG.NORMAL_BLACK, bet: 50 },
-  { type: CHIP.PURPLE, normal: CHIP_IMG.NORMAL_PURPLE, bet: 100 },
-  { type: CHIP.YELLOW, normal: CHIP_IMG.NORMAL_YELLOW, bet: 500 },
+  { type: CHIP.RED, src: CHIP_IMG.NORMAL_RED },
+  { type: CHIP.GREEN, src: CHIP_IMG.NORMAL_GREEN },
+  { type: CHIP.BLUE, src: CHIP_IMG.NORMAL_BLUE },
+  { type: CHIP.BLACK, src: CHIP_IMG.NORMAL_BLACK },
+  { type: CHIP.PURPLE, src: CHIP_IMG.NORMAL_PURPLE },
+  { type: CHIP.YELLOW, src: CHIP_IMG.NORMAL_YELLOW },
 ];
 
 export default function Bet({ min, max }: Props) {
   const { chosen } = useSelector((state: AppState) => state.bet);
+
+  const dispatch = useDispatch();
 
   return (
     <div className={styles.bet}>
@@ -41,8 +42,14 @@ export default function Bet({ min, max }: Props) {
 
         <div className={styles.section}>
           <div className={styles.field}>
-            {chips.map(({ type, normal, bet }) => (
-              <Chip type={type} selected={type === chosen} key={type} src={normal} bet={bet * min} />
+            {chips.map(({ type, src }) => (
+              <Chip
+                key={type}
+                selected={type === chosen?.chip}
+                src={src}
+                bet={type * min}
+                onClick={() => dispatch(choose({ chip: type, amount: type * min }))}
+              />
             ))}
           </div>
         </div>

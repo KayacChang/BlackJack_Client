@@ -1,6 +1,6 @@
 import { Container, Sprite } from 'pixi.js';
 import { SEAT, Seat as SeatModel } from '../../../models';
-import Seat from './seat';
+import Seat, { SeatState } from './seat';
 import { observe } from '../../../store';
 
 const config = [
@@ -22,7 +22,7 @@ function update(seats: Sprite[]) {
         return;
       }
 
-      found.emit('statechange', true);
+      found.emit('statechange', SeatState.OccupyByUser);
     });
   };
 }

@@ -3,11 +3,19 @@ import RES from '../../assets';
 import { SEAT } from '../../../models';
 import { throttleBy } from '../../../utils';
 import services from '../../../services';
+import store from '../../../store';
+import { addBet } from '../../../store/actions';
 
 interface Prop {
   id: SEAT;
   x: number;
   y: number;
+}
+
+export enum SeatState {
+  Empty,
+  Occupy,
+  OccupyByUser,
 }
 
 export default function Seat({ id, x, y }: Prop) {
@@ -24,7 +32,7 @@ export default function Seat({ id, x, y }: Prop) {
 
   it.on('statechange', onStateChange(it, id));
 
-  it.emit('statechange', false);
+  it.emit('statechange', SeatState.Empty);
 
   return it;
 }
@@ -36,17 +44,52 @@ function onStateChange(it: Sprite, id: SEAT) {
   const seat_normal = RES.get('SEAT_NORMAL').texture;
   const seat_enable = RES.get('SEAT_ENABLE').texture;
 
-  return function (state: boolean) {
+  const onPlaceBet = placeBet(id);
+
+  return function (state: SeatState) {
     //
-    if (state) {
-      it.texture = seat_enable;
+    it.off('pointerdown', onPlaceBet);
+
+    if (state === SeatState.Empty) {
+      it.texture = select_normal;
+
+      it.once('pointerdown', throttleBy(join(id)));
 
       return;
     }
 
-    it.texture = select_normal;
+    if (state === SeatState.Occupy) {
+      it.texture = seat_normal;
 
-    it.once('pointerdown', throttleBy(join(id)));
+      return;
+    }
+
+    if (state === SeatState.OccupyByUser) {
+      it.texture = seat_enable;
+
+      it.on('pointerdown', onPlaceBet);
+
+      return;
+    }
+    //
+  };
+}
+
+function placeBet(seat: SEAT) {
+  //
+  return function () {
+    const { bet } = store.getState();
+
+    if (!bet.chosen) {
+      return;
+    }
+
+    store.dispatch(
+      addBet({
+        ...bet.chosen,
+        seat,
+      })
+    );
   };
 }
 

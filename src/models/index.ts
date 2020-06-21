@@ -19,18 +19,18 @@ export enum PAIR {
 }
 
 export enum CHIP {
-  RED,
-  GREEN,
-  BLUE,
-  BLACK,
-  PURPLE,
-  YELLOW,
+  RED = 1,
+  GREEN = 5,
+  BLUE = 10,
+  BLACK = 50,
+  PURPLE = 100,
+  YELLOW = 500,
 }
 
 export interface Bet {
-  type: CHIP;
-  seat: SEAT;
+  chip: CHIP;
   amount: number;
+  seat?: SEAT;
 }
 
 export interface User {
