@@ -31,6 +31,7 @@ export interface Bet {
   chip: CHIP;
   amount: number;
   seat?: SEAT;
+  time?: Date;
 }
 
 export interface User {

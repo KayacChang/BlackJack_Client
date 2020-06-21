@@ -3,13 +3,11 @@ import { SEAT, Seat as SeatModel } from '../../../models';
 import Seat, { SeatState } from './seat';
 import { observe } from '../../../store';
 
-const config = [
-  { id: SEAT.A, x: 15 / 100, y: 58 / 100 },
-  { id: SEAT.B, x: 30 / 100, y: 75 / 100 },
-  { id: SEAT.C, x: 50 / 100, y: 82 / 100 },
-  { id: SEAT.D, x: 70 / 100, y: 75 / 100 },
-  { id: SEAT.E, x: 85 / 100, y: 58 / 100 },
-];
+type Props = {
+  id: SEAT;
+  x: number;
+  y: number;
+};
 
 function update(seats: Sprite[]) {
   //
@@ -27,11 +25,11 @@ function update(seats: Sprite[]) {
   };
 }
 
-function init(container: Container) {
+function init(container: Container, meta: Props[]) {
   //
   return function onInit({ width, height }: Container) {
     //
-    const seats = config.map(({ id, x, y }) =>
+    const seats = meta.map(({ id, x, y }) =>
       Seat({
         id: id,
         x: width * x,
@@ -41,14 +39,16 @@ function init(container: Container) {
 
     container.addChild(...seats);
 
+    seats.forEach((seat) => seat.emit('statechange', SeatState.OccupyByUser));
+
     observe((state) => state.seat, update(seats));
   };
 }
 
-export default function Seats() {
+export default function Seats(meta: Props[]) {
   const seats = new Container();
   seats.name = 'seats';
-  seats.once('added', init(seats));
+  seats.once('added', init(seats, meta));
 
   return seats;
 }

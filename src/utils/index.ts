@@ -26,5 +26,18 @@ export function throttleBy<T>(func: () => Promise<T>) {
   };
 }
 
+export function random(min: number, max?: number) {
+  if (!max) {
+    max = min;
+    min = 0;
+  }
+
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+
+  return min + (max - min) * Math.random();
+}
+
 export * from './check';
 export { isMobile, currency };

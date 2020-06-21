@@ -29,10 +29,9 @@ export default function Seat({ id, x, y }: Prop) {
   });
 
   it.anchor.set(0.5);
+  it.scale.set(0.75);
 
   it.on('statechange', onStateChange(it, id));
-
-  it.emit('statechange', SeatState.Empty);
 
   return it;
 }
@@ -87,6 +86,7 @@ function placeBet(seat: SEAT) {
     store.dispatch(
       addBet({
         ...bet.chosen,
+        time: new Date(),
         seat,
       })
     );

@@ -2,8 +2,10 @@ import { Loader } from 'pixi.js';
 import TABLE from './table';
 import SEAT from './seat';
 import POKER from './poker';
+import CHIP from './chip';
 
 const PKG = Object.freeze({
+  ...CHIP,
   ...TABLE,
   ...SEAT,
   ...POKER,
