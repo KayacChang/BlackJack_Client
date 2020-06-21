@@ -24,7 +24,7 @@ export default function Chip(type: CHIP) {
   const chip = new Sprite(RES.get(mapping(type)).texture);
 
   chip.anchor.set(0.5);
-  chip.scale.set(0.5);
+  chip.scale.set(0.6);
 
   return chip;
 }

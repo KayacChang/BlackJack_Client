@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js';
+import { Sprite, Container, Text } from 'pixi.js';
 import RES from '../../assets';
 import { SEAT } from '../../../models';
 import { throttleBy } from '../../../utils';
@@ -31,12 +31,39 @@ export default function Seat({ id, x, y }: Prop) {
   it.anchor.set(0.5);
   it.scale.set(0.75);
 
-  it.on('statechange', onStateChange(it, id));
+  const field = Field();
+  field.y = 160;
+  it.addChild(field);
+
+  it.on('statechange', onStateChange(it, field, id));
 
   return it;
 }
 
-function onStateChange(it: Sprite, id: SEAT) {
+function Field() {
+  const it = new Container();
+
+  const background = new Sprite(RES.get('FIELD').texture);
+  background.anchor.set(0.5);
+  it.addChild(background);
+
+  const field = new Text('', {
+    fontWeight: 'bold',
+    fontFamily: 'Arial',
+    fill: 0xffffff,
+    fontSize: 48,
+  });
+  field.anchor.set(0.5);
+  it.addChild(field);
+
+  it.on('update', (player: string) => {
+    field.text = player;
+  });
+
+  return it;
+}
+
+function onStateChange(it: Sprite, field: Container, id: SEAT) {
   //
   const select_normal = RES.get('SELECT_SEAT_NORMAL').texture;
   const select_enable = RES.get('SELECT_SEAT_ENABLE').texture;
@@ -45,12 +72,14 @@ function onStateChange(it: Sprite, id: SEAT) {
 
   const onPlaceBet = placeBet(id);
 
-  return function (state: SeatState) {
+  return function (state: SeatState, player: string) {
     //
     it.off('pointerdown', onPlaceBet);
 
     if (state === SeatState.Empty) {
       it.texture = select_normal;
+
+      field.visible = false;
 
       it.once('pointerdown', throttleBy(join(id)));
 
@@ -66,20 +95,26 @@ function onStateChange(it: Sprite, id: SEAT) {
     if (state === SeatState.OccupyByUser) {
       it.texture = seat_enable;
 
+      field.visible = true;
+      field.emit('update', player);
+
       it.on('pointerdown', onPlaceBet);
 
       return;
     }
-    //
   };
 }
 
 function placeBet(seat: SEAT) {
   //
   return function () {
-    const { bet } = store.getState();
+    const { game, bet, user } = store.getState();
 
     if (!bet.chosen) {
+      return;
+    }
+
+    if (user.totalBet + bet.chosen.amount > game.maxBet) {
       return;
     }
 

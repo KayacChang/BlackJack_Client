@@ -1,6 +1,6 @@
-import { Container, Sprite } from 'pixi.js';
+import { Container, Sprite, Text } from 'pixi.js';
 import { observe } from '../../../store';
-import { Bet, SEAT, Vec2 } from '../../../models';
+import { Bet, SEAT } from '../../../models';
 import { without } from 'ramda';
 import Chip from './chip';
 import gsap from 'gsap';
@@ -11,53 +11,77 @@ type Props = {
   y: number;
 };
 
-function placeChipAnim(chip: Sprite, { x, y }: Vec2) {
-  const offsetY = 50;
+function transIn(chip: Sprite) {
+  chip.y -= 50;
 
-  Object.assign(chip, { x, y: y - offsetY });
-
-  gsap.to(chip, { y, alpha: 1 });
+  gsap.to(chip, { y: 0, alpha: 1 });
 }
 
-function update(container: Container, meta: Props[]) {
+function update(groups: Container[]) {
   let pre: Bet[] = [];
 
   return function onUpdate(history: Bet[]) {
+    //
     const diff = without(pre, history)[0];
-
-    if (!diff) {
+    if (diff === undefined || diff.seat === undefined) {
       return;
     }
 
-    const seat = meta.find(({ id }) => id === diff.seat);
-
-    if (!seat) {
+    const target = diff.seat;
+    const group = groups.find(({ name }) => name === SEAT[target]);
+    if (!group) {
       return;
     }
 
     const chip = Chip(diff.chip);
-    container.addChild(chip);
+    group.addChild(chip);
 
-    placeChipAnim(chip, {
-      x: seat.x,
-      y: seat.y,
-    });
+    const total = history
+      //
+      .filter(({ seat }) => diff.seat === seat)
+      .reduce((total, { amount }) => total + amount, 0);
+
+    group.emit('update', String(total));
+
+    transIn(chip);
 
     pre = [...history];
   };
+}
+
+function Group(id: SEAT, x: number, y: number) {
+  //
+  const name = SEAT[id];
+
+  const group = Object.assign(new Container(), { name, x, y });
+
+  const field = new Text('123', {
+    fontFamily: 'Arial',
+    fontWeight: 'bold',
+    fill: 0xffffff,
+    fontSize: 48,
+  });
+  field.x = 120;
+  field.anchor.set(0, 0.5);
+
+  group.on('update', (total: string) => {
+    field.text = total;
+
+    group.addChild(field);
+  });
+
+  return group;
 }
 
 function init(container: Container, meta: Props[]) {
   //
   return function onInit({ width, height }: Container) {
     //
-    const seats = meta.map(({ id, x, y }) => ({
-      id: id,
-      x: width * x,
-      y: height * y,
-    }));
+    const seats = meta.map(({ id, x, y }) => Group(id, width * x, height * y));
 
-    observe((state) => state.bet.history, update(container, seats));
+    container.addChild(...seats);
+
+    observe((state) => state.bet.history, update(seats));
   };
 }
 
