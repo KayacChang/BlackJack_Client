@@ -97,9 +97,15 @@ function onUpdateSeat(service: Service, data: SeatProp[]) {
   return service.emit(EVENT.UPDATE_SEAT, action.payload);
 }
 
+function onBet(service: Service, data: any) {
+  return service.emit(EVENT.BET);
+}
+
 export default {
   [GAME.JOIN]: onJoinRoom,
   [GAME.UPDATE_SEAT]: onUpdateSeat,
+
+  [GAME.BET]: onBet,
 
   [GAME.BETTING]: (service: Service, { expire }: CountDownProp) => console.log(expire),
   [GAME.BET_START]: onBetStart,

@@ -65,6 +65,10 @@ $unit: 32px;
   }
 }
 
+.disable {
+  opacity: 0.5;
+}
+
 .controls {
   @include on-circle($item-count: 5, $circle-size: 12em);
 }

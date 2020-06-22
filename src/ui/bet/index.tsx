@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, CornerUpLeft, RotateCw } from 'react-feather';
 import Chip from './components/Chip';
 import Control from './components/Control';
@@ -32,30 +32,49 @@ const chips: ChipMeta[] = [
 ];
 
 export default function Bet({ min, max }: Props) {
+  const [lock, setLock] = useState(false);
+
   const seats = useSelector((state: AppState) => state.seat);
   const { chosen, history } = useSelector((state: AppState) => state.bet);
 
   const dispatch = useDispatch();
 
+  function onChipClick(chip: CHIP, amount: number) {
+    return function () {
+      if (lock) return;
+
+      dispatch(choose({ chip, amount }));
+    };
+  }
+
   async function onClearClick() {
+    if (lock) return;
+
     await Promise.all(seats.map(({ id }) => services.leaveSeat(id)));
 
     dispatch(clearBet());
   }
 
   function onUndoClick() {
+    if (lock) return;
+
     const last = history[history.length - 1];
 
     last && dispatch(undoBet(last));
   }
 
-  function onDealClick() {
-    //
-    services.deal();
+  async function onDealClick() {
+    if (lock) return;
+
+    await services.deal();
+
+    setLock(true);
   }
 
+  const className = [styles.bet, lock && styles.disable].filter(Boolean).join(' ');
+
   return (
-    <div className={styles.bet}>
+    <div className={className}>
       <div>
         <h3>place your bets</h3>
 
@@ -67,7 +86,7 @@ export default function Bet({ min, max }: Props) {
                 selected={type === chosen?.chip}
                 src={src}
                 bet={type * min}
-                onClick={() => dispatch(choose({ chip: type, amount: type * min }))}
+                onClick={onChipClick(type, type * min)}
               />
             ))}
           </div>
