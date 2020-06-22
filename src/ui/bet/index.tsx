@@ -37,16 +37,21 @@ export default function Bet({ min, max }: Props) {
 
   const dispatch = useDispatch();
 
-  async function clear() {
+  async function onClearClick() {
     await Promise.all(seats.map(({ id }) => services.leaveSeat(id)));
 
     dispatch(clearBet());
   }
 
-  function undo() {
+  function onUndoClick() {
     const last = history[history.length - 1];
 
     last && dispatch(undoBet(last));
+  }
+
+  function onDealClick() {
+    //
+    services.deal();
   }
 
   return (
@@ -71,9 +76,14 @@ export default function Bet({ min, max }: Props) {
         <Timer />
 
         <div className={styles.controls}>
-          <Control title={'clear'} icon={<X />} onClick={clear} />
-          <Control title={'undo'} icon={<CornerUpLeft />} onClick={undo} />
-          <Control title={'deal'} icon={<img src={DEAL} alt={DEAL} />} style={{ width: '48px', height: '48px' }} />
+          <Control title={'clear'} icon={<X />} onClick={onClearClick} />
+          <Control title={'undo'} icon={<CornerUpLeft />} onClick={onUndoClick} />
+          <Control
+            title={'deal'}
+            icon={<img src={DEAL} alt={DEAL} />}
+            style={{ width: '48px', height: '48px' }}
+            onClick={onDealClick}
+          />
           <Control title={'repeat'} icon={<RotateCw />} />
           <Control title={'double bet'} icon={<h3>2x</h3>} />
         </div>
