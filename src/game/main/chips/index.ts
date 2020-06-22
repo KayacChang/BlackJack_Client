@@ -1,6 +1,6 @@
 import { Container, Sprite, Text } from 'pixi.js';
 import { observe } from '../../../store';
-import { Bet, SEAT } from '../../../models';
+import { Bet, SEAT, Seat } from '../../../models';
 import { without } from 'ramda';
 import Chip from './chip';
 import gsap from 'gsap';
@@ -11,74 +11,103 @@ type Props = {
   y: number;
 };
 
-function transIn(chip: Sprite) {
-  chip.y -= 50;
-
-  gsap.to(chip, { y: 0, alpha: 1 });
-}
-
-function update(groups: Container[]) {
-  let pre: Bet[] = [];
-
-  return function onUpdate(history: Bet[]) {
-    //
-    if (history.length === 0) {
-      groups.forEach((group) => group.removeChildren());
-
-      pre = [];
-
-      return;
-    }
-
-    const diff = without(pre, history)[0];
-    if (diff === undefined || diff.seat === undefined) {
-      return;
-    }
-
-    const target = diff.seat;
-    const group = groups.find(({ name }) => name === SEAT[target]);
-    if (!group) {
-      return;
-    }
-
-    const chip = Chip(diff.chip);
-    group.addChild(chip);
-
-    const total = history
-      //
-      .filter(({ seat }) => diff.seat === seat)
-      .reduce((total, { amount }) => total + amount, 0);
-
-    group.emit('update', String(total));
-
-    transIn(chip);
-
-    pre = [...history];
-  };
-}
-
 function Group(id: SEAT, x: number, y: number) {
   //
   const name = SEAT[id];
 
   const group = Object.assign(new Container(), { name, x, y });
 
-  const field = new Text('123', {
+  const field = new Text('', {
     fontFamily: 'Arial',
     fontWeight: 'bold',
     fill: 0xffffff,
     fontSize: 48,
   });
+  field.name = 'field';
   field.x = 120;
   field.anchor.set(0, 0.5);
 
-  group.on('update', (total: string) => {
-    field.text = total;
-
-    group.addChild(field);
-  });
+  group.addChild(field);
 
   return group;
+}
+
+function transIn(chip: Sprite) {
+  chip.y -= 50;
+
+  gsap.to(chip, { y: 0, alpha: 1 });
+}
+
+function findGroupBySeatID(groups: Container[], seat: SEAT) {
+  //
+  return groups.find(({ name }) => name === SEAT[seat]);
+}
+
+function updateChip(groups: Container[]) {
+  let pre: Bet[] = [];
+
+  function clear() {
+    groups.forEach((group) => {
+      group.children
+        //
+        .filter(({ name }) => name !== 'field')
+        .forEach((child) => group.removeChild(child));
+    });
+  }
+
+  function addChip({ seat, chip }: Bet) {
+    //
+    if (!seat) {
+      return;
+    }
+
+    const group = findGroupBySeatID(groups, seat);
+    if (!group) {
+      return;
+    }
+
+    const _chip = Chip(chip);
+    group.addChild(_chip);
+    transIn(_chip);
+  }
+
+  return function onUpdate(history: Bet[]) {
+    //
+    if (history.length === 0) {
+      clear();
+    }
+
+    if (history.length > pre.length) {
+      without(pre, history).forEach(addChip);
+    }
+
+    pre = [...history];
+  };
+}
+
+function updateSeat(groups: Container[]) {
+  //
+  function setBet(group: Container, totalBet: number) {
+    const field = group.getChildByName('field') as Text;
+
+    field.text = totalBet ? String(totalBet) : '';
+  }
+
+  return function onUpdate(seats: Seat[]) {
+    //
+    if (seats.length === 0) {
+      groups.forEach((group) => setBet(group, 0));
+    }
+
+    seats.forEach(({ id, totalBet }) => {
+      const group = findGroupBySeatID(groups, id);
+      if (!group) {
+        return;
+      }
+
+      setBet(group, totalBet);
+    });
+  };
 }
 
 function init(container: Container, meta: Props[]) {
@@ -89,7 +118,8 @@ function init(container: Container, meta: Props[]) {
 
     container.addChild(...seats);
 
-    observe((state) => state.bet.history, update(seats));
+    observe((state) => state.bet.history, updateChip(seats));
+    observe((state) => state.seat, updateSeat(seats));
   };
 }
 

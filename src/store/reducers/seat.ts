@@ -31,5 +31,18 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     });
   }
 
+  if (type === BET.UNDO) {
+    const { seat, amount } = payload as Bet;
+
+    return state.map(({ id, player, totalBet }) => {
+      //
+      if (id === seat) {
+        return { id, player, totalBet: totalBet - amount };
+      }
+
+      return { id, player, totalBet };
+    });
+  }
+
   return state;
 }

@@ -12,3 +12,7 @@ export function addBet(payload: Bet): BetAction {
 export function clearBet(): BetAction {
   return { type: BET.CLEAR, payload: undefined };
 }
+
+export function undoBet(payload: Bet): BetAction {
+  return { type: BET.UNDO, payload };
+}

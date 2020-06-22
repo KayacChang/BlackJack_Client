@@ -9,7 +9,7 @@ import CHIP_IMG from './assets/chips';
 import DEAL from './assets/icon/on_deal.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
-import { choose, clearBet } from '../../store/actions';
+import { choose, clearBet, undoBet } from '../../store/actions';
 import services from '../../services';
 
 type Props = {
@@ -33,14 +33,20 @@ const chips: ChipMeta[] = [
 
 export default function Bet({ min, max }: Props) {
   const seats = useSelector((state: AppState) => state.seat);
-  const { chosen } = useSelector((state: AppState) => state.bet);
+  const { chosen, history } = useSelector((state: AppState) => state.bet);
 
   const dispatch = useDispatch();
 
-  function clear() {
-    dispatch(clearBet());
+  async function clear() {
+    await Promise.all(seats.map(({ id }) => services.leaveSeat(id)));
 
-    seats.forEach(({ id }) => services.leaveSeat(id));
+    dispatch(clearBet());
+  }
+
+  function undo() {
+    const last = history[history.length - 1];
+
+    last && dispatch(undoBet(last));
   }
 
   return (
@@ -66,7 +72,7 @@ export default function Bet({ min, max }: Props) {
 
         <div className={styles.controls}>
           <Control title={'clear'} icon={<X />} onClick={clear} />
-          <Control title={'undo'} icon={<CornerUpLeft />} />
+          <Control title={'undo'} icon={<CornerUpLeft />} onClick={undo} />
           <Control title={'deal'} icon={<img src={DEAL} alt={DEAL} />} style={{ width: '48px', height: '48px' }} />
           <Control title={'repeat'} icon={<RotateCw />} />
           <Control title={'double bet'} icon={<h3>2x</h3>} />

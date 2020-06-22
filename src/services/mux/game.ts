@@ -92,7 +92,9 @@ function onUpdateSeat(service: Service, data: SeatProp[]) {
   const hasPlayer = ({ player }: SeatProp) => Boolean(player);
   const seats = data.filter(hasPlayer).map(toSeat);
 
-  return store.dispatch(updateSeats(seats));
+  const action = store.dispatch(updateSeats(seats));
+
+  return service.emit(EVENT.UPDATE_SEAT, action.payload);
 }
 
 export default {
