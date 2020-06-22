@@ -1,21 +1,11 @@
 import { Room } from '../../models';
-import { sort, ascend, prop } from 'ramda';
+import { sort, ascend, prop, map } from 'ramda';
 import { RoomAction, ROOM } from '../types';
 
 const sortRoomAscByID = sort<Room>(ascend(prop('id')));
 
 function update(newRoom: Room, rooms: Room[]) {
-  return rooms.map((room) => {
-    if (room.id === newRoom.id) {
-      return {
-        ...room,
-        ...newRoom,
-        history: newRoom.history,
-      };
-    }
-
-    return room;
-  });
+  return map((room) => (newRoom.id === room.id ? newRoom : room), rooms);
 }
 
 const initialState: Room[] = [];
