@@ -5,9 +5,11 @@ import { Payload } from './base';
 const PREFIX = `[SEAT]`;
 
 export const SEAT = Object.freeze({
-  ADD: `${PREFIX} ADD`,
+  UPDATE: `${PREFIX} UPDATE`,
+  CLEAR: `${PREFIX} CLEAR`,
 });
 
-type AddSeatAction = Action<typeof SEAT.ADD> & Payload<Seat[]>;
+type UpdateSeatAction = Action<typeof SEAT.UPDATE> & Payload<Seat[]>;
+type ClearSeatAction = Action<typeof SEAT.CLEAR> & Payload<Seat[]>;
 
-export type SeatAction = AddSeatAction;
+export type SeatAction = UpdateSeatAction | ClearSeatAction;

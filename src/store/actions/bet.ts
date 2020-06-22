@@ -8,3 +8,7 @@ export function choose(payload: Bet): BetAction {
 export function addBet(payload: Bet): BetAction {
   return { type: BET.ADD, payload };
 }
+
+export function clearBet(): BetAction {
+  return { type: BET.CLEAR, payload: undefined };
+}

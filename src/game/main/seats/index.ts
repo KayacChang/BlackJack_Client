@@ -13,6 +13,12 @@ function update(seats: Container[]) {
   //
   return function (state: SeatModel[]) {
     //
+    if (state.length === 0) {
+      seats.forEach((seat) => seat.emit('statechange', SeatState.Empty));
+
+      return;
+    }
+
     state.forEach(({ id, player, totalBet }) => {
       const found = seats.find(({ name }) => name === SEAT[id]);
 

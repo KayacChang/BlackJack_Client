@@ -12,10 +12,10 @@ const initialState: Seat[] = [dealer];
 export default function seatReducer(state = initialState, action: SeatAction | BetAction): Seat[] {
   const { type, payload } = action;
 
-  if (type === SEAT.ADD) {
+  if (type === SEAT.UPDATE) {
     const seats = payload as Seat[];
 
-    return [...state, ...seats];
+    return seats;
   }
 
   if (type === BET.ADD) {

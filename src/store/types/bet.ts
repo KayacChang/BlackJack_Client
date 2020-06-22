@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { Payload } from './base';
-import { Bet, SEAT } from '../../models';
+import { Bet } from '../../models';
 
 const PREFIX = '[BET]';
 
@@ -11,6 +11,7 @@ export const BET = Object.freeze({
 });
 
 export type ChooseAction = Action<typeof BET.CHOOSE> & Payload<Bet>;
-export type AddBetAction = Action<typeof BET.ADD> & Payload<Bet & SEAT>;
+export type AddBetAction = Action<typeof BET.ADD> & Payload<Bet>;
+export type ClearBetAction = Action<typeof BET.CLEAR> & Payload<undefined>;
 
-export type BetAction = ChooseAction | AddBetAction;
+export type BetAction = ChooseAction | AddBetAction | ClearBetAction;

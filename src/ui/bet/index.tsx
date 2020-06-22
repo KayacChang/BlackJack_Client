@@ -9,7 +9,8 @@ import CHIP_IMG from './assets/chips';
 import DEAL from './assets/icon/on_deal.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
-import { choose } from '../../store/actions';
+import { choose, clearBet } from '../../store/actions';
+import services from '../../services';
 
 type Props = {
   max: number;
@@ -31,9 +32,16 @@ const chips: ChipMeta[] = [
 ];
 
 export default function Bet({ min, max }: Props) {
+  const seats = useSelector((state: AppState) => state.seat);
   const { chosen } = useSelector((state: AppState) => state.bet);
 
   const dispatch = useDispatch();
+
+  function clear() {
+    dispatch(clearBet());
+
+    seats.forEach(({ id }) => services.leaveSeat(id));
+  }
 
   return (
     <div className={styles.bet}>
@@ -57,7 +65,7 @@ export default function Bet({ min, max }: Props) {
         <Timer />
 
         <div className={styles.controls}>
-          <Control title={'clear'} icon={<X />} />
+          <Control title={'clear'} icon={<X />} onClick={clear} />
           <Control title={'undo'} icon={<CornerUpLeft />} />
           <Control title={'deal'} icon={<img src={DEAL} alt={DEAL} />} style={{ width: '48px', height: '48px' }} />
           <Control title={'repeat'} icon={<RotateCw />} />

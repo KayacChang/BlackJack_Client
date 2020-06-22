@@ -4,7 +4,7 @@ import { GAME } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betting, join, betend, settle, dealCard, turn, addSeats } from '../../store/actions';
+import { betting, join, betend, settle, dealCard, turn, updateSeats } from '../../store/actions';
 
 import {
   GameProp,
@@ -16,14 +16,14 @@ import {
   EVENT,
   TurnProp,
   CountDownProp,
-  JoinSeatProp,
   toSeat,
+  SeatProp,
 } from '../types';
 
 function onJoinRoom(service: Service, data: GameProp) {
   const action = store.dispatch(join(toGame(data)));
 
-  store.dispatch(addSeats(toSeats(data)));
+  store.dispatch(updateSeats(toSeats(data)));
 
   return service.emit(EVENT.JOIN_ROOM, action.payload);
 }
@@ -88,19 +88,17 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
   );
 }
 
-function onJoinSeat(service: Service, { no }: JoinSeatProp) {
-  const { user } = store.getState();
+function onUpdateSeat(service: Service, data: SeatProp[]) {
+  const hasPlayer = ({ player }: SeatProp) => Boolean(player);
+  const seats = data.filter(hasPlayer).map(toSeat);
 
-  const seat = toSeat({ no, player: user.name, total_bet: 0 });
-
-  const action = store.dispatch(addSeats([seat]));
-
-  return service.emit(EVENT.JOIN_SEAT, action.payload);
+  return store.dispatch(updateSeats(seats));
 }
 
 export default {
   [GAME.JOIN]: onJoinRoom,
-  [GAME.JOIN_SEAT]: onJoinSeat,
+  [GAME.UPDATE_SEAT]: onUpdateSeat,
+
   [GAME.BETTING]: (service: Service, { expire }: CountDownProp) => console.log(expire),
   [GAME.BET_START]: onBetStart,
   [GAME.BET_END]: onBetEnd,

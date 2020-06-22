@@ -6,7 +6,7 @@ export default async function (service: Service, seat: SEAT) {
   const { game } = store.getState();
 
   service.send({
-    cmd: CLIENT.JOIN_SEAT,
+    cmd: CLIENT.LEAVE_SEAT,
     data: {
       id: game.room,
       no: seat,

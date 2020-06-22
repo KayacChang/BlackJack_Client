@@ -1,5 +1,5 @@
 import Service from './service';
-import { joinRoom as _joinRoom, joinSeat as _joinSeat } from './requests';
+import { joinRoom as _joinRoom, joinSeat as _joinSeat, leaveSeat as _leaveSeat } from './requests';
 import { Token, SEAT } from '../models';
 
 const service = new Service(process.env.REACT_APP_BACKEND || '');
@@ -16,4 +16,8 @@ function joinSeat(seat: SEAT) {
   return _joinSeat(service, seat);
 }
 
-export default { init, joinRoom, joinSeat };
+function leaveSeat(seat: SEAT) {
+  return _leaveSeat(service, seat);
+}
+
+export default { init, joinRoom, joinSeat, leaveSeat };

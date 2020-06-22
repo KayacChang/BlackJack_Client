@@ -22,6 +22,14 @@ function update(groups: Container[]) {
 
   return function onUpdate(history: Bet[]) {
     //
+    if (history.length === 0) {
+      groups.forEach((group) => group.removeChildren());
+
+      pre = [];
+
+      return;
+    }
+
     const diff = without(pre, history)[0];
     if (diff === undefined || diff.seat === undefined) {
       return;

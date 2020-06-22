@@ -25,5 +25,10 @@ export default function betReducer(state = initialState, action: BetAction): Bet
     return { ...state, history: [...state.history, bet] };
   }
 
+  if (type === BET.CLEAR) {
+    //
+    return initialState;
+  }
+
   return state;
 }
