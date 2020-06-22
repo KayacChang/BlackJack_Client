@@ -4,7 +4,7 @@ import { GAME } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betting, join, betend, settle, dealCard, turn, updateSeats } from '../../store/actions';
+import { betting, join, betend, settle, dealCard, turn, updateSeats, commitBet } from '../../store/actions';
 
 import {
   GameProp,
@@ -98,6 +98,10 @@ function onUpdateSeat(service: Service, data: SeatProp[]) {
 }
 
 function onBet(service: Service, data: any) {
+  const { bet } = store.getState();
+
+  store.dispatch(commitBet(bet.history));
+
   return service.emit(EVENT.BET);
 }
 

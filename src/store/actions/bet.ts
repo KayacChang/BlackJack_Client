@@ -16,3 +16,7 @@ export function clearBet(): BetAction {
 export function undoBet(payload: Bet): BetAction {
   return { type: BET.UNDO, payload };
 }
+
+export function commitBet(payload: Bet[]): BetAction {
+  return { type: BET.COMMIT, payload };
+}

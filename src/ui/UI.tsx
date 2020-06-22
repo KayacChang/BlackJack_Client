@@ -18,7 +18,7 @@ function Control() {
   }
 
   if (game.state.type === GAME.BET_START) {
-    return <Bet min={game.minBet} max={game.maxBet} />;
+    return <Bet />;
   }
 
   if (game.state.type === GAME.TURN) {
@@ -34,7 +34,7 @@ export default function UI() {
       <Menu />
       <Status />
       <Detail />
-      <Bet min={100} max={500000} />
+      <Bet />
       {/* <Control /> */}
     </div>
   );

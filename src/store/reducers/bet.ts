@@ -4,10 +4,12 @@ import { without } from 'ramda';
 
 type BetState = {
   chosen?: Bet;
+  previous: Bet[];
   history: Bet[];
 };
 
 const initialState: BetState = {
+  previous: [],
   history: [],
 };
 
@@ -36,7 +38,13 @@ export default function betReducer(state = initialState, action: BetAction): Bet
 
   if (type === BET.CLEAR) {
     //
-    return initialState;
+    return { ...state, history: [] };
+  }
+
+  if (type === BET.COMMIT) {
+    const bets = payload as Bet[];
+
+    return { ...state, previous: bets };
   }
 
   return state;
