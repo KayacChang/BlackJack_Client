@@ -1,3 +1,32 @@
+export enum SEAT {
+  DEALER = -1,
+  A = 0,
+  B = 1,
+  C = 2,
+  D = 3,
+  E = 4,
+}
+
+export enum PAIR {
+  L = 'L',
+  R = 'R',
+}
+
+export enum CHIP {
+  RED = 1,
+  GREEN = 5,
+  BLUE = 10,
+  BLACK = 50,
+  PURPLE = 100,
+  YELLOW = 500,
+}
+
+export enum GAME_STATE {
+  BETTING,
+  DEALING,
+  SETTLE,
+}
+
 export enum RANK {
   ACE = 'A',
   TWO = '2',

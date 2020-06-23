@@ -1,6 +1,6 @@
 import { Container, Sprite, Text } from 'pixi.js';
 import { observe } from '../../../store';
-import { Bet, SEAT, Seat } from '../../../models';
+import { Bet, SEAT, Seats } from '../../../models';
 import { without } from 'ramda';
 import Chip from './chip';
 import gsap from 'gsap';
@@ -93,20 +93,13 @@ function updateSeat(groups: Container[]) {
     field.text = totalBet ? String(totalBet) : '';
   }
 
-  return function onUpdate(seats: Seat[]) {
+  return function onUpdate(seats: Seats) {
     //
-    if (seats.length === 0) {
-      groups.forEach((group) => setBet(group, 0));
+    for (const [id, seat] of Object.entries(seats)) {
+      const group = findGroupBySeatID(groups, Number(id) as SEAT);
+
+      group && setBet(group, seat.bet);
     }
-
-    seats.forEach(({ id, totalBet }) => {
-      const group = findGroupBySeatID(groups, id);
-      if (!group) {
-        return;
-      }
-
-      setBet(group, totalBet);
-    });
   };
 }
 

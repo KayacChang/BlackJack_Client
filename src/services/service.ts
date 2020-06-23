@@ -1,10 +1,10 @@
 import EventEmitter from 'eventemitter3';
 import { login } from './requests';
-import { SERVER, GAME, CLIENT, Token } from '../models';
+import { S2C, C2S, Token } from '../models';
 import MUX from './mux';
 
 interface Frame {
-  cmd: CLIENT | SERVER | GAME;
+  cmd: S2C.ROOM | S2C.ROUND | S2C.SEAT | S2C.USER | C2S.CLIENT;
   data: any;
 }
 
@@ -33,27 +33,25 @@ export default class Service extends EventEmitter {
   send(data: Frame) {
     //
     if (!this.token) {
-      throw new Error(`service required token, please call connect first`);
+      throw new Error(`service required token, please connect first`);
     }
-
-    console.log('Send: ', data);
 
     const token = this.token;
 
-    const message = btoa(
-      JSON.stringify({
-        ...token,
-        ...data,
-      })
+    this.socket.send(
+      btoa(
+        JSON.stringify({
+          ...token,
+          ...data,
+        })
+      )
     );
-
-    this.socket.send(message);
   }
 
   onMessage(event: MessageEvent) {
     //
     if (!this.token) {
-      throw new Error(`service required token, please call connect first`);
+      throw new Error(`service required token, please connect first`);
     }
 
     const message = JSON.parse(atob(event.data)) as Frame;

@@ -19,7 +19,7 @@ export default function roomReducer(state = initialState, action: RoomAction): R
     return sortRoomAscByID([...state, ...rooms]);
   }
 
-  if (type === ROOM.EDIT) {
+  if (type === ROOM.UPDATE) {
     const newRoom = payload as Room;
 
     return update(newRoom, state);

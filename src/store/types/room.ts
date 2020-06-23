@@ -6,10 +6,10 @@ const PREFIX = '[ROOM]';
 
 export const ROOM = Object.freeze({
   ADD: `${PREFIX} ADD`,
-  EDIT: `${PREFIX} EDIT`,
+  UPDATE: `${PREFIX} UPDATE`,
 });
 
 export type AddRoomAction = Action<typeof ROOM.ADD> & Payload<Room[]>;
-export type EditRoomAction = Action<typeof ROOM.EDIT> & Payload<Room>;
+export type UpdateRoomAction = Action<typeof ROOM.UPDATE> & Payload<Room>;
 
-export type RoomAction = AddRoomAction | EditRoomAction;
+export type RoomAction = AddRoomAction | UpdateRoomAction;

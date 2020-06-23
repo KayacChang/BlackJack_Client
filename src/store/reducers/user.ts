@@ -1,8 +1,9 @@
 import { User, Bet } from '../../models';
 import { UserAction, USER, BET, BetAction } from '../types';
+import { v4 } from 'uuid';
 
 const initialState: User = {
-  name: '',
+  name: v4(),
   balance: 0,
   totalBet: 0,
 };
@@ -19,7 +20,11 @@ export default function userReducer(state = initialState, action: UserAction | B
   if (type === BET.ADD) {
     const { amount } = payload as Bet;
 
-    return { ...state, balance: state.balance - amount, totalBet: state.totalBet + amount };
+    return {
+      ...state,
+      balance: state.balance - amount,
+      totalBet: state.totalBet + amount,
+    };
   }
 
   return state;

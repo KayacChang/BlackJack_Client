@@ -1,49 +1,31 @@
-import { pipe } from 'ramda';
-
-import { GAME } from '../../models';
+import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betting, join, betend, settle, dealCard, turn, updateSeats, commitBet } from '../../store/actions';
+import { betStart, betEnd, settle } from '../../store/actions';
 
-import {
-  GameProp,
-  toGame,
-  toSeats,
-  toGameState,
-  DealProp,
-  toHand,
-  EVENT,
-  TurnProp,
-  CountDownProp,
-  toSeat,
-  SeatProp,
-} from '../types';
-
-function onJoinRoom(service: Service, data: GameProp) {
-  const action = store.dispatch(join(toGame(data)));
-
-  store.dispatch(updateSeats(toSeats(data)));
-
-  return service.emit(EVENT.JOIN_ROOM, action.payload);
-}
+import { GameProp, toGame, toGameState, CountDownProp } from '../types';
 
 function onBetStart(service: Service, data: GameProp) {
-  return store.dispatch(
-    betting(
+  store.dispatch(
+    betStart(
       toGame({
         ...data,
-        state: [GAME.BET_START],
+        state: [S2C.ROUND.BET_START],
       })
     )
   );
 }
 
+function onCountDown(service: Service, { expire }: CountDownProp) {
+  console.log(expire);
+}
+
 function onBetEnd(service: Service, { state }: GameProp) {
   const { game } = store.getState();
 
-  return store.dispatch(
-    betend({
+  store.dispatch(
+    betEnd({
       ...game,
       state: toGameState(state),
     })
@@ -53,69 +35,48 @@ function onBetEnd(service: Service, { state }: GameProp) {
 function onSettle(service: Service, prop: GameProp) {
   const { game } = store.getState();
 
-  return store.dispatch(
+  store.dispatch(
     settle({
       ...game,
-      state: toGameState([GAME.SETTLE]),
+      state: toGameState([S2C.ROUND.SETTLE]),
     })
   );
 }
 
-function prefix(prop: DealProp) {
-  const cards = [...(prop.cards || []), prop.card];
+// function prefix(prop: DealProp) {
+//   const cards = [...(prop.cards || []), prop.card];
 
-  return { ...prop, cards };
-}
+//   return { ...prop, cards };
+// }
 
-function onBegin(service: Service, prop: DealProp[]) {
-  const hands = prop.map(pipe(prefix, toHand));
+// function onBegin(service: Service, prop: DealProp[]) {
+//   const hands = prop.map(pipe(prefix, toHand));
 
-  return store.dispatch(dealCard(...hands));
-}
+//   return store.dispatch(dealCard(...hands));
+// }
 
-function onDeal(service: Service, prop: DealProp) {
-  return store.dispatch(dealCard(toHand(prop)));
-}
+// function onDeal(service: Service, prop: DealProp) {
+//   return store.dispatch(dealCard(toHand(prop)));
+// }
 
-function onTurn(service: Service, { no, pile }: TurnProp) {
-  const { game } = store.getState();
+// function onTurn(service: Service, { no, pile }: TurnProp) {
+//   const { game } = store.getState();
 
-  return store.dispatch(
-    turn({
-      ...game,
-      state: toGameState([GAME.TURN, no, pile]),
-    })
-  );
-}
-
-function onUpdateSeat(service: Service, data: SeatProp[]) {
-  const hasPlayer = ({ player }: SeatProp) => Boolean(player);
-  const seats = data.filter(hasPlayer).map(toSeat);
-
-  const action = store.dispatch(updateSeats(seats));
-
-  return service.emit(EVENT.UPDATE_SEAT, action.payload);
-}
-
-function onBet(service: Service, data: any) {
-  const { bet } = store.getState();
-
-  store.dispatch(commitBet(bet.history));
-
-  return service.emit(EVENT.BET);
-}
+//   return store.dispatch(
+//     turn({
+//       ...game,
+//       state: toGameState([GAME.TURN, no, pile]),
+//     })
+//   );
+// }
 
 export default {
-  [GAME.JOIN]: onJoinRoom,
-  [GAME.UPDATE_SEAT]: onUpdateSeat,
+  [S2C.ROUND.BET_START]: onBetStart,
+  [S2C.ROUND.COUNT_DOWN]: onCountDown,
+  [S2C.ROUND.BET_END]: onBetEnd,
+  [S2C.ROUND.SETTLE]: onSettle,
 
-  [GAME.BET]: onBet,
-
-  [GAME.BETTING]: (service: Service, { expire }: CountDownProp) => console.log(expire),
-  [GAME.BET_START]: onBetStart,
-  [GAME.BET_END]: onBetEnd,
-  [GAME.BEGIN]: onBegin,
-  [GAME.DEAL]: onDeal,
-  [GAME.TURN]: onTurn,
-  [GAME.SETTLE]: onSettle,
+  // [GAME.BEGIN]: onBegin,
+  // [GAME.DEAL]: onDeal,
+  // [GAME.TURN]: onTurn,
 };

@@ -4,6 +4,7 @@ import Drawer from './components/Drawer';
 import { Trigger } from './components/Button';
 import { Settings, Info, Clock, LogOut } from 'react-feather';
 import { SettingsPage, HistoryPage, GameRulesPage } from './pages';
+import clsx from 'clsx';
 
 // ===== Menu =====
 export default function Menu() {
@@ -33,8 +34,6 @@ export default function Menu() {
     },
   ];
 
-  const _className = [styles.page, page || styles.hidden].filter(Boolean).join(' ');
-
   function onTrigger() {
     setDrawerOpen(!isDrawerOpen);
     setPage(undefined);
@@ -45,7 +44,7 @@ export default function Menu() {
       <Trigger style={{ right: 0 }} open={isDrawerOpen} onClick={onTrigger} />
 
       <div className={styles.menu}>
-        <div className={_className}>{page}</div>
+        <div className={clsx(styles.page, page || styles.hidden)}>{page}</div>
         <Drawer options={options} open={isDrawerOpen} />
       </div>
     </>

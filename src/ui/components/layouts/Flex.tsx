@@ -1,24 +1,20 @@
-import React, { PropsWithChildren, HTMLAttributes } from "react";
-import styles from "./Flex.module.scss";
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import styles from './Flex.module.scss';
+import clsx from 'clsx';
 
 type Props = PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
-export function Center({ children, className, ...props }: Props) {
-  //
-  const _className = [styles.center, className].filter(Boolean).join(" ");
 
+export function Center({ children, className, ...props }: Props) {
   return (
-    <Flex className={_className} {...props}>
+    <Flex className={clsx(styles.center, className)} {...props}>
       {children}
     </Flex>
   );
 }
 
 export function Flex({ children, className, ...props }: Props) {
-  //
-  const _className = [styles.default, className].filter(Boolean).join(" ");
-
   return (
-    <div className={_className} {...props}>
+    <div className={clsx(styles.default, className)} {...props}>
       {children}
     </div>
   );

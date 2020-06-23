@@ -1,6 +1,6 @@
 import { Bet } from '../../models';
 import { BetAction, BET } from '../types';
-import { without } from 'ramda';
+import { dropLast } from 'ramda';
 
 type BetState = {
   chosen?: Bet;
@@ -29,11 +29,8 @@ export default function betReducer(state = initialState, action: BetAction): Bet
   }
 
   if (type === BET.UNDO) {
-    const bet = payload as Bet;
-
-    const history = without([bet], state.history);
-
-    return { ...state, history };
+    //
+    return { ...state, history: dropLast(1, state.history) };
   }
 
   if (type === BET.CLEAR) {

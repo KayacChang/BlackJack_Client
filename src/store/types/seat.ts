@@ -1,4 +1,4 @@
-import { Seat } from '../../models';
+import { Seats } from '../../models';
 import { Action } from 'redux';
 import { Payload } from './base';
 
@@ -9,7 +9,7 @@ export const SEAT = Object.freeze({
   CLEAR: `${PREFIX} CLEAR`,
 });
 
-type UpdateSeatAction = Action<typeof SEAT.UPDATE> & Payload<Seat[]>;
-type ClearSeatAction = Action<typeof SEAT.CLEAR> & Payload<Seat[]>;
+type UpdateSeatAction = Action<typeof SEAT.UPDATE> & Payload<Seats>;
+type ClearSeatAction = Action<typeof SEAT.CLEAR> & Payload<undefined>;
 
 export type SeatAction = UpdateSeatAction | ClearSeatAction;

@@ -5,8 +5,6 @@ import reducer from './reducers';
 
 const middlewares = [thunkMiddleware];
 
-export type AppState = ReturnType<typeof reducer>;
-
 const store = createStore(
   //
   reducer,
@@ -16,7 +14,7 @@ const store = createStore(
 type SelectFunc<T> = (state: AppState) => T;
 type OnChangeFunc<T> = (state: T) => void;
 
-export function observe<T>(select: SelectFunc<T>, onChange: OnChangeFunc<T>) {
+function observe<T>(select: SelectFunc<T>, onChange: OnChangeFunc<T>) {
   //
   let previous: T;
 
@@ -33,4 +31,6 @@ export function observe<T>(select: SelectFunc<T>, onChange: OnChangeFunc<T>) {
   return store.subscribe(handleChange);
 }
 
+export type AppState = ReturnType<typeof reducer>;
+export { observe };
 export default store;

@@ -114,7 +114,7 @@ function placeBet(seat: SEAT) {
       return;
     }
 
-    if (user.totalBet + bet.chosen.amount > game.maxBet) {
+    if (user.totalBet + bet.chosen.amount > game.bet.max) {
       return;
     }
 

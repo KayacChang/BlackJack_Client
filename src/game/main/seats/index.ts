@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js';
-import { SEAT, Seat as SeatModel } from '../../../models';
+import { SEAT, Seats } from '../../../models';
 import Seat, { SeatState } from './seat';
 import { observe } from '../../../store';
 
@@ -11,23 +11,26 @@ type Props = {
 
 function update(seats: Container[]) {
   //
-  return function (state: SeatModel[]) {
+  function findSeat(id: string) {
+    const _id = Number(id) as SEAT;
+
+    return seats.find(({ name }) => name === SEAT[_id]);
+  }
+
+  return function (state: Seats) {
     //
-    if (state.length === 0) {
-      seats.forEach((seat) => seat.emit('statechange', SeatState.Empty));
+    for (const [id, seat] of Object.entries(state)) {
+      //
+      const found = findSeat(id);
 
-      return;
-    }
+      if (!seat.player) {
+        found?.emit('statechange', SeatState.Empty);
 
-    state.forEach(({ id, player, totalBet }) => {
-      const found = seats.find(({ name }) => name === SEAT[id]);
-
-      if (!found) {
-        return;
+        continue;
       }
 
-      found.emit('statechange', SeatState.OccupyByUser, player);
-    });
+      found?.emit('statechange', SeatState.OccupyByUser, seat.player);
+    }
   };
 }
 
@@ -51,7 +54,7 @@ function init(container: Container, meta: Props[]) {
   };
 }
 
-export default function Seats(meta: Props[]) {
+export default function (meta: Props[]) {
   const seats = new Container();
   seats.name = 'seats';
   seats.once('added', init(seats, meta));

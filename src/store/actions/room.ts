@@ -1,16 +1,16 @@
 import { Room } from '../../models';
 import { RoomAction, ROOM } from '../types';
 
-export function addRoom(...rooms: Room[]): RoomAction {
+export function addRoom(payload: Room[]): RoomAction {
   return {
     type: ROOM.ADD,
-    payload: rooms,
+    payload,
   };
 }
 
-export function editRoom(room: Room): RoomAction {
+export function editRoom(payload: Room): RoomAction {
   return {
-    type: ROOM.EDIT,
-    payload: room,
+    type: ROOM.UPDATE,
+    payload,
   };
 }
