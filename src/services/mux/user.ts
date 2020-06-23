@@ -6,27 +6,27 @@ import store from '../../store';
 import { login, update, commitBet } from '../../store/actions';
 
 function onLogin(service: Service, { user_name }: LoginProp) {
-  const res = store.dispatch(
+  store.dispatch(
     login({
       name: String(user_name),
       balance: 0,
       totalBet: 0,
     })
   );
-
-  service.emit(EVENT.LOGIN, res.payload);
 }
 
 function onUpdate(service: Service, { name, balance }: UpdateProp) {
   const { user } = store.getState();
 
-  store.dispatch(
+  const res = store.dispatch(
     update({
       ...user,
       name: String(name),
       balance: Number(balance),
     })
   );
+
+  service.emit(EVENT.UPDATE_USER, res.payload);
 }
 
 function onBet(service: Service, data: any) {

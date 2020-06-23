@@ -1,18 +1,24 @@
 import { SEAT as SEAT_ID, Seat, Bet, Seats } from '../../models';
 import { SeatAction, SEAT, BET, BetAction } from '../types';
+import { v4 } from 'uuid';
 
 const dealer: Seat = {
-  player: 'dealer',
+  player: v4(),
   bet: 0,
 };
 
+const emptySeat = () => ({
+  player: '',
+  bet: 0,
+});
+
 const initialState: Seats = {
   [SEAT_ID.DEALER]: dealer,
-  [SEAT_ID.A]: undefined,
-  [SEAT_ID.B]: undefined,
-  [SEAT_ID.C]: undefined,
-  [SEAT_ID.D]: undefined,
-  [SEAT_ID.E]: undefined,
+  [SEAT_ID.A]: emptySeat(),
+  [SEAT_ID.B]: emptySeat(),
+  [SEAT_ID.C]: emptySeat(),
+  [SEAT_ID.D]: emptySeat(),
+  [SEAT_ID.E]: emptySeat(),
 };
 
 export default function seatReducer(state = initialState, action: SeatAction | BetAction): Seats {
@@ -32,10 +38,11 @@ export default function seatReducer(state = initialState, action: SeatAction | B
   if (type === BET.ADD) {
     const { seat, amount } = payload as Bet;
 
-    const target = state[seat];
-    if (!target) {
-      throw new Error(`Seat ${seat} not existed...`);
+    if (!seat) {
+      return state;
     }
+
+    const target = state[seat];
 
     return {
       ...state,
@@ -46,10 +53,11 @@ export default function seatReducer(state = initialState, action: SeatAction | B
   if (type === BET.UNDO) {
     const { seat, amount } = payload as Bet;
 
-    const target = state[seat];
-    if (!target) {
-      throw new Error(`Seat ${seat} not existed...`);
+    if (!seat) {
+      return state;
     }
+
+    const target = state[seat];
 
     return {
       ...state,

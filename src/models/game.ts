@@ -15,7 +15,7 @@ export interface Game {
   turn?: Turn;
 }
 
-export type Seats = Record<SEAT, Seat | undefined>;
+export type Seats = Record<SEAT, Seat>;
 
 export interface Seat {
   player: string;
@@ -30,8 +30,8 @@ export interface Card {
 export interface Bet {
   chip: CHIP;
   amount: number;
-  seat: SEAT;
-  time: Date;
+  seat?: SEAT;
+  time?: Date;
 }
 
 export interface Hand {

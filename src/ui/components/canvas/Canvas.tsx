@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, HTMLProps, memo } from 'react';
 import styles from './Canvas.module.scss';
+import clsx from 'clsx';
 
 type Props = PropsWithChildren<HTMLProps<HTMLCanvasElement>>;
 
@@ -14,7 +15,7 @@ function Canvas({ children, ...props }: Props) {
     console.error(`Canvas children must be function`);
   }
 
-  return <canvas className={`${styles.shadow} ${styles.fitScreen}`} ref={init} {...props} />;
+  return <canvas className={clsx(styles.shadow, styles.fitScreen)} ref={init} {...props} />;
 }
 
 export default memo(Canvas);

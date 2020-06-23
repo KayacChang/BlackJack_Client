@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Timer from '../components/timer';
 import styles from './Bet.module.scss';
-import { CHIP, GAME } from '../../models';
+import { CHIP, GAME_STATE } from '../../models';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
 import { choose, clearBet, undoBet } from '../../store/actions';
@@ -13,26 +13,31 @@ function useUserJoin() {
   const seats = useSelector((state: AppState) => state.seat);
   const user = useSelector((state: AppState) => state.user);
 
-  return seats.some(({ player }) => user.name === player);
+  return Object.values(seats).some(({ player }) => user.name === player);
 }
 
 function useGameState() {
-  const state = useSelector((state: AppState) => state.game.state.type);
+  const state = useSelector((state: AppState) => state.game.state);
 
-  return state === GAME.BET_START;
+  return state === GAME_STATE.BETTING;
 }
 
 export default function Bet() {
   const dispatch = useDispatch();
 
-  const seats = useSelector((state: AppState) => state.seat);
   const history = useSelector((state: AppState) => state.bet.history);
   const isBetting = useGameState();
   const isUserJoin = useUserJoin();
 
   const [hasCommited, setCommited] = useState(false);
-
   useEffect(() => setCommited(false), [isBetting]);
+
+  const [opacity, setOpacity] = useState(0);
+  useEffect(() => {
+    const opacity = hasCommited ? 0.3 : isBetting && isUserJoin ? 1 : 0;
+
+    setOpacity(opacity);
+  }, [hasCommited, isBetting, isUserJoin]);
 
   function onSelect(chip: CHIP, amount: number) {
     return function () {
@@ -45,8 +50,6 @@ export default function Bet() {
   async function onClear() {
     if (!isBetting || !isUserJoin || hasCommited) return;
 
-    await Promise.all(seats.map(({ id }) => services.leaveSeat(id)));
-
     dispatch(clearBet());
   }
 
@@ -55,7 +58,7 @@ export default function Bet() {
 
     const last = history[history.length - 1];
 
-    last && dispatch(undoBet(last));
+    last && dispatch(undoBet());
   }
 
   async function onDeal() {
@@ -65,8 +68,6 @@ export default function Bet() {
 
     setCommited(true);
   }
-
-  const opacity = hasCommited ? 0.3 : isBetting && isUserJoin ? 1 : 0;
 
   return (
     <div className={styles.bet} style={{ opacity }}>

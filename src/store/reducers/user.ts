@@ -1,8 +1,9 @@
 import { User, Bet } from '../../models';
 import { UserAction, USER, BET, BetAction } from '../types';
+import { v4 } from 'uuid';
 
 const initialState: User = {
-  name: '',
+  name: v4(),
   balance: 0,
   totalBet: 0,
 };

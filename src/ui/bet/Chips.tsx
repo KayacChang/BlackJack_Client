@@ -20,7 +20,7 @@ const chips = [
 ];
 
 export default function Chips({ onSelect }: Props) {
-  const min = useSelector((state: AppState) => state.game.minBet);
+  const min = useSelector((state: AppState) => state.game.bet.min);
   const chip = useSelector((state: AppState) => state.bet.chosen?.chip);
 
   return (
