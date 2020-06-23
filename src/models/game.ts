@@ -16,10 +16,11 @@ export interface Game {
   turn?: Turn;
 }
 
+export type Seats = Record<SEAT, Seat | undefined>;
+
 export interface Seat {
-  id: SEAT;
   player: string;
-  totalBet: number;
+  bet: number;
 }
 
 export interface Card {
@@ -27,13 +28,11 @@ export interface Card {
   rank: RANK;
 }
 
-//
-
 export interface Bet {
   chip: CHIP;
   amount: number;
-  seat?: SEAT;
-  time?: Date;
+  seat: SEAT;
+  time: Date;
 }
 
 export interface Hand {

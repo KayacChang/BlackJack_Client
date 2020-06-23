@@ -19,7 +19,11 @@ export default function userReducer(state = initialState, action: UserAction | B
   if (type === BET.ADD) {
     const { amount } = payload as Bet;
 
-    return { ...state, balance: state.balance - amount, totalBet: state.totalBet + amount };
+    return {
+      ...state,
+      balance: state.balance - amount,
+      totalBet: state.totalBet + amount,
+    };
   }
 
   return state;
