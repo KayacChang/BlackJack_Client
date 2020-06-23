@@ -1,9 +1,9 @@
-import { USER } from '../../models';
+import { S2C } from '../../models';
 import Service from '../service';
 import { EVENT, LoginProp, UpdateProp } from '../types';
 
 import store from '../../store';
-import { login, update } from '../../store/actions';
+import { login, update, commitBet } from '../../store/actions';
 
 function onLogin(service: Service, { user_name }: LoginProp) {
   const res = store.dispatch(
@@ -14,13 +14,13 @@ function onLogin(service: Service, { user_name }: LoginProp) {
     })
   );
 
-  return service.emit(EVENT.LOGIN, res.payload);
+  service.emit(EVENT.LOGIN, res.payload);
 }
 
 function onUpdate(service: Service, { name, balance }: UpdateProp) {
   const { user } = store.getState();
 
-  return store.dispatch(
+  store.dispatch(
     update({
       ...user,
       name: String(name),
@@ -29,7 +29,16 @@ function onUpdate(service: Service, { name, balance }: UpdateProp) {
   );
 }
 
+function onBet(service: Service, data: any) {
+  const { bet } = store.getState();
+
+  store.dispatch(commitBet(bet.history));
+
+  return service.emit(EVENT.BET);
+}
+
 export default {
-  [USER.LOGIN]: onLogin,
-  [USER.UPDATE]: onUpdate,
+  [S2C.USER.LOGIN]: onLogin,
+  [S2C.USER.UPDATE]: onUpdate,
+  [S2C.USER.BET]: onBet,
 };

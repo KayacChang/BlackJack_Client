@@ -1,5 +1,5 @@
-import { SEAT, Seat } from '../../models';
-import { SeatProp, GameProp } from './prop';
+import { SEAT, Seat, Seats } from '../../models';
+import { SeatProp } from './prop';
 
 export function toSeatNum(no: number): SEAT {
   if (no in SEAT) {
@@ -9,11 +9,10 @@ export function toSeatNum(no: number): SEAT {
   throw new Error(`Not support seat type: ${no}`);
 }
 
-export function toSeat({ no, player, total_bet }: SeatProp): Seat {
+export function toSeat({ player, total_bet }: SeatProp): Seat {
   return {
-    id: toSeatNum(no),
     player: String(player),
-    totalBet: Number(total_bet),
+    bet: Number(total_bet),
   };
 }
 
@@ -21,6 +20,12 @@ export function isPlayerExist({ player }: SeatProp) {
   return Boolean(player);
 }
 
-export function toSeats({ seats }: GameProp) {
-  return seats.filter(isPlayerExist).map(toSeat);
+export function toSeats(seats: SeatProp[]): Seats {
+  //
+  return seats.reduce((config, { no, player, total_bet }) => {
+    //
+    config[toSeatNum(no)] = toSeat({ no, player, total_bet });
+
+    return config;
+  }, {} as Seats);
 }

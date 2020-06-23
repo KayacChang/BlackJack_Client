@@ -24,6 +24,7 @@ export enum CHIP {
 export enum GAME_STATE {
   BETTING,
   DEALING,
+  SETTLE,
 }
 
 export enum RANK {

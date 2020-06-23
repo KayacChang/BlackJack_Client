@@ -9,10 +9,9 @@ export interface Turn {
 export interface Game {
   room: number;
   round: string;
-
   bet: Range;
   state: GAME_STATE;
-
+  countdown?: number;
   turn?: Turn;
 }
 

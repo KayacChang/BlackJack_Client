@@ -1,38 +1,32 @@
-import { SERVER, Room } from '../../models';
+import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { addRoom, editRoom } from '../../store/actions';
+import { addRoom, editRoom, join, updateSeats } from '../../store/actions';
+import { GameProp, toGame, toSeats, EVENT, RoomProp, toRoom } from '../types';
 
-interface Prop {
-  id: number;
-  max_bet: number;
-  min_bet: number;
-  history: (number | string)[];
-}
-
-function toRoom({ id, max_bet, min_bet, history }: Prop): Room {
-  return {
-    id: Number(id),
-    maxBet: Number(max_bet),
-    minBet: Number(min_bet),
-    history: history.map(String),
-  };
-}
-
-function onLobby(service: Service, data: Prop[]) {
+function onLobby(service: Service, data: RoomProp[]) {
   const rooms = data.map(toRoom);
 
-  return store.dispatch(addRoom(...rooms));
+  store.dispatch(addRoom(rooms));
 }
 
-function onUpdate(service: Service, data: Prop) {
+function onUpdate(service: Service, data: RoomProp) {
   const room = toRoom(data);
 
-  return store.dispatch(editRoom(room));
+  store.dispatch(editRoom(room));
+}
+
+function onJoin(service: Service, data: GameProp) {
+  const action = store.dispatch(join(toGame(data)));
+
+  store.dispatch(updateSeats(toSeats(data.seats)));
+
+  service.emit(EVENT.JOIN_ROOM, action.payload);
 }
 
 export default {
-  [SERVER.LOBBY]: onLobby,
-  [SERVER.UPDATE_LOBBY]: onUpdate,
+  [S2C.ROOM.ADD]: onLobby,
+  [S2C.ROOM.UPDATE]: onUpdate,
+  [S2C.ROOM.JOIN]: onJoin,
 };

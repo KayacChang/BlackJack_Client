@@ -14,6 +14,7 @@ export enum ROUND {
   BET_START = 8003020,
   COUNT_DOWN = 8003006,
   BET_END = 8003021,
+  SETTLE = 8003022,
 }
 
 export enum SEAT {

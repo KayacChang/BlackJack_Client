@@ -1,3 +1,10 @@
+export interface RoomProp {
+  id: number;
+  max_bet: number;
+  min_bet: number;
+  history: (number | string)[];
+}
+
 export interface SeatProp {
   no: number;
   player: string;
