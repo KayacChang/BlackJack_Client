@@ -63,6 +63,7 @@ export function toGame({ id, round, state, max_bet, min_bet }: GameProp): Game {
     round: String(round),
     state: toGameState(state),
     turn: toTurn(state),
+    countdown: 0,
     bet: {
       max: Number(max_bet),
       min: Number(min_bet),

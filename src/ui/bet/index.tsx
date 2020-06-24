@@ -26,6 +26,8 @@ export default function Bet() {
   const dispatch = useDispatch();
 
   const history = useSelector((state: AppState) => state.bet.history);
+  const countdown = useSelector((state: AppState) => state.game.countdown);
+
   const isBetting = useGameState();
   const isUserJoin = useUserJoin();
 
@@ -76,7 +78,7 @@ export default function Bet() {
 
         <Chips onSelect={onSelect} />
 
-        <Timer />
+        <Timer total={20} countdown={countdown} />
 
         <Controls onClear={onClear} onUndo={onUndo} onDeal={onDeal} />
       </div>

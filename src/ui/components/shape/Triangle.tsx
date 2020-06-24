@@ -1,4 +1,6 @@
 import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import { useSpring, animated } from 'react-spring';
+import { Sine } from 'gsap';
 
 type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
 
@@ -10,7 +12,8 @@ type Props = Div<{
 
 export default function Triangle({ direction, len, color }: Props) {
   //
-  const diff = 12;
+  const min = 8;
+  const max = len;
 
   const styles = {
     width: 0,
@@ -18,10 +21,6 @@ export default function Triangle({ direction, len, color }: Props) {
   };
 
   if (direction === 'top') {
-    //
-    const min = Math.round(len / diff);
-    const max = len;
-
     Object.assign(styles, {
       borderTop: `${max}px solid transparent`,
       borderBottom: `${0}px solid transparent`,
@@ -31,10 +30,6 @@ export default function Triangle({ direction, len, color }: Props) {
   }
 
   if (direction === 'bottom') {
-    //
-    const min = Math.round(len / diff);
-    const max = len;
-
     Object.assign(styles, {
       borderTop: `${0}px solid transparent`,
       borderBottom: `${max}px solid transparent`,
@@ -44,10 +39,6 @@ export default function Triangle({ direction, len, color }: Props) {
   }
 
   if (direction === 'left') {
-    //
-    const min = Math.round(len / diff);
-    const max = len;
-
     Object.assign(styles, {
       borderTop: `${min}px solid transparent`,
       borderBottom: `${min}px solid transparent`,
@@ -57,10 +48,6 @@ export default function Triangle({ direction, len, color }: Props) {
   }
 
   if (direction === 'right') {
-    //
-    const min = Math.round(len / diff);
-    const max = len;
-
     Object.assign(styles, {
       borderTop: `${min}px solid transparent`,
       borderBottom: `${min}px solid transparent`,
@@ -69,5 +56,12 @@ export default function Triangle({ direction, len, color }: Props) {
     });
   }
 
-  return <div style={styles} />;
+  const anim = useSpring({
+    ...styles,
+    config: {
+      duration: 1000,
+    },
+  });
+
+  return <animated.div style={anim} />;
 }

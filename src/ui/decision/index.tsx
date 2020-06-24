@@ -2,7 +2,6 @@ import React, { ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
 import { Plus, Minus, Code } from 'react-feather';
 import styles from './Decision.module.scss';
 import { Button } from '../components/button/Button';
-import Timer from '../components/timer';
 
 type ButtonProps<T> = PropsWithChildren<T & HTMLAttributes<HTMLButtonElement>>;
 
@@ -34,7 +33,7 @@ export default function Decision() {
           <Control className={styles.split} icon={<Code />} title={'split'} />
         </div>
 
-        <Timer />
+        {/* <Timer /> */}
       </div>
     </div>
   );

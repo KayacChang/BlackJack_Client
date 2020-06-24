@@ -5,6 +5,7 @@ const initialState: Game = {
   room: 0,
   round: '',
   state: GAME_STATE.BETTING,
+  countdown: 0,
   bet: {
     max: 0,
     min: 0,
@@ -20,6 +21,15 @@ export default function gameReducer(state = initialState, action: GameAction): G
     return {
       ...state,
       ...game,
+    };
+  }
+
+  if (type === GAME.COUNT_DOWN) {
+    const countdown = payload as number;
+
+    return {
+      ...state,
+      countdown,
     };
   }
 

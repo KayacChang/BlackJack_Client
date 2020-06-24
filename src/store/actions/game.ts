@@ -20,3 +20,7 @@ export function settle(payload: Game): GameAction {
 export function turn(payload: Game): GameAction {
   return { type: GAME.TURN, payload };
 }
+
+export function countdown(payload: number): GameAction {
+  return { type: GAME.COUNT_DOWN, payload };
+}

@@ -2,9 +2,9 @@ import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betStart, betEnd, settle } from '../../store/actions';
+import { betStart, betEnd, settle, countdown, updateSeats, clearBet } from '../../store/actions';
 
-import { GameProp, toGame, toGameState, CountDownProp } from '../types';
+import { GameProp, toGame, toGameState, CountDownProp, toSeats } from '../types';
 
 function onBetStart(service: Service, data: GameProp) {
   store.dispatch(
@@ -15,10 +15,13 @@ function onBetStart(service: Service, data: GameProp) {
       })
     )
   );
+
+  store.dispatch(countdown(20));
 }
 
 function onCountDown(service: Service, { expire }: CountDownProp) {
-  console.log(expire);
+  //
+  store.dispatch(countdown(expire));
 }
 
 function onBetEnd(service: Service, { state }: GameProp) {
@@ -41,6 +44,11 @@ function onSettle(service: Service, prop: GameProp) {
       state: toGameState([S2C.ROUND.SETTLE]),
     })
   );
+
+  const seats = prop.seats.map(({ no, player }) => ({ no, player, total_bet: 0 }));
+
+  store.dispatch(updateSeats(toSeats(seats)));
+  store.dispatch(clearBet());
 }
 
 // function prefix(prop: DealProp) {

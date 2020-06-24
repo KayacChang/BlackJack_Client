@@ -11,7 +11,7 @@ export interface Game {
   round: string;
   bet: Range;
   state: GAME_STATE;
-  countdown?: number;
+  countdown: number;
   turn?: Turn;
 }
 
