@@ -1,6 +1,5 @@
 import React, { PropsWithChildren, HTMLAttributes } from 'react';
 import { useSpring, animated } from 'react-spring';
-import { Sine } from 'gsap';
 
 type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
 

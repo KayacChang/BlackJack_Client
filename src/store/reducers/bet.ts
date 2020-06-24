@@ -1,6 +1,5 @@
 import { Bet } from '../../models';
 import { BetAction, BET } from '../types';
-import { dropLast } from 'ramda';
 
 type BetState = {
   chosen?: Bet;
