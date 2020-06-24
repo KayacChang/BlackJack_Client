@@ -1,6 +1,7 @@
-import { SEAT as SEAT_ID, Seat, Bet, Seats } from '../../models';
+import { SEAT as SEAT_ID, Seat, Bet, Seats, User } from '../../models';
 import { SeatAction, SEAT, BET, BetAction } from '../types';
 import { v4 } from 'uuid';
+import { mapObjIndexed } from 'ramda';
 
 const dealer: Seat = {
   player: v4(),
@@ -62,6 +63,17 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     return {
       ...state,
       [seat]: { ...target, bet: target.bet - amount },
+    };
+  }
+
+  if (type === BET.CLEAR) {
+    const { name } = payload as User;
+
+    const newState = mapObjIndexed((seat) => (seat.player === name ? ((seat.bet = 0), seat) : seat), state);
+
+    return {
+      ...state,
+      ...newState,
     };
   }
 

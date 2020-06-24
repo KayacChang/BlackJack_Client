@@ -25,6 +25,7 @@ function useGameState() {
 export default function Bet() {
   const dispatch = useDispatch();
 
+  const user = useSelector((state: AppState) => state.user);
   const history = useSelector((state: AppState) => state.bet.history);
   const countdown = useSelector((state: AppState) => state.game.countdown);
 
@@ -52,7 +53,7 @@ export default function Bet() {
   async function onClear() {
     if (!isBetting || !isUserJoin || hasCommited) return;
 
-    dispatch(clearBet());
+    dispatch(clearBet(user));
   }
 
   function onUndo() {
@@ -60,7 +61,7 @@ export default function Bet() {
 
     const last = history[history.length - 1];
 
-    last && dispatch(undoBet());
+    last && dispatch(undoBet(last));
   }
 
   async function onDeal() {

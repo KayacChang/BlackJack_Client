@@ -29,8 +29,11 @@ export default function betReducer(state = initialState, action: BetAction): Bet
   }
 
   if (type === BET.UNDO) {
-    //
-    return { ...state, history: dropLast(1, state.history) };
+    const { time } = payload as Bet;
+
+    const history = state.history.filter((record) => record.time !== time);
+
+    return { ...state, history };
   }
 
   if (type === BET.CLEAR) {
