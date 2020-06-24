@@ -4,7 +4,7 @@ import styles from './Bet.module.scss';
 import { CHIP, GAME_STATE } from '../../models';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
-import { choose, clearBet, undoBet } from '../../store/actions';
+import { choose, clearBet, undoBet, repeatBet } from '../../store/actions';
 import services from '../../services';
 import Controls from './Controls';
 import Chips from './Chips';
@@ -26,7 +26,7 @@ export default function Bet() {
   const dispatch = useDispatch();
 
   const user = useSelector((state: AppState) => state.user);
-  const history = useSelector((state: AppState) => state.bet.history);
+  const { history, previous } = useSelector((state: AppState) => state.bet);
   const countdown = useSelector((state: AppState) => state.game.countdown);
 
   const isBetting = useGameState();
@@ -72,6 +72,12 @@ export default function Bet() {
     setCommited(true);
   }
 
+  function onRepeat() {
+    if (!isBetting || !isUserJoin || hasCommited) return;
+
+    dispatch(repeatBet(previous));
+  }
+
   return (
     <div className={styles.bet} style={{ opacity }}>
       <div>
@@ -81,7 +87,7 @@ export default function Bet() {
 
         <Timer total={20} countdown={countdown} />
 
-        <Controls onClear={onClear} onUndo={onUndo} onDeal={onDeal} />
+        <Controls onClear={onClear} onUndo={onUndo} onDeal={onDeal} onRepeat={onRepeat} />
       </div>
     </div>
   );

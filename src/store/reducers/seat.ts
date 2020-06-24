@@ -77,5 +77,25 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     };
   }
 
+  if (type === BET.REPEAT) {
+    const bets = payload as Bet[];
+
+    const newState = bets.reduce(
+      (seats, { seat, amount }) => {
+        if (seat) {
+          seats[seat].bet += amount;
+        }
+
+        return seats;
+      },
+      { ...state }
+    );
+
+    return {
+      ...state,
+      ...newState,
+    };
+  }
+
   return state;
 }

@@ -8,9 +8,10 @@ type Props = {
   onClear: () => void;
   onUndo: () => void;
   onDeal: () => void;
+  onRepeat: () => void;
 };
 
-export default function Controls({ onClear, onUndo, onDeal }: Props) {
+export default function Controls({ onClear, onUndo, onDeal, onRepeat }: Props) {
   return (
     <div className={styles.controls}>
       <Control title={'clear'} icon={<X />} onClick={onClear} />
@@ -21,7 +22,7 @@ export default function Controls({ onClear, onUndo, onDeal }: Props) {
         style={{ width: '48px', height: '48px' }}
         onClick={onDeal}
       />
-      <Control title={'repeat'} icon={<RotateCw />} />
+      <Control title={'repeat'} icon={<RotateCw />} onClick={onRepeat} />
       <Control title={'double bet'} icon={<h3>2x</h3>} />
     </div>
   );
