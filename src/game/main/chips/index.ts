@@ -43,17 +43,15 @@ function findGroupBySeatID(groups: Container[], seat: SEAT) {
   return groups.find(({ name }) => name === SEAT[seat]);
 }
 
+function removeAllChips(group: Container) {
+  group.children
+    //
+    .filter(({ name }) => name !== 'field')
+    .forEach((child) => group.removeChild(child));
+}
+
 function updateChip(groups: Container[]) {
   let pre: Bet[] = [];
-
-  function clear() {
-    groups.forEach((group) => {
-      group.children
-        //
-        .filter(({ name }) => name !== 'field')
-        .forEach((child) => group.removeChild(child));
-    });
-  }
 
   function addChip({ seat, chip }: Bet) {
     //
@@ -73,10 +71,6 @@ function updateChip(groups: Container[]) {
 
   return function onUpdate(history: Bet[]) {
     //
-    if (history.length === 0) {
-      clear();
-    }
-
     if (history.length > pre.length) {
       without(pre, history).forEach(addChip);
     }
@@ -98,7 +92,15 @@ function updateSeat(groups: Container[]) {
     for (const [id, seat] of Object.entries(seats)) {
       const group = findGroupBySeatID(groups, Number(id) as SEAT);
 
-      group && setBet(group, seat.bet);
+      if (!group) {
+        continue;
+      }
+
+      setBet(group, seat.bet);
+
+      if (seat.bet === 0) {
+        removeAllChips(group);
+      }
     }
   };
 }

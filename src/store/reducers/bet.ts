@@ -46,7 +46,7 @@ export default function betReducer(state = initialState, action: BetAction): Bet
     return { ...state, previous: bets };
   }
 
-  if (type === BET.REPEAT) {
+  if (type === BET.REPLACE) {
     const bets = payload as Bet[];
 
     return { ...state, history: bets };

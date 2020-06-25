@@ -77,19 +77,20 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     };
   }
 
-  if (type === BET.REPEAT) {
+  if (type === BET.REPLACE) {
     const bets = payload as Bet[];
 
-    const newState = bets.reduce(
-      (seats, { seat, amount }) => {
-        if (seat) {
-          seats[seat].bet += amount;
-        }
+    const newState = {} as Seats;
 
-        return seats;
-      },
-      { ...state }
-    );
+    for (const { seat, amount } of bets) {
+      if (!seat) continue;
+
+      if (!newState[seat]) {
+        newState[seat] = { ...state[seat], bet: 0 };
+      }
+
+      newState[seat].bet += amount;
+    }
 
     return {
       ...state,

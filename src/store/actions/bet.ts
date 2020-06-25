@@ -17,8 +17,8 @@ export function undoBet(payload: Bet): BetAction {
   return { type: BET.UNDO, payload };
 }
 
-export function repeatBet(payload: Bet[]): BetAction {
-  return { type: BET.REPEAT, payload };
+export function replaceBet(payload: Bet[]): BetAction {
+  return { type: BET.REPLACE, payload };
 }
 
 export function commitBet(payload: Bet[]): BetAction {
