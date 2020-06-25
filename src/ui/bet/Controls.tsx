@@ -16,28 +16,43 @@ type Props = {
 };
 
 export default function Controls({ onClear, onUndo, onDeal, onRepeat, onDouble, enable }: Props) {
+  const history = useSelector((state: AppState) => state.bet.history);
+  const isDealable = history.length > 0 && enable;
+
   const previous = useSelector((state: AppState) => state.bet.previous);
-  const isRepeatEnable = previous.length > 0 && enable;
+  const isRepeatable = previous.length > 0 && enable;
 
   return (
     <div className={styles.controls}>
       <Control title={'clear'} icon={<X />} onClick={onClear} enable={enable} />
-      <Control title={'undo'} icon={<CornerUpLeft />} onClick={onUndo} enable={enable} />
+      <Control
+        title={'undo'}
+        style={{ opacity: isDealable ? 1 : 0.3 }}
+        icon={<CornerUpLeft />}
+        onClick={onUndo}
+        enable={isDealable}
+      />
       <Control
         title={'deal'}
         icon={<img src={DEAL} alt={DEAL} />}
-        style={{ width: '48px', height: '48px' }}
+        style={{ width: '48px', height: '48px', opacity: isDealable ? 1 : 0.3 }}
         onClick={onDeal}
-        enable={enable}
+        enable={isDealable}
       />
       <Control
         title={'repeat'}
         icon={<RotateCw />}
-        style={{ opacity: isRepeatEnable ? 1 : 0.3 }}
+        style={{ opacity: isRepeatable ? 1 : 0.3 }}
         onClick={onRepeat}
-        enable={isRepeatEnable}
+        enable={isRepeatable}
       />
-      <Control title={'double bet'} icon={<h3>2x</h3>} onClick={onDouble} enable={enable} />
+      <Control
+        title={'double bet'}
+        style={{ width: '48px', height: '48px', opacity: isDealable ? 1 : 0.3 }}
+        icon={<h3>2x</h3>}
+        onClick={onDouble}
+        enable={isDealable}
+      />
     </div>
   );
 }
