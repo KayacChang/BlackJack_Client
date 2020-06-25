@@ -1,8 +1,10 @@
-import React, { useState, ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
+import React, { ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
 import style from './Status.module.scss';
 import { currency } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWallet, faCoins } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
 
 type ButtonProps<T> = PropsWithChildren<T & HTMLAttributes<HTMLButtonElement>>;
 
@@ -25,9 +27,7 @@ function Field({ icon, title, value }: FieldProps) {
 }
 
 export default function Status() {
-  //
-  const [totalBet] = useState(123456789);
-  const [balance] = useState(123456789);
+  const { balance, totalBet } = useSelector((state: AppState) => state.user);
 
   return (
     <div className={style.status}>

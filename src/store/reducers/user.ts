@@ -27,5 +27,23 @@ export default function userReducer(state = initialState, action: UserAction | B
     };
   }
 
+  if (type === BET.UNDO) {
+    const { amount } = payload as Bet;
+
+    return {
+      ...state,
+      balance: state.balance + amount,
+      totalBet: state.totalBet - amount,
+    };
+  }
+
+  if (type === BET.CLEAR) {
+    return {
+      ...state,
+      balance: state.balance + state.totalBet,
+      totalBet: 0,
+    };
+  }
+
   return state;
 }
