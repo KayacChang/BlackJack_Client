@@ -17,7 +17,9 @@ export default function Bet() {
   const { countdown } = useSelector((state: AppState) => state.game);
   const { history, previous } = useSelector((state: AppState) => state.bet);
 
-  const isBetting = countdown > 0;
+  const deadline = 1;
+
+  const isBetting = countdown > deadline;
   const isUserJoin = Object.values(seats).some(({ player }) => user.name === player);
 
   const [hasCommited, setCommited] = useState(false);
@@ -26,11 +28,18 @@ export default function Bet() {
       .filter(({ player }) => player === user.name)
       .every(({ commited }) => commited);
 
-    setCommited(isCommited);
+    setCommited(isBetting && isCommited);
   }, [isBetting, seats, user]);
 
   const [opacity, setOpacity] = useState(0);
   useEffect(() => {
+    setOpacity(0);
+
+    if (hasCommited) {
+      setOpacity(0.3);
+      return;
+    }
+
     if (!isBetting) {
       setOpacity(0);
       return;
@@ -40,16 +49,11 @@ export default function Bet() {
       setOpacity(1);
       return;
     }
-
-    if (hasCommited) {
-      setOpacity(0.3);
-      return;
-    }
   }, [hasCommited, isBetting, isUserJoin]);
 
   useEffect(() => {
     //
-    if (countdown === 1 && !hasCommited && history.length > 0) {
+    if (countdown === deadline && !hasCommited && history.length > 0) {
       onDeal();
     }
   }, [countdown, hasCommited, history]);
@@ -66,7 +70,7 @@ export default function Bet() {
 
   async function onClear() {
     const tasks = Object.entries(seats)
-      .filter(([, seat]) => seat.player === user.name)
+      .filter(([, seat]) => seat.player === user.name && !seat.commited)
       .map(([id]) => services.leaveSeat(Number(id)));
 
     await Promise.all(tasks);
@@ -82,12 +86,26 @@ export default function Bet() {
 
   async function onDeal() {
     await services.deal();
-
-    setCommited(true);
   }
 
-  function onRepeat() {
+  async function onRepeat() {
     dispatch(clearBet(user));
+
+    const tasks = previous
+      .map(({ seat }) => {
+        if (!seat) {
+          return;
+        }
+
+        if (seats[seat].player === user.name) {
+          return;
+        }
+
+        return services.joinSeat(seat);
+      })
+      .filter(Boolean) as Promise<void>[];
+
+    await Promise.all(tasks);
 
     dispatch(replaceBet(previous));
   }

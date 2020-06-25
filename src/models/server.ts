@@ -20,3 +20,7 @@ export enum ROUND {
 export enum SEAT {
   UPDATE = 8003030,
 }
+
+export enum SYSTEM {
+  ERROR = 8003091,
+}

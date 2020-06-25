@@ -33,9 +33,9 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     const newState = {} as Seats;
 
     for (const [id, seat] of Object.entries(seats)) {
-      const old = state[Number(id) as SEAT_ID];
+      const seatID = Number(id) as SEAT_ID;
 
-      newState[Number(id) as SEAT_ID] = { ...old, ...seat };
+      newState[seatID] = { ...state[seatID], ...seat };
     }
 
     return { ...state, ...newState };
@@ -112,7 +112,24 @@ export default function seatReducer(state = initialState, action: SeatAction | B
   if (type === BET.CLEAR) {
     const { name } = payload as User;
 
-    const newState = mapObjIndexed((seat) => (seat.player === name ? ((seat.bet = 0), seat) : seat), state);
+    const newState = {} as Seats;
+    for (const [id, seat] of Object.entries(state)) {
+      if (seat.player !== name) {
+        continue;
+      }
+
+      if (seat.commited) {
+        continue;
+      }
+
+      const seatID = Number(id) as SEAT_ID;
+
+      if (!newState[seatID]) {
+        newState[seatID] = { ...state[seatID] };
+      }
+
+      newState[seatID].bet = 0;
+    }
 
     return {
       ...state,

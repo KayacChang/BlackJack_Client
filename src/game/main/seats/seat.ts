@@ -106,12 +106,16 @@ function onStateChange(it: Sprite, field: Container, id: SEAT) {
   };
 }
 
-function placeBet(seat: SEAT) {
+function placeBet(id: SEAT) {
   //
   return function () {
-    const { game, bet, user } = store.getState();
+    const { game, bet, user, seat } = store.getState();
 
     if (!bet.chosen) {
+      return;
+    }
+
+    if (game.countdown <= 1 || seat[id].commited) {
       return;
     }
 
@@ -123,7 +127,7 @@ function placeBet(seat: SEAT) {
       addBet({
         ...bet.chosen,
         time: new Date(),
-        seat,
+        seat: id,
       })
     );
   };
