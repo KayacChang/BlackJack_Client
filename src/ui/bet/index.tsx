@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Timer from '../components/timer';
 import styles from './Bet.module.scss';
-import { CHIP, GAME_STATE } from '../../models';
+import { CHIP } from '../../models';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
 import { choose, clearBet, undoBet, replaceBet, addBet } from '../../store/actions';
@@ -14,10 +14,10 @@ export default function Bet() {
 
   const user = useSelector((state: AppState) => state.user);
   const seats = useSelector((state: AppState) => state.seat);
-  const { state, countdown } = useSelector((state: AppState) => state.game);
+  const { countdown } = useSelector((state: AppState) => state.game);
   const { history, previous } = useSelector((state: AppState) => state.bet);
 
-  const isBetting = state === GAME_STATE.BETTING;
+  const isBetting = countdown > 0;
   const isUserJoin = Object.values(seats).some(({ player }) => user.name === player);
 
   const [hasCommited, setCommited] = useState(false);
@@ -25,10 +25,28 @@ export default function Bet() {
 
   const [opacity, setOpacity] = useState(0);
   useEffect(() => {
-    const opacity = hasCommited ? 0.3 : isBetting && isUserJoin ? 1 : 0;
+    if (!isBetting) {
+      setOpacity(0);
+      return;
+    }
 
-    setOpacity(opacity);
+    if (hasCommited) {
+      setOpacity(0.3);
+      return;
+    }
+
+    if (isUserJoin) {
+      setOpacity(1);
+      return;
+    }
   }, [hasCommited, isBetting, isUserJoin]);
+
+  useEffect(() => {
+    //
+    if (countdown === 1 && !hasCommited && history.length > 0) {
+      services.deal().then(() => setCommited(true));
+    }
+  }, [countdown, hasCommited, history]);
 
   const enable = isBetting && isUserJoin && !hasCommited;
 

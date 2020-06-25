@@ -27,6 +27,18 @@ export default function userReducer(state = initialState, action: UserAction | B
     };
   }
 
+  if (type === BET.REPLACE) {
+    const bets = payload as Bet[];
+
+    const totalBet = bets.reduce((acc, { amount }) => acc + amount, 0);
+
+    return {
+      ...state,
+      balance: state.balance - totalBet,
+      totalBet,
+    };
+  }
+
   if (type === BET.UNDO) {
     const { amount } = payload as Bet;
 

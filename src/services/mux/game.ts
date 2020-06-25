@@ -21,7 +21,7 @@ function onBetStart(service: Service, data: GameProp) {
 
 function onCountDown(service: Service, { expire }: CountDownProp) {
   //
-  store.dispatch(countdown(expire));
+  store.dispatch(countdown(expire - 1));
 }
 
 function onBetEnd(service: Service, { state }: GameProp) {

@@ -1,4 +1,4 @@
-import { Container, Sprite, Text } from 'pixi.js';
+import { Container, Sprite } from 'pixi.js';
 import { observe } from '../../../store';
 import { Bet, SEAT, Seats } from '../../../models';
 import { without } from 'ramda';
@@ -56,6 +56,21 @@ function updateChip(groups: Container[]) {
   };
 }
 
+function updateByBet(seats: Container[]) {
+  return function (state: Seats) {
+    //
+    for (const [id, seat] of Object.entries(state)) {
+      if (seat.bet > 0) continue;
+
+      const found = findGroupBySeatID(seats, Number(id) as SEAT);
+
+      if (found) {
+        found.removeChildren();
+      }
+    }
+  };
+}
+
 function init(container: Container, meta: Props[]) {
   //
   return function onInit({ width, height }: Container) {
@@ -65,20 +80,7 @@ function init(container: Container, meta: Props[]) {
     container.addChild(...seats);
 
     observe((state) => state.bet.history, updateChip(seats));
-    observe(
-      (state) => state.seat,
-      (state: Seats) => {
-        for (const [id, seat] of Object.entries(state)) {
-          if (seat.bet === 0) {
-            const found = findGroupBySeatID(seats, Number(id) as SEAT);
-
-            if (found) {
-              found.removeChildren();
-            }
-          }
-        }
-      }
-    );
+    observe((state) => state.seat, updateByBet(seats));
   };
 }
 
