@@ -25,18 +25,20 @@ export default function Bet() {
 
   const [opacity, setOpacity] = useState(0);
   useEffect(() => {
-    if (!isBetting) {
-      setOpacity(0);
-      return;
-    }
+    setOpacity(0);
 
     if (hasCommited) {
       setOpacity(0.3);
       return;
     }
 
-    if (isUserJoin) {
+    if (isUserJoin && isBetting) {
       setOpacity(1);
+      return;
+    }
+
+    if (isBetting) {
+      setOpacity(0.3);
       return;
     }
   }, [hasCommited, isBetting, isUserJoin]);

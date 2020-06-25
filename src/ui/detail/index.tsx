@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Home } from 'react-feather';
 import { Button } from '../components/button/Button';
 import styles from './Detail.module.scss';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
 
 function Back() {
   return (
@@ -26,16 +28,16 @@ function Field({ title, value }: Props) {
 }
 
 export default function RoomDetail() {
-  const [roomID] = useState('20');
-  const [roundID] = useState('12');
-  const [range] = useState('50 - 1,000');
+  const roomID = useSelector((state: AppState) => state.game.room);
+  const roundID = useSelector((state: AppState) => state.game.round);
+  const { max, min } = useSelector((state: AppState) => state.game.bet);
 
   return (
     <div className={styles.detail}>
       <Back />
-      <Field title={'blackjack'} value={roomID} />
+      <Field title={'room'} value={String(roomID)} />
       <Field title={'round'} value={roundID} />
-      <Field title={'bet'} value={range} />
+      <Field title={'bet'} value={`${min} - ${max}`} />
     </div>
   );
 }
