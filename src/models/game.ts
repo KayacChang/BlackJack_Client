@@ -15,7 +15,7 @@ export interface Game {
   turn?: Turn;
 }
 
-export type Seats = Record<SEAT, Seat>;
+export type Seats = Record<SEAT, Seat & { commited?: boolean }>;
 
 export interface Seat {
   player: string;

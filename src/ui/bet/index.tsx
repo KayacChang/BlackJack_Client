@@ -21,14 +21,18 @@ export default function Bet() {
   const isUserJoin = Object.values(seats).some(({ player }) => user.name === player);
 
   const [hasCommited, setCommited] = useState(false);
-  useEffect(() => setCommited(false), [isBetting]);
+  useEffect(() => {
+    const isCommited = Object.values(seats)
+      .filter(({ player }) => player === user.name)
+      .every(({ commited }) => commited);
+
+    setCommited(isCommited);
+  }, [isBetting, seats, user]);
 
   const [opacity, setOpacity] = useState(0);
   useEffect(() => {
-    setOpacity(0);
-
-    if (hasCommited) {
-      setOpacity(0.3);
+    if (!isBetting) {
+      setOpacity(0);
       return;
     }
 
@@ -37,7 +41,7 @@ export default function Bet() {
       return;
     }
 
-    if (isBetting) {
+    if (hasCommited) {
       setOpacity(0.3);
       return;
     }
@@ -46,7 +50,7 @@ export default function Bet() {
   useEffect(() => {
     //
     if (countdown === 1 && !hasCommited && history.length > 0) {
-      services.deal().then(() => setCommited(true));
+      onDeal();
     }
   }, [countdown, hasCommited, history]);
 

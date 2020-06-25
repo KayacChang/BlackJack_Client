@@ -1,16 +1,18 @@
-import { SEAT as SEAT_ID, Seat, Bet, Seats, User } from '../../models';
-import { SeatAction, SEAT, BET, BetAction } from '../types';
+import { SEAT as SEAT_ID, Bet, Seats, User } from '../../models';
+import { SeatAction, SEAT, BET, BetAction, GAME } from '../types';
 import { v4 } from 'uuid';
 import { mapObjIndexed } from 'ramda';
 
-const dealer: Seat = {
+const dealer = {
   player: v4(),
   bet: 0,
+  commited: false,
 };
 
 const emptySeat = () => ({
   player: '',
   bet: 0,
+  commited: false,
 });
 
 const initialState: Seats = {
@@ -28,7 +30,25 @@ export default function seatReducer(state = initialState, action: SeatAction | B
   if (type === SEAT.UPDATE) {
     const seats = payload as Seats;
 
-    return { ...state, ...seats };
+    const newState = {} as Seats;
+
+    for (const [id, seat] of Object.entries(seats)) {
+      const old = state[Number(id) as SEAT_ID];
+
+      newState[Number(id) as SEAT_ID] = { ...old, ...seat };
+    }
+
+    return { ...state, ...newState };
+  }
+
+  if (type === GAME.BET_START) {
+    const newState = {} as Seats;
+
+    for (const [id, seat] of Object.entries(state)) {
+      newState[Number(id) as SEAT_ID] = { ...seat, commited: false };
+    }
+
+    return newState;
   }
 
   if (type === SEAT.CLEAR) {
@@ -63,6 +83,29 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     return {
       ...state,
       [seat]: { ...target, bet: target.bet - amount },
+    };
+  }
+
+  if (type === BET.COMMIT) {
+    const bets = payload as Bet[];
+
+    const newState = {} as Seats;
+
+    for (const { seat, amount } of bets) {
+      if (seat === undefined) continue;
+
+      if (!newState[seat]) {
+        newState[seat] = { ...state[seat] };
+      }
+
+      if (!newState[seat].commited) {
+        newState[seat].commited = amount > 0;
+      }
+    }
+
+    return {
+      ...state,
+      ...newState,
     };
   }
 
