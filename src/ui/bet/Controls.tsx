@@ -11,10 +11,11 @@ type Props = {
   onUndo: () => void;
   onDeal: () => void;
   onRepeat: () => void;
+  onDouble: () => void;
   enable: boolean;
 };
 
-export default function Controls({ onClear, onUndo, onDeal, onRepeat, enable }: Props) {
+export default function Controls({ onClear, onUndo, onDeal, onRepeat, onDouble, enable }: Props) {
   const previous = useSelector((state: AppState) => state.bet.previous);
   const isRepeatEnable = previous.length > 0 && enable;
 
@@ -36,7 +37,7 @@ export default function Controls({ onClear, onUndo, onDeal, onRepeat, enable }: 
         onClick={onRepeat}
         enable={isRepeatEnable}
       />
-      <Control title={'double bet'} icon={<h3>2x</h3>} enable={enable} />
+      <Control title={'double bet'} icon={<h3>2x</h3>} onClick={onDouble} enable={enable} />
     </div>
   );
 }

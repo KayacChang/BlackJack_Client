@@ -4,7 +4,7 @@ import styles from './Bet.module.scss';
 import { CHIP, GAME_STATE } from '../../models';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
-import { choose, clearBet, undoBet, replaceBet } from '../../store/actions';
+import { choose, clearBet, undoBet, replaceBet, addBet } from '../../store/actions';
 import services from '../../services';
 import Controls from './Controls';
 import Chips from './Chips';
@@ -58,7 +58,14 @@ export default function Bet() {
 
   function onRepeat() {
     dispatch(clearBet(user));
+
     dispatch(replaceBet(previous));
+  }
+
+  function onDouble() {
+    dispatch(clearBet(user));
+
+    [...history, ...history].forEach((bet) => dispatch(addBet(bet)));
   }
 
   return (
@@ -70,7 +77,14 @@ export default function Bet() {
 
         <Timer total={20} countdown={countdown} />
 
-        <Controls enable={enable} onClear={onClear} onUndo={onUndo} onDeal={onDeal} onRepeat={onRepeat} />
+        <Controls
+          enable={enable}
+          onClear={onClear}
+          onUndo={onUndo}
+          onDeal={onDeal}
+          onRepeat={onRepeat}
+          onDouble={onDouble}
+        />
       </div>
     </div>
   );
