@@ -13,23 +13,7 @@ type Props = {
 
 function Group(id: SEAT, x: number, y: number) {
   //
-  const name = SEAT[id];
-
-  const group = Object.assign(new Container(), { name, x, y });
-
-  const field = new Text('', {
-    fontFamily: 'Arial',
-    fontWeight: 'bold',
-    fill: 0xffffff,
-    fontSize: 48,
-  });
-  field.name = 'field';
-  field.x = 120;
-  field.anchor.set(0, 0.5);
-
-  group.addChild(field);
-
-  return group;
+  return Object.assign(new Container(), { name: SEAT[id], x, y });
 }
 
 function transIn(chip: Sprite) {
@@ -41,13 +25,6 @@ function transIn(chip: Sprite) {
 function findGroupBySeatID(groups: Container[], seat: SEAT) {
   //
   return groups.find(({ name }) => name === SEAT[seat]);
-}
-
-function removeAllChips(group: Container) {
-  group.children
-    //
-    .filter(({ name }) => name !== 'field')
-    .forEach((child) => group.removeChild(child));
 }
 
 function updateChip(groups: Container[]) {
@@ -79,32 +56,6 @@ function updateChip(groups: Container[]) {
   };
 }
 
-function updateSeat(groups: Container[]) {
-  //
-  function setBet(group: Container, totalBet: number) {
-    const field = group.getChildByName('field') as Text;
-
-    field.text = totalBet ? String(totalBet) : '';
-  }
-
-  return function onUpdate(seats: Seats) {
-    //
-    for (const [id, seat] of Object.entries(seats)) {
-      const group = findGroupBySeatID(groups, Number(id) as SEAT);
-
-      if (!group) {
-        continue;
-      }
-
-      setBet(group, seat.bet);
-
-      if (seat.bet === 0) {
-        removeAllChips(group);
-      }
-    }
-  };
-}
-
 function init(container: Container, meta: Props[]) {
   //
   return function onInit({ width, height }: Container) {
@@ -114,7 +65,20 @@ function init(container: Container, meta: Props[]) {
     container.addChild(...seats);
 
     observe((state) => state.bet.history, updateChip(seats));
-    observe((state) => state.seat, updateSeat(seats));
+    observe(
+      (state) => state.seat,
+      (state: Seats) => {
+        for (const [id, seat] of Object.entries(state)) {
+          if (seat.bet === 0) {
+            const found = findGroupBySeatID(seats, Number(id) as SEAT);
+
+            if (found) {
+              found.removeChildren();
+            }
+          }
+        }
+      }
+    );
   };
 }
 

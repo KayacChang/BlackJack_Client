@@ -32,7 +32,7 @@ export default function Seat({ id, x, y }: Prop) {
   it.scale.set(0.75);
 
   const field = Field();
-  field.y = 160;
+  field.y = 170;
   it.addChild(field);
 
   it.on('statechange', onStateChange(it, field, id));
@@ -45,6 +45,7 @@ function Field() {
 
   const background = new Sprite(RES.get('FIELD').texture);
   background.anchor.set(0.5);
+  background.tint = 0x333333;
   it.addChild(background);
 
   const field = new Text('', {

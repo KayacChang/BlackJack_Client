@@ -4,6 +4,7 @@ import Seats from './seats';
 import Game from './game';
 import Chips from './chips';
 import { SEAT } from '../../models';
+import Bets from './bets';
 
 const seatMeta = [
   { id: SEAT.A, x: 15 / 100, y: 58 / 100 },
@@ -25,6 +26,9 @@ export default function Scene(app: Application): Container {
 
   const chips = Chips(seatMeta);
   scene.addChild(chips);
+
+  const bets = Bets(seatMeta);
+  scene.addChild(bets);
 
   const game = Game();
   scene.addChild(game);
