@@ -27,7 +27,8 @@ function Field({ icon, title, value }: FieldProps) {
 }
 
 export default function Status() {
-  const { balance, totalBet } = useSelector((state: AppState) => state.user);
+  const balance = useSelector((state: AppState) => state.user.balance);
+  const totalBet = useSelector((state: AppState) => state.user.totalBet);
 
   return (
     <div className={style.status}>
