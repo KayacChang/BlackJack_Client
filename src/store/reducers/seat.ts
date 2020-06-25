@@ -39,7 +39,7 @@ export default function seatReducer(state = initialState, action: SeatAction | B
   if (type === BET.ADD) {
     const { seat, amount } = payload as Bet;
 
-    if (!seat) {
+    if (seat === undefined) {
       return state;
     }
 
@@ -54,7 +54,7 @@ export default function seatReducer(state = initialState, action: SeatAction | B
   if (type === BET.UNDO) {
     const { seat, amount } = payload as Bet;
 
-    if (!seat) {
+    if (seat === undefined) {
       return state;
     }
 
@@ -83,7 +83,7 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     const newState = {} as Seats;
 
     for (const { seat, amount } of bets) {
-      if (!seat) continue;
+      if (seat === undefined) continue;
 
       if (!newState[seat]) {
         newState[seat] = { ...state[seat], bet: 0 };

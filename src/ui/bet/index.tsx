@@ -59,6 +59,12 @@ export default function Bet() {
   }
 
   async function onClear() {
+    const tasks = Object.entries(seats)
+      .filter(([, seat]) => seat.player === user.name)
+      .map(([id]) => services.leaveSeat(Number(id)));
+
+    await Promise.all(tasks);
+
     dispatch(clearBet(user));
   }
 

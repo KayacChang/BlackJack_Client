@@ -32,7 +32,7 @@ function updateChip(groups: Container[]) {
 
   function addChip({ seat, chip }: Bet) {
     //
-    if (!seat) {
+    if (seat === undefined) {
       return;
     }
 
