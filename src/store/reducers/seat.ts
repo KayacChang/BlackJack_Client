@@ -1,7 +1,6 @@
 import { SEAT as SEAT_ID, Bet, Seats, User } from '../../models';
 import { SeatAction, SEAT, BET, BetAction, GAME } from '../types';
 import { v4 } from 'uuid';
-import { mapObjIndexed } from 'ramda';
 
 const dealer = {
   player: v4(),

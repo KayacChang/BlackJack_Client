@@ -91,19 +91,17 @@ export default function Bet() {
   async function onRepeat() {
     dispatch(clearBet(user));
 
-    const tasks = previous
-      .map(({ seat }) => {
-        if (!seat) {
-          return;
-        }
+    const tasks = previous.map(({ seat }) => {
+      if (!seat) {
+        return Promise.resolve();
+      }
 
-        if (seats[seat].player === user.name) {
-          return;
-        }
+      if (seats[seat].player === user.name) {
+        return Promise.resolve();
+      }
 
-        return services.joinSeat(seat);
-      })
-      .filter(Boolean) as Promise<void>[];
+      return services.joinSeat(seat);
+    });
 
     await Promise.all(tasks);
 
