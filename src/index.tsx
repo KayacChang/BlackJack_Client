@@ -9,7 +9,7 @@ import service from './services';
 import './index.scss';
 
 import store from './store';
-import { getToken } from './utils';
+import { getURLParam } from './utils';
 
 async function main() {
   //
@@ -18,8 +18,8 @@ async function main() {
     gsap.init(),
     service.init({
       token: `Bearer ${
-        await getToken()
-        // getURLParam('token')
+        // await getToken()
+        getURLParam('token')
       }`,
       game_token: ``,
       game_id: `209B407F0F9751E3B87751FD8C99EDC9`,

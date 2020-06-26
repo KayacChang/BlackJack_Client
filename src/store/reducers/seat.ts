@@ -40,7 +40,7 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     return { ...state, ...newState };
   }
 
-  if (type === GAME.BET_START) {
+  if (type === GAME.SETTLE) {
     const newState = {} as Seats;
 
     for (const [id, seat] of Object.entries(state)) {
