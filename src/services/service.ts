@@ -23,8 +23,6 @@ export default class Service extends EventEmitter {
   async connect(token: Token) {
     this.token = token;
 
-    await new Promise((resolve) => (this.socket.onopen = resolve));
-
     this.socket.onmessage = (event) => this.onMessage(event);
 
     return login(this);
