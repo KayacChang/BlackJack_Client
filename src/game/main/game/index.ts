@@ -91,11 +91,31 @@ function Scores(): Record<SEAT, number> {
   };
 }
 
+function timer(func: (pass: number) => void) {
+  let start = performance.now();
+
+  function handle() {
+    if (document.hidden) {
+      start = performance.now();
+
+      return;
+    }
+
+    const pass = performance.now() - start;
+
+    func(pass);
+  }
+
+  handle();
+
+  document.addEventListener('visibilitychange', handle);
+
+  return () => document.removeEventListener('visibilitychange', handle);
+}
+
 function state(paths: Container, pokers: Container, scoresGroup: Container) {
   let pre = Hands();
   let scores = Scores();
-
-  let time: gsap.core.Timeline;
 
   function getPath(id: SEAT) {
     const path = paths.getChildByName(String(id)) as Path;
@@ -136,35 +156,41 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       return 0;
     });
 
-    time = gsap.timeline();
+    const time = gsap.timeline();
 
     for (const { id, card, points } of hands) {
       const { suit, rank } = card;
 
       const poker = new Poker(suit, rank);
-
-      pre[id].push(card);
-      scores[id] = Math.max(scores[id], points);
+      pokers.addChild(poker);
+      poker.alpha = 0;
 
       time.add(() => {
-        pokers.addChild(poker);
+        gsap.to(poker, { alpha: 1 });
+
+        pre[id].push(card);
+        scores[id] = Math.max(scores[id], points);
 
         return getPath(id).attach(poker);
       });
     }
 
-    await time;
+    const clear = timer((pass) => time.seek(pass / 1000, false));
 
-    for (const [id, score] of Object.entries(scores)) {
-      if (score === 0) continue;
+    time.call(() => {
+      clear();
 
-      const view = Score(score);
-      view.name = id;
-      const { x, y } = config[Number(id) as SEAT];
-      view.position.set(x, y + 75);
+      for (const [id, score] of Object.entries(scores)) {
+        if (score === 0) continue;
 
-      scoresGroup.removeChild(scoresGroup.getChildByName(id));
-      scoresGroup.addChild(view);
-    }
+        const view = Score(score);
+        view.name = id;
+        const { x, y } = config[Number(id) as SEAT];
+        view.position.set(x, y + 75);
+
+        scoresGroup.removeChild(scoresGroup.getChildByName(id));
+        scoresGroup.addChild(view);
+      }
+    });
   };
 }
