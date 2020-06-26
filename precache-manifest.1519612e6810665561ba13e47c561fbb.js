@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "faeaeddc874b6ee8f7d05ce68fcd922c",
+    "revision": "49f72c2480692aa4ee2109790b0a6d18",
     "url": "/blackjack/index.html"
   },
   {
-    "revision": "4d4d6310a5b2f3f8d61d",
-    "url": "/blackjack/static/css/main.a2ae5fc1.chunk.css"
+    "revision": "8708633f79b2f18641e5",
+    "url": "/blackjack/static/css/main.6ddf690e.chunk.css"
   },
   {
-    "revision": "82f9eb2f6cf8a8951b71",
-    "url": "/blackjack/static/js/2.ccf3d886.chunk.js"
+    "revision": "b425c345dd746d762d66",
+    "url": "/blackjack/static/js/2.4d03bf48.chunk.js"
   },
   {
-    "revision": "26620a58703d3f34ed7c488f154604fb",
-    "url": "/blackjack/static/js/2.ccf3d886.chunk.js.LICENSE.txt"
+    "revision": "a9daa8185d152d18b5b9c067ccbc8d12",
+    "url": "/blackjack/static/js/2.4d03bf48.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "4d4d6310a5b2f3f8d61d",
-    "url": "/blackjack/static/js/main.8e3d4259.chunk.js"
+    "revision": "8708633f79b2f18641e5",
+    "url": "/blackjack/static/js/main.ac241469.chunk.js"
   },
   {
     "revision": "beb09d679b872bdd8bfa",
@@ -252,8 +252,24 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/blackjack/static/media/back.606a4553.png"
   },
   {
+    "revision": "5841f4f4170f879b842879d5022b4604",
+    "url": "/blackjack/static/media/black.5841f4f4.png"
+  },
+  {
+    "revision": "5c702a50a85ab61c0e50e3a33d578562",
+    "url": "/blackjack/static/media/black.5c702a50.png"
+  },
+  {
     "revision": "6e7fab6e3eb91dab58705c49a200a6fd",
     "url": "/blackjack/static/media/blackjack.6e7fab6e.png"
+  },
+  {
+    "revision": "56238518d3ecbbec05e88297ba9160a3",
+    "url": "/blackjack/static/media/blue.56238518.png"
+  },
+  {
+    "revision": "d27c3703318d880ed605a516370f777a",
+    "url": "/blackjack/static/media/blue.d27c3703.png"
   },
   {
     "revision": "5e98861f6ef1ce225121abfb3f418166",
@@ -264,8 +280,32 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/blackjack/static/media/gray.568b6b82.jpg"
   },
   {
+    "revision": "5fdd45ca301cd4078e46a07bd80d235c",
+    "url": "/blackjack/static/media/green.5fdd45ca.png"
+  },
+  {
+    "revision": "6c954ac87722ed932f73299b06050026",
+    "url": "/blackjack/static/media/green.6c954ac8.png"
+  },
+  {
     "revision": "c712edc7070b5575dc348cadb0b51a9e",
     "url": "/blackjack/static/media/green.c712edc7.jpg"
+  },
+  {
+    "revision": "4fc2e8e747787f4d6b98a7df853db374",
+    "url": "/blackjack/static/media/purple.4fc2e8e7.png"
+  },
+  {
+    "revision": "5ccb86d6b62b915b35b855d7bec3f020",
+    "url": "/blackjack/static/media/purple.5ccb86d6.png"
+  },
+  {
+    "revision": "26840b598b82f67977fdd3a9452fc553",
+    "url": "/blackjack/static/media/red.26840b59.png"
+  },
+  {
+    "revision": "bbae36a3babcfd9b41c8e040f9b30818",
+    "url": "/blackjack/static/media/red.bbae36a3.png"
   },
   {
     "revision": "c5a286587596a1cbdc99968211ccdcc0",
@@ -274,5 +314,13 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "94666778abdd2a6adcd1583a7a0b90cb",
     "url": "/blackjack/static/media/table_red.94666778.jpg"
+  },
+  {
+    "revision": "5ae963ea3e8f5544e29c2ab9e7b3139f",
+    "url": "/blackjack/static/media/yellow.5ae963ea.png"
+  },
+  {
+    "revision": "d7d7aeba490bda2addd2f44a72557ddb",
+    "url": "/blackjack/static/media/yellow.d7d7aeba.png"
   }
 ]);
