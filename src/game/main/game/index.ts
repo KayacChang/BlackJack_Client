@@ -4,6 +4,7 @@ import { Hand, Card, SEAT } from '../../../models';
 import Path from './Path';
 import Poker from './Poker';
 import GameText from '../text';
+import gsap from 'gsap';
 
 const dealPoint = { x: 2515, y: 160 };
 
@@ -94,6 +95,8 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
   let pre = Hands();
   let scores = Scores();
 
+  let time: gsap.core.Timeline;
+
   function getPath(id: SEAT) {
     const path = paths.getChildByName(String(id)) as Path;
 
@@ -133,18 +136,24 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       return 0;
     });
 
+    time = gsap.timeline();
+
     for (const { id, card, points } of hands) {
       const { suit, rank } = card;
 
       const poker = new Poker(suit, rank);
 
-      pokers.addChild(poker);
-
       pre[id].push(card);
       scores[id] = Math.max(scores[id], points);
 
-      await getPath(id).attach(poker);
+      time.add(() => {
+        pokers.addChild(poker);
+
+        return getPath(id).attach(poker);
+      });
     }
+
+    await time;
 
     for (const [id, score] of Object.entries(scores)) {
       if (score === 0) continue;
