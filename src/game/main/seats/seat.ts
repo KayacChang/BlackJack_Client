@@ -1,10 +1,11 @@
-import { Sprite, Container, Text } from 'pixi.js';
+import { Sprite, Container } from 'pixi.js';
 import RES from '../../assets';
 import { SEAT } from '../../../models';
 import { throttleBy } from '../../../utils';
 import services from '../../../services';
 import store from '../../../store';
 import { addBet } from '../../../store/actions';
+import GameText from '../text';
 
 interface Prop {
   id: SEAT;
@@ -48,12 +49,7 @@ function Field() {
   background.tint = 0x333333;
   it.addChild(background);
 
-  const field = new Text('', {
-    fontWeight: 'bold',
-    fontFamily: 'Arial',
-    fill: 0xffffff,
-    fontSize: 48,
-  });
+  const field = GameText('');
   field.anchor.set(0.5);
   it.addChild(field);
 

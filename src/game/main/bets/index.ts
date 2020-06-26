@@ -2,6 +2,7 @@ import { Container, Text, Sprite } from 'pixi.js';
 import { SEAT, Seats } from '../../../models';
 import RES from '../../assets';
 import { observe } from '../../../store';
+import GameText from '../text';
 
 type Props = {
   id: SEAT;
@@ -52,12 +53,7 @@ function Bet(id: SEAT, x: number, y: number) {
   background.tint = 0xf0aa0a;
   it.addChild(background);
 
-  const field = new Text('', {
-    fontFamily: 'Arial',
-    fontWeight: 'bold',
-    fill: 0xffffff,
-    fontSize: 48,
-  });
+  const field = GameText('');
   field.name = 'field';
   field.anchor.set(0.5);
 

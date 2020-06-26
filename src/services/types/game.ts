@@ -14,10 +14,11 @@ export function toRoom({ id, max_bet, min_bet, history }: RoomProp): Room {
   };
 }
 
-export function toHand({ no, card }: DealProp): Hand {
+export function toHand({ no, card, points }: DealProp): Hand {
   return {
     id: toSeatNum(no),
     card: toCard(card),
+    points: Number(points),
   };
 }
 
