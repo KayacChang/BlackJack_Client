@@ -36,7 +36,7 @@ export interface Bet {
 
 export interface Hand {
   id: SEAT;
-  cards: Card[];
+  card: Card;
 }
 
 export interface Pair {

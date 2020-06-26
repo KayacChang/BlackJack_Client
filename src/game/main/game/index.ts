@@ -2,7 +2,7 @@ import { Container } from 'pixi.js';
 import Paths from '../path';
 import { observe } from '../../../store';
 import { Hand, Card, SEAT } from '../../../models';
-import { propEq, without } from 'ramda';
+import { propEq } from 'ramda';
 import Path from '../path/Path';
 import Poker from './Poker';
 
@@ -37,45 +37,34 @@ function state(paths: Container, pokers: Container) {
   //
   let pre = Hands();
 
-  function toHands(hands: Hand[]) {
-    //
-    return hands.reduce((config, { id, cards }) => {
-      config[id] = cards;
-
-      return config;
-    }, Hands());
-  }
-
   function getPath(id: SEAT) {
     const found = paths.children.find(propEq('name', String(id))) as Container;
 
     const next = pre[id].length;
 
-    console.log(next);
-
     return found.children[next] as Path;
   }
 
-  return function update(hands: Hand[]) {
+  return async function update(hands: Hand[]) {
     //
     if (hands.length === 0) {
+      pre = Hands();
+
       pokers.removeChildren();
     }
 
-    for (const { id, cards } of hands) {
-      //
-      const diff = without(pre[id], cards);
+    hands = hands.sort((a, b) => b.id - a.id);
 
-      for (const { suit, rank } of diff) {
-        //
-        const poker = new Poker(suit, rank);
+    for (const { id, card } of hands) {
+      const { suit, rank } = card;
 
-        pokers.addChild(poker);
+      const poker = new Poker(suit, rank);
 
-        getPath(id).attach(poker);
-      }
+      pokers.addChild(poker);
+
+      await getPath(id).attach(poker);
+
+      pre[id].push(card);
     }
-
-    pre = toHands(hands);
   };
 }

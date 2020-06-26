@@ -17,9 +17,7 @@ export default function Bet() {
   const { countdown } = useSelector((state: AppState) => state.game);
   const { history, previous } = useSelector((state: AppState) => state.bet);
 
-  const deadline = 1;
-
-  const isBetting = countdown > deadline;
+  const isBetting = countdown > 1;
   const isUserJoin = Object.values(seats).some(({ player }) => user.name === player);
 
   const [hasCommited, setCommited] = useState(false);
@@ -53,7 +51,7 @@ export default function Bet() {
 
   useEffect(() => {
     //
-    if (countdown === deadline && !hasCommited && history.length > 0) {
+    if (countdown === 2 && !hasCommited && history.length > 0) {
       onDeal();
     }
   }, [countdown, hasCommited, history]);

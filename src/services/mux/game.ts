@@ -2,9 +2,10 @@ import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betStart, betEnd, settle, countdown, clearBet } from '../../store/actions';
+import { betStart, betEnd, settle, countdown, clearBet, dealCard } from '../../store/actions';
 
-import { GameProp, toGame, toGameState, CountDownProp } from '../types';
+import { GameProp, toGame, toGameState, CountDownProp, DealProp, toHand } from '../types';
+import { pipe } from 'ramda';
 
 function onBetStart(service: Service, data: GameProp) {
   store.dispatch(
@@ -48,21 +49,21 @@ function onSettle(service: Service, prop: GameProp) {
   store.dispatch(clearBet(user));
 }
 
-// function prefix(prop: DealProp) {
-//   const cards = [...(prop.cards || []), prop.card];
+function prefix(prop: DealProp) {
+  const cards = [...(prop.cards || []), prop.card];
 
-//   return { ...prop, cards };
-// }
+  return { ...prop, cards };
+}
 
-// function onBegin(service: Service, prop: DealProp[]) {
-//   const hands = prop.map(pipe(prefix, toHand));
+function onBegin(service: Service, prop: DealProp[]) {
+  const hands = prop.map(pipe(prefix, toHand));
 
-//   return store.dispatch(dealCard(...hands));
-// }
+  return store.dispatch(dealCard(...hands));
+}
 
-// function onDeal(service: Service, prop: DealProp) {
-//   return store.dispatch(dealCard(toHand(prop)));
-// }
+function onDeal(service: Service, prop: DealProp) {
+  return store.dispatch(dealCard(toHand(prop)));
+}
 
 // function onTurn(service: Service, { no, pile }: TurnProp) {
 //   const { game } = store.getState();
@@ -80,6 +81,9 @@ export default {
   [S2C.ROUND.COUNT_DOWN]: onCountDown,
   [S2C.ROUND.BET_END]: onBetEnd,
   [S2C.ROUND.SETTLE]: onSettle,
+
+  [S2C.ROUND.BEGIN]: onBegin,
+  [S2C.ROUND.DEAL]: onDeal,
 
   // [GAME.BEGIN]: onBegin,
   // [GAME.DEAL]: onDeal,
