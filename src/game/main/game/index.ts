@@ -103,7 +103,7 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
     const nextX = 50;
 
     const end = {
-      x: target.x + offsetX + nextX * pre[id].length,
+      x: target.x + offsetX + nextX * (pre[id].length - 1),
       y: target.y,
     };
 
@@ -119,6 +119,8 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       scores = Scores();
       pokers.removeChildren();
       scoresGroup.removeChildren();
+
+      return;
     }
 
     hands = hands.sort((a, b) => {
@@ -138,10 +140,10 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
 
       pokers.addChild(poker);
 
-      await getPath(id).attach(poker);
-
       pre[id].push(card);
       scores[id] = Math.max(scores[id], points);
+
+      await getPath(id).attach(poker);
     }
 
     for (const [id, score] of Object.entries(scores)) {
