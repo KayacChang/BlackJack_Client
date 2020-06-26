@@ -8,12 +8,20 @@ import { Vec2 } from '../../../models';
 
 export default class Path extends Graphics {
   //
-  points: Vec2[];
+  tint = 0x007cff;
 
-  constructor(points: Vec2[]) {
-    super();
+  private _points: Vec2[] = [];
+  get points(): Vec2[] {
+    return this._points;
+  }
+  set points(points: Vec2[]) {
+    this._points = points;
 
-    this.points = points;
+    if (points.length <= 1) {
+      return;
+    }
+
+    this.clear();
 
     // Start
     const start = points[0] as Point;
@@ -28,14 +36,10 @@ export default class Path extends Graphics {
 
   drawLine(points: Vec2[]) {
     //
-    if (points.length <= 1) {
-      return;
-    }
-
     if (points.length <= 2) {
       const [start, end] = points as Point[];
 
-      line(start, end, this);
+      line({ start, end }, this);
 
       return;
     }

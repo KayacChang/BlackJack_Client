@@ -1,9 +1,12 @@
 import { Graphics, Point } from 'pixi.js';
 
-export function line(start: Point, end: Point, it: Graphics) {
-  const color = 0x000000;
-  const width = 5;
-
+type Line = {
+  start: Point;
+  end: Point;
+  color?: number;
+  width?: number;
+};
+export function line({ start, end, color = 0xffffff, width = 5 }: Line, it: Graphics) {
   return (
     it
       //
@@ -14,7 +17,7 @@ export function line(start: Point, end: Point, it: Graphics) {
 }
 
 export function circle(center: Point, it: Graphics) {
-  const color = 0x000000;
+  const color = 0xffffff;
   const radius = 5;
 
   return (
@@ -27,7 +30,7 @@ export function circle(center: Point, it: Graphics) {
 }
 
 export function bezierCurve(start: Point, controlA: Point, controlB: Point, end: Point, it: Graphics) {
-  const color = 0x000000;
+  const color = 0xffffff;
   const width = 5;
 
   return (

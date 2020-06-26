@@ -1,17 +1,68 @@
 import { Container } from 'pixi.js';
-import Paths from '../path';
 import { observe } from '../../../store';
 import { Hand, Card, SEAT } from '../../../models';
-import { propEq } from 'ramda';
-import Path from '../path/Path';
+import Path from './Path';
 import Poker from './Poker';
+
+const config = {
+  //
+  [SEAT.A]: [
+    { x: 2515, y: 160 },
+    { x: 443 - 100, y: 630 },
+  ],
+
+  //
+  [SEAT.B]: [
+    { x: 2515, y: 160 },
+    { x: 888 - 100, y: 880 },
+  ],
+
+  //
+  [SEAT.C]: [
+    { x: 2515, y: 160 },
+    { x: 1480 - 100, y: 980 },
+  ],
+
+  //
+  [SEAT.D]: [
+    { x: 2515, y: 160 },
+    { x: 2072 - 100, y: 880 },
+  ],
+
+  //
+  [SEAT.E]: [
+    { x: 2515, y: 160 },
+    { x: 2515 - 100, y: 630 },
+  ],
+
+  //
+  [SEAT.DEALER]: [
+    { x: 2515, y: 160 },
+    { x: 1480 - 100, y: 330 },
+  ],
+};
+
+function Paths() {
+  const container = new Container();
+  container.name = 'paths';
+
+  for (const [id, paths] of Object.entries(config)) {
+    const path = new Path();
+
+    path.name = id;
+    path.points = paths;
+
+    container.addChild(path);
+  }
+
+  return container;
+}
 
 export default function Game() {
   const container = new Container();
   container.name = 'game';
 
   const paths = Paths();
-  // container.addChild(paths);
 
   const pokers = new Container();
   pokers.name = 'pokers';
@@ -37,12 +88,16 @@ function state(paths: Container, pokers: Container) {
   //
   let pre = Hands();
 
+  const offsetX = 50;
+
   function getPath(id: SEAT) {
-    const found = paths.children.find(propEq('name', String(id))) as Container;
+    const path = paths.getChildByName(String(id)) as Path;
 
-    const next = pre[id].length;
+    const [start, end] = config[id];
 
-    return found.children[next] as Path;
+    path.points = [start, { x: end.x + offsetX * pre[id].length, y: end.y }];
+
+    return path;
   }
 
   return async function update(hands: Hand[]) {
