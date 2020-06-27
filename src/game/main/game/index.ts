@@ -5,6 +5,7 @@ import Path from './Path';
 import Poker from './Poker';
 import GameText from '../text';
 import gsap from 'gsap';
+import { whenVisibilityChange } from '../../../utils';
 
 const dealPoint = { x: 2515, y: 160 };
 
@@ -91,49 +92,29 @@ function Scores(): Record<SEAT, number> {
   };
 }
 
-function timer(func: (pass: number) => void) {
-  let start = performance.now();
+function getPath(paths: Container, id: SEAT, nextIdx: number) {
+  const path = paths.getChildByName(String(id)) as Path;
 
-  function handle() {
-    if (document.hidden) {
-      start = performance.now();
+  const target = config[id];
 
-      return;
-    }
+  const offsetX = -100;
+  const nextX = 50;
 
-    const pass = performance.now() - start;
+  const end = {
+    x: target.x + offsetX + nextX * nextIdx,
+    y: target.y,
+  };
 
-    func(pass);
-  }
+  path.points = [dealPoint, end];
 
-  handle();
-
-  document.addEventListener('visibilitychange', handle);
-
-  return () => document.removeEventListener('visibilitychange', handle);
+  return path;
 }
 
 function state(paths: Container, pokers: Container, scoresGroup: Container) {
   let pre = Hands();
   let scores = Scores();
 
-  function getPath(id: SEAT) {
-    const path = paths.getChildByName(String(id)) as Path;
-
-    const target = config[id];
-
-    const offsetX = -100;
-    const nextX = 50;
-
-    const end = {
-      x: target.x + offsetX + nextX * (pre[id].length - 1),
-      y: target.y,
-    };
-
-    path.points = [dealPoint, end];
-
-    return path;
-  }
+  let outer: gsap.core.Timeline;
 
   return async function update(hands: Hand[]) {
     //
@@ -156,41 +137,43 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       return 0;
     });
 
-    const time = gsap.timeline();
+    if (outer) {
+      outer.seek(outer.endTime(), false);
+    }
+
+    outer = gsap.timeline();
 
     for (const { id, card, points } of hands) {
+      //
       const { suit, rank } = card;
 
       const poker = new Poker(suit, rank);
       pokers.addChild(poker);
-      poker.alpha = 0;
 
-      time.add(() => {
-        gsap.to(poker, { alpha: 1 });
+      pre[id].push(card);
+      scores[id] = Math.max(scores[id], points);
 
-        pre[id].push(card);
-        scores[id] = Math.max(scores[id], points);
+      const path = getPath(paths, id, pre[id].length - 1);
 
-        return getPath(id).attach(poker);
-      });
+      outer.add(path.attach(poker));
     }
 
-    const clear = timer((pass) => time.seek(pass / 1000, false));
+    const clear = whenVisibilityChange((pass) => outer.seek(pass / 1000, false));
 
-    time.call(() => {
-      clear();
+    await outer;
 
-      for (const [id, score] of Object.entries(scores)) {
-        if (score === 0) continue;
+    clear();
 
-        const view = Score(score);
-        view.name = id;
-        const { x, y } = config[Number(id) as SEAT];
-        view.position.set(x, y + 75);
+    for (const [id, score] of Object.entries(scores)) {
+      if (score === 0) continue;
 
-        scoresGroup.removeChild(scoresGroup.getChildByName(id));
-        scoresGroup.addChild(view);
-      }
-    });
+      const view = Score(score);
+      view.name = id;
+      const { x, y } = config[Number(id) as SEAT];
+      view.position.set(x, y + 75);
+
+      scoresGroup.removeChild(scoresGroup.getChildByName(id));
+      scoresGroup.addChild(view);
+    }
   };
 }

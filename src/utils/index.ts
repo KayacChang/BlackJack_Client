@@ -57,5 +57,27 @@ export function random(min: number, max?: number) {
   return min + (max - min) * Math.random();
 }
 
+export function whenVisibilityChange(func: (pass: number) => void) {
+  let start = performance.now();
+
+  function handle() {
+    if (document.hidden) {
+      start = performance.now();
+
+      return;
+    }
+
+    const pass = performance.now() - start;
+
+    func(pass);
+  }
+
+  handle();
+
+  document.addEventListener('visibilitychange', handle);
+
+  return () => document.removeEventListener('visibilitychange', handle);
+}
+
 export * from './check';
 export { isMobile, currency };
