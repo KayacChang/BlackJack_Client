@@ -1,7 +1,11 @@
-import React, { ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
+import React, { ReactNode, PropsWithChildren, HTMLAttributes, useEffect, useState } from 'react';
 import { Plus, Minus, Code } from 'react-feather';
 import styles from './Decision.module.scss';
 import { Button } from '../components/button/Button';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
+import { GAME_STATE } from '../../models';
+import Timer from '../components/timer';
 
 type ButtonProps<T> = PropsWithChildren<T & HTMLAttributes<HTMLButtonElement>>;
 
@@ -21,8 +25,33 @@ function Control({ className, title, icon }: Props) {
 }
 
 export default function Decision() {
+  const user = useSelector((state: AppState) => state.user);
+  const { state, countdown, turn } = useSelector((state: AppState) => state.game);
+
+  const seat = useSelector((state: AppState) => state.seat);
+
+  const isDealing = state === GAME_STATE.DEALING && countdown > 1;
+  const isUserTurn = turn && seat[turn.seat].player === user.name;
+
+  console.log(isUserTurn && isDealing);
+
+  const [opacity, setOpacity] = useState(0);
+  useEffect(() => {
+    setOpacity(0);
+
+    if (!isDealing) {
+      setOpacity(0);
+      return;
+    }
+
+    if (isUserTurn && isDealing) {
+      setOpacity(1);
+      return;
+    }
+  }, [isDealing, isUserTurn]);
+
   return (
-    <div className={styles.decision}>
+    <div className={styles.decision} style={{ opacity }}>
       <div>
         <h3>make your decision</h3>
 
@@ -33,7 +62,7 @@ export default function Decision() {
           <Control className={styles.split} icon={<Code />} title={'split'} />
         </div>
 
-        {/* <Timer /> */}
+        <Timer total={10} countdown={countdown} />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import Menu from './menu';
 import Status from './status';
 import Detail from './detail';
 import Bet from './bet';
+import Decision from './decision';
 
 export default function UI() {
   return (
@@ -11,6 +12,7 @@ export default function UI() {
       <Status />
       <Detail />
       <Bet />
+      <Decision />
     </div>
   );
 }
