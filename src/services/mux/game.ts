@@ -2,10 +2,11 @@ import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betStart, betEnd, settle, countdown, clearBet, dealCard } from '../../store/actions';
+import { betStart, betEnd, settle, countdown, clearBet, dealCard, turn } from '../../store/actions';
 
-import { GameProp, toGame, toGameState, CountDownProp, DealProp, toHand } from '../types';
+import { GameProp, toGame, toGameState, CountDownProp, DealProp, toHand, TurnProp, toSeatNum, toPair } from '../types';
 import { pipe } from 'ramda';
+import { wait } from '../../utils';
 
 function onBetStart(service: Service, data: GameProp) {
   store.dispatch(
@@ -22,7 +23,7 @@ function onBetStart(service: Service, data: GameProp) {
 
 function onCountDown(service: Service, { expire }: CountDownProp) {
   //
-  store.dispatch(countdown(expire - 1));
+  store.dispatch(countdown(expire));
 }
 
 function onBetEnd(service: Service, { state }: GameProp) {
@@ -57,24 +58,36 @@ function prefix(prop: DealProp) {
 
 function onBegin(service: Service, prop: DealProp[]) {
   const hands = prop.map(pipe(prefix, toHand));
-
-  return store.dispatch(dealCard(...hands));
+  store.dispatch(dealCard(...hands));
 }
 
 function onDeal(service: Service, prop: DealProp) {
-  return store.dispatch(dealCard(toHand(prop)));
+  store.dispatch(dealCard(toHand(prop)));
 }
 
-// function onTurn(service: Service, { no, pile }: TurnProp) {
-//   const { game } = store.getState();
+function onTurn(service: Service, { no, pile }: TurnProp) {
+  const { game } = store.getState();
 
-//   return store.dispatch(
-//     turn({
-//       ...game,
-//       state: toGameState([GAME.TURN, no, pile]),
-//     })
-//   );
-// }
+  store.dispatch(
+    turn({
+      ...game,
+      turn: {
+        seat: toSeatNum(no),
+        pair: toPair(pile),
+      },
+    })
+  );
+}
+
+async function onAction(service: Service, { expire }: TurnProp) {
+  while (expire > 0) {
+    expire -= 1;
+
+    onCountDown(service, { expire });
+
+    await wait(1000);
+  }
+}
 
 export default {
   [S2C.ROUND.BET_START]: onBetStart,
@@ -85,7 +98,6 @@ export default {
   [S2C.ROUND.BEGIN]: onBegin,
   [S2C.ROUND.DEAL]: onDeal,
 
-  // [GAME.BEGIN]: onBegin,
-  // [GAME.DEAL]: onDeal,
-  // [GAME.TURN]: onTurn,
+  [S2C.ROUND.TURN]: onTurn,
+  [S2C.ROUND.ACTION]: onAction,
 };

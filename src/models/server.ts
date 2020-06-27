@@ -17,6 +17,8 @@ export enum ROUND {
   SETTLE = 8003022,
   BEGIN = 8003036,
   DEAL = 8003033,
+  TURN = 8003034,
+  ACTION = 8003008,
 }
 
 export enum SEAT {

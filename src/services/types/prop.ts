@@ -48,6 +48,16 @@ export interface UpdateProp {
 export interface TurnProp {
   no: number;
   pile: number;
+  expire: number;
+  options: {
+    dbl: boolean;
+    gvp: boolean;
+    hit: boolean;
+    ins: boolean;
+    pay: boolean;
+    spt: boolean;
+    sty: boolean;
+  };
 }
 
 export interface JoinSeatProp {

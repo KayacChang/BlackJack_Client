@@ -17,6 +17,7 @@ export enum SeatState {
   Empty,
   Occupy,
   OccupyByUser,
+  Turn,
 }
 
 export default function Seat({ id, x, y }: Prop) {
@@ -68,6 +69,9 @@ function onStateChange(it: Sprite, field: Container, id: SEAT) {
   const seat_enable = RES.get('SEAT_ENABLE').texture;
 
   const onPlaceBet = placeBet(id);
+
+  const effect = new Sprite(seat_normal);
+  effect.scale.set(2);
 
   return function (state: SeatState, player: string) {
     //

@@ -85,19 +85,6 @@ function getPath(paths: Container, id: SEAT, nextIdx: number) {
   return path;
 }
 
-function sort(hands: Hand[]) {
-  const by_ID_Desc = (a: Hand, b: Hand) => b.id - a.id;
-
-  const dealer = hands.findIndex(({ id }) => id === SEAT.DEALER);
-
-  return [
-    //
-    ...hands.slice(0, dealer).sort(by_ID_Desc),
-    hands[dealer],
-    ...hands.slice(dealer + 1).sort(by_ID_Desc),
-  ];
-}
-
 function state(paths: Container, pokers: Container, scoresGroup: Container) {
   let pre = Hands();
   let scores = Scores();
@@ -114,8 +101,6 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
 
       return;
     }
-
-    hands = sort(hands);
 
     if (outer) {
       outer.seek(outer.endTime(), false);

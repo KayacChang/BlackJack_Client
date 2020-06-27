@@ -1,10 +1,10 @@
 export enum SEAT {
   DEALER = -1,
-  A = 0,
-  B = 1,
+  A = 4,
+  B = 3,
   C = 2,
-  D = 3,
-  E = 4,
+  D = 1,
+  E = 0,
 }
 
 export enum PAIR {
