@@ -1,11 +1,11 @@
-import { Container, Graphics } from 'pixi.js';
+import { Container } from 'pixi.js';
 import { observe } from '../../../store';
 import { Hand, Card, SEAT } from '../../../models';
 import Path from './Path';
 import Poker from './Poker';
-import GameText from '../text';
 import gsap from 'gsap';
 import { whenVisibilityChange } from '../../../utils';
+import Score from './Score';
 
 const dealPoint = { x: 2515, y: 160 };
 
@@ -18,44 +18,19 @@ const config = {
   [SEAT.DEALER]: { x: 1480, y: 330 },
 };
 
-function Paths() {
+export default function Game() {
   const container = new Container();
+  container.name = 'game';
 
+  const paths = new Container();
   for (const [id, end] of Object.entries(config)) {
     const path = new Path();
 
     path.name = id;
     path.points = [dealPoint, end];
 
-    container.addChild(path);
+    paths.addChild(path);
   }
-
-  return container;
-}
-
-function Score(score: number) {
-  const [width, height] = [108, 76];
-
-  const it = new Container();
-
-  const background = new Graphics();
-  background.beginFill(0x000, 0.7);
-  background.drawRoundedRect(-0.5 * width, -0.5 * height, width, height, 16);
-  background.endFill();
-  it.addChild(background);
-
-  const field = GameText(String(score));
-  field.anchor.set(0.5);
-  it.addChild(field);
-
-  return it;
-}
-
-export default function Game() {
-  const container = new Container();
-  container.name = 'game';
-
-  const paths = Paths();
 
   const pokers = new Container();
   pokers.name = 'pokers';
@@ -110,6 +85,19 @@ function getPath(paths: Container, id: SEAT, nextIdx: number) {
   return path;
 }
 
+function sort(hands: Hand[]) {
+  const by_ID_Desc = (a: Hand, b: Hand) => b.id - a.id;
+
+  const dealer = hands.findIndex(({ id }) => id === SEAT.DEALER);
+
+  return [
+    //
+    ...hands.slice(0, dealer).sort(by_ID_Desc),
+    hands[dealer],
+    ...hands.slice(dealer + 1).sort(by_ID_Desc),
+  ];
+}
+
 function state(paths: Container, pokers: Container, scoresGroup: Container) {
   let pre = Hands();
   let scores = Scores();
@@ -127,15 +115,7 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       return;
     }
 
-    hands = hands.sort((a, b) => {
-      if (a.id > b.id) return -1;
-      if (a.id < b.id) return 1;
-
-      if (a.points > b.points) return 1;
-      if (a.points < b.points) return -1;
-
-      return 0;
-    });
+    hands = sort(hands);
 
     if (outer) {
       outer.seek(outer.endTime(), false);
@@ -144,10 +124,10 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
     outer = gsap.timeline();
 
     for (const { id, card, points } of hands) {
-      //
       const { suit, rank } = card;
 
       const poker = new Poker(suit, rank);
+      poker.alpha = 0;
       pokers.addChild(poker);
 
       pre[id].push(card);
@@ -156,6 +136,7 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       const path = getPath(paths, id, pre[id].length - 1);
 
       outer.add(path.attach(poker));
+      outer.add(gsap.to(poker, { alpha: 1 }), '<');
     }
 
     const clear = whenVisibilityChange((pass) => outer.seek(pass / 1000, false));

@@ -1,14 +1,17 @@
 import { Loader } from 'pixi.js';
+
 import TABLE from './table';
 import SEAT from './seat';
 import POKER from './poker';
 import CHIP from './chip';
+import ICON from './icon';
 
 const PKG = Object.freeze({
   ...CHIP,
   ...TABLE,
   ...SEAT,
   ...POKER,
+  ...ICON,
 });
 
 const loader = new Loader();

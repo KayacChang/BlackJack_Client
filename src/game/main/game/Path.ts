@@ -58,7 +58,7 @@ export default class Path extends Graphics {
     }
   }
 
-  attach(target: DisplayObject, duration = 1, ease: string | gsap.EaseFunction = Expo.easeOut) {
+  attach(target: DisplayObject, duration = 0.8, ease: string | gsap.EaseFunction = Expo.easeOut) {
     const { x, y } = this;
 
     const path = this.points.flat().map(mergeWith(add, { x, y }));
