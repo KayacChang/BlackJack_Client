@@ -1,29 +1,12 @@
-import React, { ReactNode, PropsWithChildren, HTMLAttributes, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Minus, Code, Flag } from 'react-feather';
 import { RiSafeLine, RiHandCoinLine } from 'react-icons/ri';
 import styles from './Decision.module.scss';
-import { Button } from '../components/button/Button';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { GAME_STATE } from '../../models';
 import Timer from '../components/timer';
-
-type ButtonProps<T> = PropsWithChildren<T & HTMLAttributes<HTMLButtonElement>>;
-
-type Props = ButtonProps<{
-  title: string;
-  icon: ReactNode;
-}>;
-
-function Control({ className, title, icon }: Props) {
-  //
-  return (
-    <div className={className}>
-      <Button>{icon}</Button>
-      <h5>{title}</h5>
-    </div>
-  );
-}
+import Control from '../components/button/Control';
 
 export default function Decision() {
   const user = useSelector((state: AppState) => state.user);

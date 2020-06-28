@@ -4,3 +4,4 @@ export * from './user';
 export * from './hand';
 export * from './seat';
 export * from './bet';
+export * from './decision';

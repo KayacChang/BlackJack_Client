@@ -1,10 +1,21 @@
-import { S2C } from '../../models';
+import { S2C, Decisions } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betStart, betEnd, settle, countdown, clearBet, dealCard, turn } from '../../store/actions';
+import { betStart, betEnd, settle, countdown, clearBet, dealCard, turn, updateDecision } from '../../store/actions';
 
-import { GameProp, toGame, toGameState, CountDownProp, DealProp, toHand, TurnProp, toSeatNum, toPair } from '../types';
+import {
+  GameProp,
+  toGame,
+  toGameState,
+  CountDownProp,
+  DealProp,
+  toHand,
+  TurnProp,
+  toSeatNum,
+  toPair,
+  OptionsProp,
+} from '../types';
 import { pipe } from 'ramda';
 import { wait } from '../../utils';
 
@@ -79,7 +90,21 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
   );
 }
 
-async function onAction(service: Service, { expire }: TurnProp) {
+function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp): Decisions {
+  return {
+    double: Boolean(dbl),
+    surrender: Boolean(gvp),
+    hit: Boolean(hit),
+    insurance: Boolean(ins),
+    pay: Boolean(pay),
+    split: Boolean(spt),
+    stand: Boolean(sty),
+  };
+}
+
+async function onAction(service: Service, { expire, options }: TurnProp) {
+  store.dispatch(updateDecision(toDecision(options)));
+
   while (expire > 0) {
     expire -= 1;
 

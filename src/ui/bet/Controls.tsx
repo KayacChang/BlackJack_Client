@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, CornerUpLeft, RotateCw } from 'react-feather';
-import Control from './components/Control';
+import Control from '../components/button/Control';
 import styles from './Bet.module.scss';
 import DEAL from './assets/icon/on_deal.png';
 import { useSelector } from 'react-redux';
@@ -47,7 +47,7 @@ export default function Controls({ onClear, onUndo, onDeal, onRepeat, onDouble, 
         enable={isRepeatable}
       />
       <Control
-        title={'double bet'}
+        title={'double'}
         style={{ width: '48px', height: '48px', opacity: isDealable ? 1 : 0.3 }}
         icon={<h3>2x</h3>}
         onClick={onDouble}

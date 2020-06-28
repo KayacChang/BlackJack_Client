@@ -45,19 +45,21 @@ export interface UpdateProp {
   balance: number;
 }
 
+export interface OptionsProp {
+  dbl: boolean;
+  gvp: boolean;
+  hit: boolean;
+  ins: boolean;
+  pay: boolean;
+  spt: boolean;
+  sty: boolean;
+}
+
 export interface TurnProp {
   no: number;
   pile: number;
   expire: number;
-  options: {
-    dbl: boolean;
-    gvp: boolean;
-    hit: boolean;
-    ins: boolean;
-    pay: boolean;
-    spt: boolean;
-    sty: boolean;
-  };
+  options: OptionsProp;
 }
 
 export interface JoinSeatProp {
