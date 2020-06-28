@@ -1,5 +1,6 @@
 import React, { ReactNode, PropsWithChildren, HTMLAttributes, useEffect, useState } from 'react';
-import { Plus, Minus, Code } from 'react-feather';
+import { Plus, Minus, Code, Flag } from 'react-feather';
+import { RiSafeLine, RiHandCoinLine } from 'react-icons/ri';
 import styles from './Decision.module.scss';
 import { Button } from '../components/button/Button';
 import { useSelector } from 'react-redux';
@@ -33,8 +34,6 @@ export default function Decision() {
   const isDealing = state === GAME_STATE.DEALING && countdown > 1;
   const isUserTurn = turn && seat[turn.seat].player === user.name;
 
-  console.log(isUserTurn && isDealing);
-
   const [opacity, setOpacity] = useState(0);
   useEffect(() => {
     setOpacity(0);
@@ -56,10 +55,13 @@ export default function Decision() {
         <h3>make your decision</h3>
 
         <div className={styles.section}>
-          <Control className={styles.double} icon={<h3>2x</h3>} title={'double down'} />
-          <Control className={styles.hit} icon={<Plus />} title={'hit'} />
-          <Control className={styles.stand} icon={<Minus />} title={'stand'} />
-          <Control className={styles.split} icon={<Code />} title={'split'} />
+          <Control className={styles.indigo} icon={<RiSafeLine />} title={'insurance'} />
+          <Control className={styles.orange} icon={<RiHandCoinLine />} title={'pay'} />
+          <Control className={styles.red} icon={<Minus />} title={'stand'} />
+          <Control className={styles.green} icon={<Plus />} title={'hit'} />
+          <Control className={styles.yellow} icon={<h3>2x</h3>} title={'double'} />
+          <Control className={styles.teal} icon={<Code />} title={'split'} />
+          <Control className={styles.gray} icon={<Flag />} title={'surrender'} />
         </div>
 
         <Timer total={10} countdown={countdown} />

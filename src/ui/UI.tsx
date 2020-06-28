@@ -11,8 +11,8 @@ export default function UI() {
       <Menu />
       <Status />
       <Detail />
-      <Bet />
       <Decision />
+      <Bet />
     </div>
   );
 }

@@ -19,24 +19,33 @@
 }
 
 .section {
-  display: flex;
-
   margin: 16px;
-  margin-bottom: 24px;
+  width: 60%;
 
-  & > * {
-    margin: auto 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    width: 72px;
-
-    word-wrap: break-word;
-    text-align: center;
-
+  > * {
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
 
-    position: relative;
+  button {
+    height: 48px;
+    width: 48px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  h5 {
+    position: absolute;
+    top: 88px;
   }
 }
 
@@ -57,69 +66,55 @@ $green: rgb(52, 199, 89);
 $red: rgb(255, 59, 48);
 $orange: rgb(255, 149, 0);
 $gray: rgb(142, 142, 147);
+$teal: rgb(90, 200, 250);
+$indigo: rgb(88, 86, 214);
+$yellow: rgb(255, 204, 0);
 
-.bigger {
-  svg {
-    width: 48px;
-    height: 48px;
-  }
-}
-
-.smaller {
-  width: 48px;
-  height: 48px;
-}
-
-.hit {
-  @extend .bigger;
-
+.green {
   button {
-    background: rgba($green, $alpha: 1);
-    @include shadow($green, 0.6);
-  }
-
-  h5 {
-    position: absolute;
-    bottom: -24px;
+    background: $green;
+    @include shadow($green, 1);
   }
 }
 
-.stand {
-  @extend .bigger;
-
+.red {
   button {
-    background: rgba($red, $alpha: 1);
-    @include shadow($red, 0.6);
-  }
-
-  h5 {
-    position: absolute;
-    bottom: -24px;
+    background: $red;
+    @include shadow($red, 1);
   }
 }
 
-.double {
-  @extend .smaller;
-
+.orange {
   button {
-    background: rgba($orange, $alpha: 1);
-    @include shadow($orange, 0.6);
-  }
-
-  h5 {
-    margin-top: 8px;
+    background: $orange;
+    @include shadow($orange, 1);
   }
 }
 
-.split {
-  @extend .smaller;
-
+.gray {
   button {
-    background: rgba($gray, $alpha: 1);
-    @include shadow($gray, 0.6);
+    background: $gray;
+    @include shadow($gray, 1);
   }
+}
 
-  h5 {
-    margin-top: 8px;
+.teal {
+  button {
+    background: $teal;
+    @include shadow($teal, 1);
+  }
+}
+
+.indigo {
+  button {
+    background: $indigo;
+    @include shadow($indigo, 1);
+  }
+}
+
+.yellow {
+  button {
+    background: $yellow;
+    @include shadow($yellow, 1);
   }
 }

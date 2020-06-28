@@ -1,12 +1,12 @@
 $color: rgba(48, 209, 88, 1);
 
 .timer {
+  margin: 8px;
+
   display: flex;
   align-items: center;
 
   h5 {
-    display: block;
-
     background: rgba($color: #111, $alpha: 0.6);
 
     border: 2px solid $color;
