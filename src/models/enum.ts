@@ -49,3 +49,13 @@ export enum SUIT {
   DIAMOND = 'DIAMOND',
   CLUB = 'CLUB',
 }
+
+export enum DECISION {
+  DOUBLE = 'dbl',
+  SURRENDER = 'gvp',
+  HIT = 'hit',
+  INSURANCE = 'ins',
+  PAY = 'pay',
+  SPLIT = 'spt',
+  STAND = 'sty',
+}

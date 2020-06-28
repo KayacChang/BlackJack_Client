@@ -3,4 +3,5 @@ export enum EVENT {
   JOIN_ROOM = 'join_room',
   UPDATE_SEAT = 'update_seat',
   BET = 'bet',
+  DECISION = 'decision',
 }
