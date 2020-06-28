@@ -4,6 +4,7 @@ import { Button } from '../components/button/Button';
 import styles from './Detail.module.scss';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
+import { currency } from '../../utils';
 
 function Back() {
   return (
@@ -37,7 +38,7 @@ export default function RoomDetail() {
       <Back />
       <Field title={'room'} value={String(roomID)} />
       <Field title={'round'} value={roundID} />
-      <Field title={'bet'} value={`${min} - ${max}`} />
+      <Field title={'bet'} value={`${currency(min)} - ${currency(max)}`} />
     </div>
   );
 }

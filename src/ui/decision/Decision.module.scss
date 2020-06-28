@@ -32,19 +32,6 @@
   }
 }
 
-@mixin shadow($color, $alpha) {
-  box-shadow: 0px 0px 8px 1px rgba($color, $alpha);
-
-  @media screen and (min-device-width: 1200px) {
-    box-shadow: 0px 0px 4px 2px rgba($color, $alpha);
-
-    transition: box-shadow 0.3s ease-in-out;
-    &:hover {
-      box-shadow: 0px 0px 8px 4px rgba($color, $alpha);
-    }
-  }
-}
-
 $green: rgb(52, 199, 89);
 $red: rgb(255, 59, 48);
 $orange: rgb(255, 149, 0);
@@ -56,48 +43,41 @@ $yellow: rgb(255, 204, 0);
 .green {
   button {
     background: $green;
-    @include shadow($green, 1);
   }
 }
 
 .red {
   button {
     background: $red;
-    @include shadow($red, 1);
   }
 }
 
 .orange {
   button {
     background: $orange;
-    @include shadow($orange, 1);
   }
 }
 
 .gray {
   button {
     background: $gray;
-    @include shadow($gray, 1);
   }
 }
 
 .teal {
   button {
     background: $teal;
-    @include shadow($teal, 1);
   }
 }
 
 .indigo {
   button {
     background: $indigo;
-    @include shadow($indigo, 1);
   }
 }
 
 .yellow {
   button {
     background: $yellow;
-    @include shadow($yellow, 1);
   }
 }
