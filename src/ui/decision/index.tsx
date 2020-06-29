@@ -4,26 +4,41 @@ import { RiSafeLine, RiHandCoinLine } from 'react-icons/ri';
 import styles from './Decision.module.scss';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
-import { GAME_STATE } from '../../models';
+import { GAME_STATE, DECISION } from '../../models';
 import Timer from '../components/timer';
 import Control from '../components/button/Control';
+import services from '../../services';
 
 function Controls({ enable }: { enable: boolean }) {
   const { insurance, pay, stand, hit, double, split, surrender } = useSelector((state: AppState) => state.decision);
 
   const config = [
-    { title: 'insurance', icon: <RiSafeLine />, className: styles.indigo, trigger: insurance },
-    { title: 'pay', icon: <RiHandCoinLine />, className: styles.orange, trigger: pay },
-    { title: 'stand', icon: <Minus />, className: styles.red, trigger: stand },
-    { title: 'hit', icon: <Plus />, className: styles.green, trigger: hit },
-    { title: 'double', icon: <h3>2x</h3>, className: styles.yellow, trigger: double },
-    { title: 'split', icon: <Code />, className: styles.teal, trigger: split },
-    { title: 'surrender', icon: <Flag />, className: styles.gray, trigger: surrender },
+    {
+      title: 'insurance',
+      icon: <RiSafeLine />,
+      className: styles.indigo,
+      trigger: insurance,
+      item: DECISION.INSURANCE,
+    },
+    { title: 'pay', icon: <RiHandCoinLine />, className: styles.orange, trigger: pay, item: DECISION.PAY },
+    { title: 'stand', icon: <Minus />, className: styles.red, trigger: stand, item: DECISION.STAND },
+    { title: 'hit', icon: <Plus />, className: styles.green, trigger: hit, item: DECISION.HIT },
+    { title: 'double', icon: <h3>2x</h3>, className: styles.yellow, trigger: double, item: DECISION.DOUBLE },
+    { title: 'split', icon: <Code />, className: styles.teal, trigger: split, item: DECISION.SPLIT },
+    { title: 'surrender', icon: <Flag />, className: styles.gray, trigger: surrender, item: DECISION.SURRENDER },
   ];
+
+  function onClick(item: DECISION) {
+    return async function () {
+      const action = await services.decision(item);
+
+      console.log(action);
+    };
+  }
 
   return (
     <div className={styles.section}>
-      {config.map(({ title, icon, className, trigger }) => (
+      {config.map(({ title, icon, className, trigger, item }) => (
         <Control
           key={title}
           title={title}
@@ -31,6 +46,7 @@ function Controls({ enable }: { enable: boolean }) {
           className={className}
           style={{ opacity: enable && trigger ? 1 : 0.3 }}
           enable={enable && trigger}
+          onClick={onClick(item)}
         />
       ))}
     </div>

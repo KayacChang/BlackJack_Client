@@ -1,6 +1,12 @@
 import Service from './service';
-import { joinRoom as _joinRoom, joinSeat as _joinSeat, leaveSeat as _leaveSeat, deal as _deal } from './requests';
-import { Token, SEAT } from '../models';
+import {
+  joinRoom as _joinRoom,
+  joinSeat as _joinSeat,
+  leaveSeat as _leaveSeat,
+  deal as _deal,
+  decision as _decision,
+} from './requests';
+import { Token, SEAT, DECISION } from '../models';
 
 const service = new Service(process.env.REACT_APP_BACKEND || '');
 
@@ -24,4 +30,8 @@ function deal() {
   return _deal(service);
 }
 
-export default { init, joinRoom, joinSeat, leaveSeat, deal };
+function decision(decision: DECISION) {
+  return _decision(service, decision);
+}
+
+export default { init, joinRoom, joinSeat, leaveSeat, deal, decision };

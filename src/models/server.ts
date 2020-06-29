@@ -2,6 +2,7 @@ export enum USER {
   LOGIN = 8003050,
   UPDATE = 8003095,
   BET = 8003007,
+  ACTION = 8003035,
 }
 
 export enum ROOM {

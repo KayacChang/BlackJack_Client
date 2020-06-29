@@ -66,3 +66,10 @@ export interface JoinSeatProp {
   id: number;
   no: number;
 }
+
+export interface ActionProp {
+  action: string;
+  id: number;
+  no: number;
+  pile: number;
+}

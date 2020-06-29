@@ -1,6 +1,6 @@
 import { S2C } from '../../models';
 import Service from '../service';
-import { EVENT, LoginProp, UpdateProp } from '../types';
+import { EVENT, LoginProp, UpdateProp, ActionProp } from '../types';
 
 import store from '../../store';
 import { login, update, commitBet } from '../../store/actions';
@@ -37,8 +37,13 @@ function onBet(service: Service, data: any) {
   return service.emit(EVENT.BET);
 }
 
+function onAction(service: Service, { action }: ActionProp) {
+  return service.emit(EVENT.DECISION, action);
+}
+
 export default {
   [S2C.USER.LOGIN]: onLogin,
   [S2C.USER.UPDATE]: onUpdate,
   [S2C.USER.BET]: onBet,
+  [S2C.USER.ACTION]: onAction,
 };

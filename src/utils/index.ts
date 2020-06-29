@@ -79,5 +79,17 @@ export function whenVisibilityChange(func: (pass: number) => void) {
   return () => document.removeEventListener('visibilitychange', handle);
 }
 
+type CondFunc = (flag: boolean) => Promise<boolean>;
+
+export function looper(fn: CondFunc) {
+  let flag = true;
+
+  (async function call() {
+    if (await fn(flag)) call();
+  })();
+
+  return () => (flag = false);
+}
+
 export * from './check';
 export { isMobile, currency };

@@ -2,7 +2,7 @@ import { S2C } from '../../models';
 import Service from '../service';
 
 function onError(service: Service, data: any) {
-  throw new Error(data);
+  throw new Error(JSON.stringify(data));
 }
 
 export default {

@@ -17,7 +17,7 @@ import {
   OptionsProp,
 } from '../types';
 import { pipe } from 'ramda';
-import { wait } from '../../utils';
+import { wait, looper } from '../../utils';
 
 function onBetStart(service: Service, data: GameProp) {
   store.dispatch(
@@ -102,16 +102,24 @@ function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp): Decisio
   };
 }
 
+let cancel: () => void;
+
 async function onAction(service: Service, { expire, options }: TurnProp) {
   store.dispatch(updateDecision(toDecision(options)));
 
-  while (expire > 0) {
-    expire -= 1;
+  if (cancel) {
+    cancel();
+  }
 
+  cancel = looper(async (flag: boolean) => {
     onCountDown(service, { expire });
 
     await wait(1000);
-  }
+
+    expire -= 1;
+
+    return flag && expire > 0;
+  });
 }
 
 export default {
