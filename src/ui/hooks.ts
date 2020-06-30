@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 type TriggerFunc = (flag?: boolean | undefined) => void;
 
@@ -37,4 +37,22 @@ export function useResize<T>(fn: () => T) {
   }, [fn]);
 
   return state;
+}
+
+export function useOpacity(init: number): [number, string, () => void, (opacity: number) => void] {
+  const [opacity, setOpacity] = useState(init);
+  const [display, setDisplay] = useState(opacity > 0 ? 'block' : 'none');
+
+  function set(opacity: number) {
+    setOpacity(opacity);
+    setDisplay(opacity > 0 ? 'block' : 'none');
+  }
+
+  const onTransitionEnd = useCallback(
+    //
+    () => setDisplay(opacity > 0 ? 'block' : 'none'),
+    [opacity, setDisplay]
+  );
+
+  return [opacity, display, onTransitionEnd, set];
 }
