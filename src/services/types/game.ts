@@ -1,7 +1,7 @@
-import { PAIR, Game, GAME_STATE, Hand, Room, S2C, Turn } from '../../models';
+import { PAIR, Game, GAME_STATE, Hand, Room, S2C, Turn, Decisions } from '../../models';
 import { toCard } from './card';
 import { toSeatNum } from './seat';
-import { DealProp, GameStateProp, GameProp, RoomProp } from './prop';
+import { DealProp, GameStateProp, GameProp, RoomProp, OptionsProp } from './prop';
 
 export function toRoom({ id, max_bet, min_bet, history }: RoomProp): Room {
   return {
@@ -69,5 +69,17 @@ export function toGame({ id, round, state, max_bet, min_bet }: GameProp): Game {
       max: Number(max_bet),
       min: Number(min_bet),
     },
+  };
+}
+
+export function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp): Decisions {
+  return {
+    double: Boolean(dbl),
+    surrender: Boolean(gvp),
+    hit: Boolean(hit),
+    insurance: Boolean(ins),
+    pay: Boolean(pay),
+    split: Boolean(spt),
+    stand: Boolean(sty),
   };
 }

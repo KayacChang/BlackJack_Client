@@ -1,4 +1,4 @@
-import { S2C, Decisions } from '../../models';
+import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
@@ -14,7 +14,7 @@ import {
   TurnProp,
   toSeatNum,
   toPair,
-  OptionsProp,
+  toDecision,
 } from '../types';
 import { pipe } from 'ramda';
 import { wait, looper } from '../../utils';
@@ -88,18 +88,6 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
       },
     })
   );
-}
-
-function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp): Decisions {
-  return {
-    double: Boolean(dbl),
-    surrender: Boolean(gvp),
-    hit: Boolean(hit),
-    insurance: Boolean(ins),
-    pay: Boolean(pay),
-    split: Boolean(spt),
-    stand: Boolean(sty),
-  };
 }
 
 let cancel: () => void;

@@ -3,11 +3,12 @@ import Chip from './components/Chip';
 import styles from './Bet.module.scss';
 import { CHIP } from '../../models';
 import CHIP_IMG from './assets/chips';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
+import { choose } from '../../store/actions';
 
 type Props = {
-  onSelect: (chip: CHIP, amount: number) => () => void;
+  enable: boolean;
 };
 
 const chips = [
@@ -19,9 +20,19 @@ const chips = [
   { type: CHIP.YELLOW, src: CHIP_IMG.NORMAL_YELLOW },
 ];
 
-export default function Chips({ onSelect }: Props) {
+export default function Chips({ enable }: Props) {
+  const dispatch = useDispatch();
+
   const min = useSelector((state: AppState) => state.game.bet.min);
   const chip = useSelector((state: AppState) => state.bet.chosen?.chip);
+
+  function onSelect(chip: CHIP, amount: number) {
+    return function () {
+      if (!enable) return;
+
+      dispatch(choose({ chip, amount }));
+    };
+  }
 
   return (
     <div className={styles.section}>

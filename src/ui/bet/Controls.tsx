@@ -1,26 +1,80 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, CornerUpLeft, RotateCw } from 'react-feather';
 import Control from '../components/button/Control';
 import styles from './Bet.module.scss';
 import DEAL from './assets/icon/on_deal.png';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
+import { clearBet, undoBet, replaceBet, addBet } from '../../store/actions';
+import services from '../../services';
 
 type Props = {
-  onClear: () => void;
-  onUndo: () => void;
-  onDeal: () => void;
-  onRepeat: () => void;
-  onDouble: () => void;
   enable: boolean;
 };
 
-export default function Controls({ onClear, onUndo, onDeal, onRepeat, onDouble, enable }: Props) {
+export default function Controls({ enable }: Props) {
+  const dispatch = useDispatch();
+  const user = useSelector((state: AppState) => state.user);
+  const seats = useSelector((state: AppState) => state.seat);
+  const countdown = useSelector((state: AppState) => state.game.countdown);
+
   const history = useSelector((state: AppState) => state.bet.history);
   const isDealable = history.length > 0 && enable;
 
   const previous = useSelector((state: AppState) => state.bet.previous);
   const isRepeatable = previous.length > 0 && enable;
+
+  async function onClear() {
+    const tasks = Object.entries(seats)
+      .filter(([, seat]) => seat.player === user.name && !seat.commited)
+      .map(([id]) => services.leaveSeat(Number(id)));
+
+    await Promise.all(tasks);
+
+    dispatch(clearBet(user));
+  }
+
+  function onUndo() {
+    const last = history[history.length - 1];
+
+    last && dispatch(undoBet(last));
+  }
+
+  async function onDeal() {
+    await services.deal();
+  }
+
+  useEffect(() => {
+    if (enable && history.length > 0 && countdown === 2) {
+      onDeal();
+    }
+  }, [enable, countdown, history]);
+
+  async function onRepeat() {
+    dispatch(clearBet(user));
+
+    const tasks = previous.map(({ seat }) => {
+      if (!seat) {
+        return Promise.resolve();
+      }
+
+      if (seats[seat].player === user.name) {
+        return Promise.resolve();
+      }
+
+      return services.joinSeat(seat);
+    });
+
+    await Promise.all(tasks);
+
+    dispatch(replaceBet(previous));
+  }
+
+  function onDouble() {
+    dispatch(clearBet(user));
+
+    [...history, ...history].forEach((bet) => dispatch(addBet(bet)));
+  }
 
   return (
     <div className={styles.controls}>

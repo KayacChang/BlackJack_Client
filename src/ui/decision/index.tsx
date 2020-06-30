@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useLayoutEffect } from 'react';
 import { Plus, Minus, Code, Flag } from 'react-feather';
 import { RiSafeLine, RiHandCoinLine } from 'react-icons/ri';
 import styles from './Decision.module.scss';
@@ -79,17 +79,17 @@ export default function Decision() {
     [opacity, setDisplay]
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isDealing && hasCommited) {
       setOpacity(0.3);
-      onTransitionEnd();
+      setDisplay('block');
       return;
     }
 
     if (isDealing && isUserTurn) {
       setCommited(false);
       setOpacity(1);
-      onTransitionEnd();
+      setDisplay('block');
       return;
     }
 
