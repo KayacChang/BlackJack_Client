@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Plus, Minus, Code, Flag } from 'react-feather';
 import { RiSafeLine, RiHandCoinLine } from 'react-icons/ri';
 import styles from './Decision.module.scss';
@@ -9,7 +9,12 @@ import Timer from '../components/timer';
 import Control from '../components/button/Control';
 import services from '../../services';
 
-function Controls({ enable }: { enable: boolean }) {
+type Props = {
+  enable: boolean;
+  setCommited: (flag: boolean) => void;
+};
+
+function Controls({ enable, setCommited }: Props) {
   const { insurance, pay, stand, hit, double, split, surrender } = useSelector((state: AppState) => state.decision);
 
   const config = [
@@ -29,7 +34,10 @@ function Controls({ enable }: { enable: boolean }) {
   ];
 
   function onClick(item: DECISION) {
+    //
     return async function () {
+      setCommited(true);
+
       const action = await services.decision(item);
 
       console.log(action);
@@ -56,33 +64,44 @@ function Controls({ enable }: { enable: boolean }) {
 export default function Decision() {
   const user = useSelector((state: AppState) => state.user);
   const { state, countdown, turn } = useSelector((state: AppState) => state.game);
-
   const seat = useSelector((state: AppState) => state.seat);
 
   const isDealing = state === GAME_STATE.DEALING && countdown > 1;
   const isUserTurn = turn ? seat[turn.seat].player === user.name : false;
 
+  const [hasCommited, setCommited] = useState(false);
   const [opacity, setOpacity] = useState(0);
+  const [display, setDisplay] = useState('none');
+
+  const onTransitionEnd = useCallback(
+    //
+    () => setDisplay(opacity > 0 ? 'block' : 'none'),
+    [opacity, setDisplay]
+  );
+
   useEffect(() => {
-    setOpacity(0);
-
-    if (!isDealing) {
-      setOpacity(0);
+    if (isDealing && hasCommited) {
+      setOpacity(0.3);
+      onTransitionEnd();
       return;
     }
 
-    if (isUserTurn && isDealing) {
+    if (isDealing && isUserTurn) {
+      setCommited(false);
       setOpacity(1);
+      onTransitionEnd();
       return;
     }
-  }, [isDealing, isUserTurn]);
+
+    setOpacity(0);
+  }, [onTransitionEnd, isDealing, isUserTurn, hasCommited]);
 
   return (
-    <div className={styles.decision} style={{ opacity }}>
+    <div className={styles.decision} onTransitionEnd={onTransitionEnd} style={{ opacity, display }}>
       <div>
         <h3>make your decision</h3>
 
-        <Controls enable={isUserTurn && isDealing} />
+        <Controls enable={isUserTurn && isDealing} setCommited={setCommited} />
 
         <Timer total={10} countdown={countdown} />
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Timer from '../components/timer';
 import styles from './Bet.module.scss';
 import { CHIP, GAME_STATE } from '../../models';
@@ -21,6 +21,15 @@ export default function Bet() {
   const isUserJoin = Object.values(seats).some(({ player }) => user.name === player);
 
   const [hasCommited, setCommited] = useState(false);
+  const [opacity, setOpacity] = useState(0);
+  const [display, setDisplay] = useState('none');
+
+  const onTransitionEnd = useCallback(
+    //
+    () => setDisplay(opacity > 0 ? 'block' : 'none'),
+    [opacity, setDisplay]
+  );
+
   useEffect(() => {
     const isCommited = Object.values(seats)
       .filter(({ player }) => player === user.name)
@@ -29,25 +38,21 @@ export default function Bet() {
     setCommited(isBetting && isCommited);
   }, [isBetting, seats, user]);
 
-  const [opacity, setOpacity] = useState(0);
   useEffect(() => {
-    setOpacity(0);
-
     if (hasCommited) {
       setOpacity(0.3);
-      return;
-    }
-
-    if (!isBetting) {
-      setOpacity(0);
+      onTransitionEnd();
       return;
     }
 
     if (isUserJoin && isBetting) {
       setOpacity(1);
+      onTransitionEnd();
       return;
     }
-  }, [hasCommited, isBetting, isUserJoin]);
+
+    setOpacity(0);
+  }, [onTransitionEnd, hasCommited, isBetting, isUserJoin]);
 
   useEffect(() => {
     //
@@ -113,7 +118,7 @@ export default function Bet() {
   }
 
   return (
-    <div className={styles.bet} style={{ opacity }}>
+    <div className={styles.bet} onTransitionEnd={onTransitionEnd} style={{ opacity, display }}>
       <div>
         <h3>place your bets</h3>
 

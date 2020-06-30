@@ -37,8 +37,8 @@ function onBet(service: Service, data: any) {
   return service.emit(EVENT.BET);
 }
 
-function onAction(service: Service, { action }: ActionProp) {
-  return service.emit(EVENT.DECISION, action);
+function onAction(service: Service, data: ActionProp | undefined) {
+  return service.emit(EVENT.DECISION, data?.action);
 }
 
 export default {
