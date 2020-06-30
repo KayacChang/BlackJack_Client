@@ -106,14 +106,14 @@ async function onAction(service: Service, { expire, options }: TurnProp) {
     cancel();
   }
 
-  cancel = looper(async (flag: boolean) => {
+  cancel = looper(async () => {
     onCountDown(service, { expire });
 
     await wait(1000);
 
     expire -= 1;
 
-    return flag && expire > 0;
+    return expire > 0;
   });
 }
 

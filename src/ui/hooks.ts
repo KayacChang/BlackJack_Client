@@ -45,7 +45,7 @@ export function useOpacity(init: number): [number, string, () => void, (opacity:
 
   function set(opacity: number) {
     setOpacity(opacity);
-    setDisplay(opacity > 0 ? 'block' : 'none');
+    if (opacity > 0) setDisplay('block');
   }
 
   const onTransitionEnd = useCallback(

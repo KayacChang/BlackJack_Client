@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import styles from './Decision.module.scss';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
@@ -18,8 +18,14 @@ export default function Decision() {
   const [hasCommited, setCommited] = useState(false);
   const [opacity, display, onTransitionEnd, setOpacity] = useOpacity(0);
 
+  useEffect(() => {
+    const flag = user.decisions.length > 0;
+
+    setCommited(!flag);
+  }, [setCommited, user]);
+
   useLayoutEffect(() => {
-    if (isDealing && hasCommited) {
+    if (isDealing && isUserTurn && hasCommited) {
       setOpacity(0.3);
       return;
     }
