@@ -2,7 +2,7 @@ import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betStart, betEnd, settle, countdown, clearBet, dealCard, turn, updateDecision } from '../../store/actions';
+import { betStart, betEnd, settle, countdown, clearBet, dealCard, turn, update } from '../../store/actions';
 
 import {
   GameProp,
@@ -93,7 +93,14 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
 let cancel: () => void;
 
 async function onAction(service: Service, { expire, options }: TurnProp) {
-  store.dispatch(updateDecision(toDecision(options)));
+  const { user } = store.getState();
+
+  store.dispatch(
+    update({
+      ...user,
+      decisions: toDecision(options),
+    })
+  );
 
   if (cancel) {
     cancel();

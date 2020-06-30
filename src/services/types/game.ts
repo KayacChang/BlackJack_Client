@@ -1,4 +1,4 @@
-import { PAIR, Game, GAME_STATE, Hand, Room, S2C, Turn, Decisions } from '../../models';
+import { PAIR, Game, GAME_STATE, Hand, Room, S2C, Turn, DECISION } from '../../models';
 import { toCard } from './card';
 import { toSeatNum } from './seat';
 import { DealProp, GameStateProp, GameProp, RoomProp, OptionsProp } from './prop';
@@ -72,14 +72,14 @@ export function toGame({ id, round, state, max_bet, min_bet }: GameProp): Game {
   };
 }
 
-export function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp): Decisions {
-  return {
-    double: Boolean(dbl),
-    surrender: Boolean(gvp),
-    hit: Boolean(hit),
-    insurance: Boolean(ins),
-    pay: Boolean(pay),
-    split: Boolean(spt),
-    stand: Boolean(sty),
-  };
+export function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp) {
+  return [
+    dbl && DECISION.DOUBLE,
+    gvp && DECISION.SURRENDER,
+    hit && DECISION.HIT,
+    ins && DECISION.INSURANCE,
+    pay && DECISION.PAY,
+    spt && DECISION.SPLIT,
+    sty && DECISION.STAND,
+  ].filter(Boolean) as DECISION[];
 }

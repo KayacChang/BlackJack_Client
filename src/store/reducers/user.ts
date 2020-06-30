@@ -6,6 +6,7 @@ const initialState: User = {
   name: v4(),
   balance: 0,
   totalBet: 0,
+  decisions: [],
 };
 
 export default function userReducer(state = initialState, action: UserAction | BetAction): User {

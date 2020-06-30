@@ -51,11 +51,11 @@ export enum SUIT {
 }
 
 export enum DECISION {
-  DOUBLE = 'dbl',
-  SURRENDER = 'gvp',
+  DOUBLE = 'double',
+  SURRENDER = 'surrender',
   HIT = 'hit',
-  INSURANCE = 'ins',
+  INSURANCE = 'insurance',
   PAY = 'pay',
-  SPLIT = 'spt',
-  STAND = 'sty',
+  SPLIT = 'split',
+  STAND = 'stand',
 }

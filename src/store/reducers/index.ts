@@ -6,7 +6,6 @@ import user from './user';
 import seat from './seat';
 import hand from './hand';
 import bet from './bet';
-import decision from './decision';
 
 export default combineReducers({
   game,
@@ -15,5 +14,4 @@ export default combineReducers({
   seat,
   hand,
   bet,
-  decision,
 });

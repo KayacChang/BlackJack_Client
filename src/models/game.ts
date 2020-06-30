@@ -45,13 +45,3 @@ export interface Pair {
   bet: number;
   cards: Card[];
 }
-
-export interface Decisions {
-  double: boolean;
-  surrender: boolean;
-  hit: boolean;
-  insurance: boolean;
-  pay: boolean;
-  split: boolean;
-  stand: boolean;
-}

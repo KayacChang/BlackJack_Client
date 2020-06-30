@@ -11,6 +11,7 @@ function onLogin(service: Service, { user_name }: LoginProp) {
       name: String(user_name),
       balance: 0,
       totalBet: 0,
+      decisions: [],
     })
   );
 }
@@ -38,6 +39,15 @@ function onBet(service: Service, data: any) {
 }
 
 function onAction(service: Service, data: ActionProp | undefined) {
+  const { user } = store.getState();
+
+  store.dispatch(
+    update({
+      ...user,
+      decisions: [],
+    })
+  );
+
   return service.emit(EVENT.DECISION, data?.action);
 }
 
