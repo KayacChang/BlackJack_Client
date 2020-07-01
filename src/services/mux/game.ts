@@ -76,8 +76,14 @@ function onDeal(service: Service, prop: DealProp) {
   store.dispatch(dealCard(toHand(prop)));
 }
 
+let cancel: () => void;
+
 function onTurn(service: Service, { no, pile }: TurnProp) {
   const { game } = store.getState();
+
+  if (cancel) {
+    cancel();
+  }
 
   store.dispatch(
     turn({
@@ -89,8 +95,6 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
     })
   );
 }
-
-let cancel: () => void;
 
 async function onAction(service: Service, { expire, options }: TurnProp) {
   const { user } = store.getState();

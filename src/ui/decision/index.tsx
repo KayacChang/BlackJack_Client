@@ -6,6 +6,7 @@ import { GAME_STATE } from '../../models';
 import Timer from '../components/timer';
 import { useOpacity } from '../hooks';
 import Controls from './Controls';
+import { animated } from 'react-spring';
 
 export default function Decision() {
   const user = useSelector((state: AppState) => state.user);
@@ -16,7 +17,7 @@ export default function Decision() {
   const isUserTurn = turn ? seat[turn.seat].player === user.name : false;
 
   const [hasCommited, setCommited] = useState(false);
-  const [opacity, display, onTransitionEnd, setOpacity] = useOpacity(0);
+  const [style, setOpacity] = useOpacity(0);
 
   useEffect(() => {
     const flag = user.decisions.length > 0;
@@ -40,7 +41,7 @@ export default function Decision() {
   }, [setOpacity, isDealing, isUserTurn, hasCommited]);
 
   return (
-    <div className={styles.decision} onTransitionEnd={onTransitionEnd} style={{ opacity, display }}>
+    <animated.div className={styles.decision} style={style}>
       <div>
         <h3>make your decision</h3>
 
@@ -48,6 +49,6 @@ export default function Decision() {
 
         <Timer total={10} countdown={countdown} />
       </div>
-    </div>
+    </animated.div>
   );
 }

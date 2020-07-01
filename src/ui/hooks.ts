@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { useSpring } from 'react-spring';
 
 type TriggerFunc = (flag?: boolean | undefined) => void;
 
@@ -19,11 +20,9 @@ export function useTrigger(initState = false): [boolean, TriggerFunc] {
 }
 
 export function useResize<T>(fn: () => T) {
-  //
   const [state, setState] = useState(fn());
 
   useEffect(() => {
-    //
     let id = window.requestAnimationFrame(handler);
 
     function handler() {
@@ -33,26 +32,32 @@ export function useResize<T>(fn: () => T) {
     }
 
     return () => window.cancelAnimationFrame(id);
-    //
   }, [fn]);
 
   return state;
 }
 
-export function useOpacity(init: number): [number, string, () => void, (opacity: number) => void] {
+export function useOpacity(init: number): [any, (opacity: number) => void] {
   const [opacity, setOpacity] = useState(init);
   const [display, setDisplay] = useState(opacity > 0 ? 'block' : 'none');
 
   function set(opacity: number) {
+    setDisplay(opacity > 0 ? 'block' : 'none');
     setOpacity(opacity);
-    if (opacity > 0) setDisplay('block');
   }
 
-  const onTransitionEnd = useCallback(
-    //
-    () => setDisplay(opacity > 0 ? 'block' : 'none'),
-    [opacity, setDisplay]
-  );
+  const style = useSpring({
+    to: async (next, cancel) => {
+      if (opacity > 0) {
+        await next({ display });
+        await next({ opacity });
+        return;
+      }
 
-  return [opacity, display, onTransitionEnd, set];
+      await next({ opacity });
+      await next({ display });
+    },
+  });
+
+  return [style, set];
 }
