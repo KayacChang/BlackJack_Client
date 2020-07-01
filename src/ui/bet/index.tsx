@@ -6,8 +6,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import Controls from './Controls';
 import Chips from './Chips';
-import { useOpacity } from '../hooks';
-import { animated } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 
 export default function Bet() {
   const user = useSelector((state: AppState) => state.user);
@@ -18,7 +17,10 @@ export default function Bet() {
   const isUserJoin = Object.values(seats).some(({ player }) => user.name === player);
 
   const [hasCommited, setCommited] = useState(false);
-  const [style, setOpacity] = useOpacity(0);
+  const [style, setOpacity] = useSpring(() => ({
+    opacity: 0,
+    display: 'none',
+  }));
 
   useEffect(() => {
     const isCommited = Object.values(seats)
@@ -30,16 +32,16 @@ export default function Bet() {
 
   useLayoutEffect(() => {
     if (isBetting && hasCommited) {
-      setOpacity(0.3);
+      setOpacity({ opacity: 0.3, display: 'block' });
       return;
     }
 
     if (isBetting && isUserJoin) {
-      setOpacity(1);
+      setOpacity({ opacity: 1, display: 'block' });
       return;
     }
 
-    setOpacity(0);
+    setOpacity([{ opacity: 0 }, { display: 'none' }]);
   }, [setOpacity, isBetting, isUserJoin, hasCommited]);
 
   const enable = isBetting && isUserJoin && !hasCommited;

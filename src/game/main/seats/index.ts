@@ -158,7 +158,7 @@ function updateState(seats: Container[]) {
 
     if (game.state === GAME_STATE.SETTLE) {
       Object.entries(seat)
-        .filter(([, { player }]) => player)
+        .filter(([, { player, bet }]) => player && bet)
         .forEach(([key, seat]) => {
           addResult(Number(key), seat.pay && seat.pay > 0 ? Win() : Lose());
         });

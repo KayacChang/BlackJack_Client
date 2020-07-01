@@ -10,7 +10,6 @@ import services from '../../services';
 
 type Props = {
   enable: boolean;
-  setCommited: (flag: boolean) => void;
 };
 
 const config = [
@@ -23,14 +22,11 @@ const config = [
   { item: DECISION.SURRENDER, icon: <Flag />, className: styles.gray },
 ];
 
-export default function Controls({ enable, setCommited }: Props) {
+export default function Controls({ enable }: Props) {
   const decisions = useSelector((state: AppState) => state.user.decisions);
 
   function onClick(item: DECISION) {
-    //
     return async function () {
-      setCommited(true);
-
       const action = await services.decision(item);
 
       console.log(action);

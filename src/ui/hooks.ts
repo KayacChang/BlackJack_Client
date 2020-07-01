@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useSpring } from 'react-spring';
 
 type TriggerFunc = (flag?: boolean | undefined) => void;
 
@@ -35,29 +34,4 @@ export function useResize<T>(fn: () => T) {
   }, [fn]);
 
   return state;
-}
-
-export function useOpacity(init: number): [any, (opacity: number) => void] {
-  const [opacity, setOpacity] = useState(init);
-  const [display, setDisplay] = useState(opacity > 0 ? 'block' : 'none');
-
-  function set(opacity: number) {
-    setDisplay(opacity > 0 ? 'block' : 'none');
-    setOpacity(opacity);
-  }
-
-  const style = useSpring({
-    to: async (next, cancel) => {
-      if (opacity > 0) {
-        await next({ display });
-        await next({ opacity });
-        return;
-      }
-
-      await next({ opacity });
-      await next({ display });
-    },
-  });
-
-  return [style, set];
 }

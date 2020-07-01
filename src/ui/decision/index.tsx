@@ -4,9 +4,8 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { GAME_STATE } from '../../models';
 import Timer from '../components/timer';
-import { useOpacity } from '../hooks';
 import Controls from './Controls';
-import { animated } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 
 export default function Decision() {
   const user = useSelector((state: AppState) => state.user);
@@ -17,7 +16,10 @@ export default function Decision() {
   const isUserTurn = turn ? seat[turn.seat].player === user.name : false;
 
   const [hasCommited, setCommited] = useState(false);
-  const [style, setOpacity] = useOpacity(0);
+  const [style, setOpacity] = useSpring(() => ({
+    opacity: 0,
+    display: 'none',
+  }));
 
   useEffect(() => {
     const flag = user.decisions.length > 0;
@@ -27,17 +29,16 @@ export default function Decision() {
 
   useLayoutEffect(() => {
     if (isDealing && isUserTurn && hasCommited) {
-      setOpacity(0.3);
+      setOpacity({ opacity: 0.3, display: 'block' });
       return;
     }
 
     if (isDealing && isUserTurn) {
-      setCommited(false);
-      setOpacity(1);
+      setOpacity({ opacity: 1, display: 'block' });
       return;
     }
 
-    setOpacity(0);
+    setOpacity([{ opacity: 0 }, { display: 'none' }]);
   }, [setOpacity, isDealing, isUserTurn, hasCommited]);
 
   return (
@@ -45,7 +46,7 @@ export default function Decision() {
       <div>
         <h3>make your decision</h3>
 
-        <Controls enable={isUserTurn && isDealing} setCommited={setCommited} />
+        <Controls enable={isUserTurn && isDealing} />
 
         <Timer total={10} countdown={countdown} />
       </div>
