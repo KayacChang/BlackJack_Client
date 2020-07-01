@@ -6,12 +6,14 @@ const dealer = {
   player: v4(),
   bet: 0,
   commited: false,
+  pay: 0,
 };
 
 const emptySeat = () => ({
   player: '',
   bet: 0,
   commited: false,
+  pay: 0,
 });
 
 const initialState: Seats = {

@@ -2,7 +2,17 @@ import { S2C } from '../../models';
 import Service from '../service';
 
 import store from '../../store';
-import { betStart, betEnd, settle, countdown, clearBet, dealCard, turn, update } from '../../store/actions';
+import {
+  betStart,
+  betEnd,
+  settle,
+  countdown,
+  clearBet,
+  dealCard,
+  turn,
+  update,
+  updateSeats,
+} from '../../store/actions';
 
 import {
   GameProp,
@@ -15,6 +25,7 @@ import {
   toSeatNum,
   toPair,
   toDecision,
+  toSeats,
 } from '../types';
 import { pipe } from 'ramda';
 import { wait, looper } from '../../utils';
@@ -50,6 +61,16 @@ function onBetEnd(service: Service, { state }: GameProp) {
 
 function onSettle(service: Service, prop: GameProp) {
   const { game, user } = store.getState();
+
+  for (const seat of prop.seats) {
+    if (Array.isArray(seat.piles) && seat.piles.length > 0) {
+      seat.pay = seat.piles.reduce((acc, { pay }) => acc + pay, 0);
+    }
+  }
+
+  const seats = toSeats(prop.seats);
+
+  store.dispatch(updateSeats(seats));
 
   store.dispatch(
     settle({

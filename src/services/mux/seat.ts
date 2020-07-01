@@ -8,12 +8,12 @@ import { EVENT, SeatProp, toSeats, toSeatNum } from '../types';
 function onUpdate(service: Service, data: SeatProp[]) {
   const { user, seat } = store.getState();
 
-  data = data.map(({ no, player, total_bet }) => {
+  data = data.map(({ no, player, total_bet, ...props }) => {
     if (player === user.name) {
       total_bet = seat[toSeatNum(no)].bet;
     }
 
-    return { no, player, total_bet };
+    return { no, player, total_bet, ...props };
   });
 
   const action = store.dispatch(updateSeats(toSeats(data)));

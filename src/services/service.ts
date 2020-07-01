@@ -9,7 +9,6 @@ interface Frame {
 }
 
 export default class Service extends EventEmitter {
-  //
   socket: WebSocket;
 
   token?: Token;
@@ -49,7 +48,6 @@ export default class Service extends EventEmitter {
   }
 
   onMessage(event: MessageEvent) {
-    //
     if (!this.token) {
       throw new Error(`service required token, please connect first`);
     }

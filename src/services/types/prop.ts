@@ -9,6 +9,15 @@ export interface SeatProp {
   no: number;
   player: string;
   total_bet: number;
+  pay?: number;
+  piles: PileProp[];
+}
+
+export interface PileProp {
+  bet: number;
+  cards: string[];
+  pay: number;
+  result: number;
 }
 
 export type GameStateProp = [number, number?, number?];
