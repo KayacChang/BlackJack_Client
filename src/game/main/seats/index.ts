@@ -1,9 +1,10 @@
 import { Container, Sprite } from 'pixi.js';
-import { SEAT, Seats, Turn, GAME_STATE } from '../../../models';
+import { SEAT, Seats, Turn, GAME_STATE, Game } from '../../../models';
 import Seat, { SeatState } from './seat';
 import store, { observe } from '../../../store';
 import RES from '../../assets';
 import gsap from 'gsap';
+import GameText from '../text';
 
 type Props = {
   id: SEAT;
@@ -74,42 +75,92 @@ function updateTurn(seats: Container[]) {
   };
 }
 
-function Result(pay: number) {
-  const result = new Sprite(RES.get('ICON_WIN').texture);
+function Win() {
+  const result = new Container();
 
-  result.anchor.set(0.5);
-  result.position.set(0, -530);
+  const icon = new Sprite(RES.get('ICON_WIN').texture);
+  icon.anchor.set(0.5);
+  result.addChild(icon);
+
+  const text = GameText('WIN', { fill: 0x000000, fontSize: 36 });
+  text.anchor.set(0.5);
+  text.position.set(0, 76);
+  result.addChild(text);
+
+  return result;
+}
+
+function Lose() {
+  const result = new Container();
+
+  const icon = new Sprite(RES.get('ICON_LOSE').texture);
+  icon.anchor.set(0.5);
+  result.addChild(icon);
+
+  const text = GameText('LOSE', { fontSize: 36 });
+  text.anchor.set(0.5);
+  text.position.set(0, 65);
+  result.addChild(text);
+
+  return result;
+}
+
+function Bust() {
+  const result = new Container();
+
+  const icon = new Sprite(RES.get('ICON_BUST').texture);
+  icon.anchor.set(0.5);
+  result.addChild(icon);
+
+  const text = GameText('BUST', { fontSize: 36 });
+  text.anchor.set(0.5);
+  text.position.set(0, 65);
+  result.addChild(text);
 
   return result;
 }
 
 function updateState(seats: Container[]) {
-  let previous: Sprite[] = [];
+  let previous: Container[] = [];
 
-  return function (state: GAME_STATE) {
-    const { seat } = store.getState();
+  function addResult(id: SEAT, result: Container) {
+    const exist = previous.some(({ name }) => name === SEAT[id]);
+    const found = seats.find(({ name }) => name === SEAT[id]);
 
-    if (state === GAME_STATE.BETTING) {
+    if (!found || exist) {
+      return;
+    }
+
+    result.name = SEAT[id];
+
+    gsap.fromTo(result, { y: -330, alpha: 0 }, { y: -530, alpha: 1 });
+
+    previous = [...previous, result];
+    found.addChild(result);
+  }
+
+  return function (game: Game) {
+    const { seat, hand } = store.getState();
+
+    if (game.state === GAME_STATE.BETTING) {
       previous.forEach((el) => el.parent.removeChild(el));
 
       previous = [];
     }
 
-    if (state === GAME_STATE.SETTLE) {
+    if (game.state === GAME_STATE.DEALING) {
+      for (const { id, points } of hand) {
+        if (points > 21) {
+          addResult(id, Bust());
+        }
+      }
+    }
+
+    if (game.state === GAME_STATE.SETTLE) {
       Object.entries(seat)
         .filter(([, { player }]) => player)
         .forEach(([key, seat]) => {
-          const found = seats.find(({ name }) => name === SEAT[Number(key)]);
-
-          if (!found) {
-            return;
-          }
-
-          const result = Result(seat.pay || 0);
-
-          previous = [...previous, result];
-
-          found.addChild(result);
+          addResult(Number(key), seat.pay && seat.pay > 0 ? Win() : Lose());
         });
     }
   };
@@ -133,7 +184,7 @@ function init(container: Container, meta: Props[]) {
 
     observe((state) => state.seat, update(seats));
     observe((state) => state.game.turn, updateTurn(seats));
-    observe((state) => state.game.state, updateState(seats));
+    observe((state) => state.game, updateState(seats));
   };
 }
 
