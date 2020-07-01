@@ -1,7 +1,7 @@
 import { Container, Sprite } from 'pixi.js';
-import { SEAT, Seats, Turn } from '../../../models';
+import { SEAT, Seats, Turn, GAME_STATE } from '../../../models';
 import Seat, { SeatState } from './seat';
-import { observe } from '../../../store';
+import store, { observe } from '../../../store';
 import RES from '../../assets';
 import gsap from 'gsap';
 
@@ -74,6 +74,47 @@ function updateTurn(seats: Container[]) {
   };
 }
 
+function Result(pay: number) {
+  const result = new Sprite(RES.get('ICON_WIN').texture);
+
+  result.anchor.set(0.5);
+  result.position.set(0, -530);
+
+  return result;
+}
+
+function updateState(seats: Container[]) {
+  let previous: Sprite[] = [];
+
+  return function (state: GAME_STATE) {
+    const { seat } = store.getState();
+
+    if (state === GAME_STATE.BETTING) {
+      previous.forEach((el) => el.parent.removeChild(el));
+
+      previous = [];
+    }
+
+    if (state === GAME_STATE.SETTLE) {
+      Object.entries(seat)
+        .filter(([, { player }]) => player)
+        .forEach(([key, seat]) => {
+          const found = seats.find(({ name }) => name === SEAT[Number(key)]);
+
+          if (!found) {
+            return;
+          }
+
+          const result = Result(seat.pay || 0);
+
+          previous = [...previous, result];
+
+          found.addChild(result);
+        });
+    }
+  };
+}
+
 function init(container: Container, meta: Props[]) {
   //
   return function onInit({ width, height }: Container) {
@@ -92,6 +133,7 @@ function init(container: Container, meta: Props[]) {
 
     observe((state) => state.seat, update(seats));
     observe((state) => state.game.turn, updateTurn(seats));
+    observe((state) => state.game.state, updateState(seats));
   };
 }
 

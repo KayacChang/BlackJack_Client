@@ -21,6 +21,9 @@ export default function Scene(app: Application): Container {
   const background = Background();
   scene.addChild(background);
 
+  const game = Game();
+  scene.addChild(game);
+
   const seats = Seats(seatMeta);
   scene.addChild(seats);
 
@@ -29,9 +32,6 @@ export default function Scene(app: Application): Container {
 
   const bets = Bets(seatMeta);
   scene.addChild(bets);
-
-  const game = Game();
-  scene.addChild(game);
 
   return scene;
 }

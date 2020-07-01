@@ -20,7 +20,7 @@ export function toSeats(seats: SeatProp[]): Seats {
     config[toSeatNum(no)] = {
       player: String(player),
       bet: Number(total_bet),
-      pay: Number(pay),
+      pay: Number(pay || 0),
     };
 
     return config;
