@@ -1,7 +1,7 @@
 import React, { ReactNode, MouseEvent, PropsWithChildren, HTMLAttributes } from 'react';
 import styles from './Drawer.module.scss';
 import { useSpring, animated } from 'react-spring';
-import { easeCubic } from 'd3-ease';
+import {Cubic} from 'gsap'
 import { Option as OptionButton } from './Button';
 
 type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
@@ -28,7 +28,7 @@ export default function Drawer({ open, options }: DrawerProps) {
     transform: `translate3d(${open ? 0 : 100}%,0,0)`,
     config: {
       duration: 160,
-      easing: easeCubic,
+      easing: Cubic.easeInOut.easeInOut,
     },
   });
 
