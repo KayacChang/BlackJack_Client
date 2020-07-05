@@ -3,6 +3,18 @@ import Service from '../service';
 import { C2S, DECISION } from '../../models';
 import store from '../../store';
 
+function toDecision(decision: DECISION) {
+  return {
+    [DECISION.DOUBLE]: 'dbl',
+    [DECISION.SURRENDER]: 'gvp',
+    [DECISION.HIT]: 'hit',
+    [DECISION.INSURANCE]: 'ins',
+    [DECISION.PAY]: 'pay',
+    [DECISION.SPLIT]: 'spt',
+    [DECISION.STAND]: 'sty',
+  }[decision];
+}
+
 export default async function (service: Service, decision: DECISION) {
   const { game, user, seat } = store.getState();
 
@@ -23,7 +35,7 @@ export default async function (service: Service, decision: DECISION) {
     cmd: C2S.CLIENT.DECISION,
     data: {
       id: game.room,
-      action: decision,
+      action: toDecision(decision),
       no: game.turn.seat,
       pile,
     },
