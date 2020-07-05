@@ -87,20 +87,17 @@ export default function Seats(meta: Props[]) {
   it.once('added', function onInit({ width, height }: Container) {
     //
 
-    const seats = meta.map(({ id, x, y }) => {
-      const seat = createSeat({
+    const seats = meta.map(({ id, x, y }) =>
+      createSeat({
         id,
         x: width * x,
         y: height * y,
-      });
-
-      return seat;
-    });
+      })
+    );
 
     it.addChild(...seats);
 
     observe((state) => state.game.turn, updateEffect(seats));
-
     observe((state) => state.game, updateResult(seats));
   });
 
