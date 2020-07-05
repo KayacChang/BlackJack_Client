@@ -55,7 +55,7 @@ function placeBet(context: Context, event: Event) {
     return;
   }
 
-  if (game.countdown <= 1 || seat[context.id].commited) {
+  if (game.countdown <= 2 || seat[context.id].commited) {
     return;
   }
 

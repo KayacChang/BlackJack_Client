@@ -41,7 +41,7 @@ export default function Bet() {
       return;
     }
 
-    setOpacity([{ opacity: 0 }, { display: 'none' }]);
+    setOpacity({ to: [{ opacity: 0 }, { display: 'none' }] });
   }, [setOpacity, isBetting, isUserJoin, hasCommited]);
 
   const enable = isBetting && isUserJoin && !hasCommited;
@@ -55,7 +55,7 @@ export default function Bet() {
 
         <Timer total={20} countdown={countdown} />
 
-        <Controls enable={enable} />
+        <Controls enable={enable} setCommited={setCommited} />
       </div>
     </animated.div>
   );

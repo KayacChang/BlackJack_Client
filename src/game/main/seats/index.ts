@@ -24,8 +24,9 @@ function updateResult(seats: Seat[]) {
     }
 
     result.name = SEAT[id];
+    result.scale.set(0.75);
 
-    gsap.fromTo(result, { y: -230, alpha: 0 }, { y: -430, alpha: 1 });
+    gsap.fromTo(result, { y: -230, alpha: 0 }, { y: -330, alpha: 1 });
 
     previous = [...previous, result];
     found.addChild(result);

@@ -9,7 +9,7 @@ export function Win() {
   icon.anchor.set(0.5);
   result.addChild(icon);
 
-  const text = GameText('WIN', { fill: 0x000000, fontSize: 36 });
+  const text = GameText('WIN', { fill: 0x000000 });
   text.anchor.set(0.5);
   text.position.set(0, 76);
   result.addChild(text);
@@ -24,7 +24,7 @@ export function Lose() {
   icon.anchor.set(0.5);
   result.addChild(icon);
 
-  const text = GameText('LOSE', { fontSize: 36 });
+  const text = GameText('LOSE');
   text.anchor.set(0.5);
   text.position.set(0, 65);
   result.addChild(text);
@@ -39,7 +39,7 @@ export function Bust() {
   icon.anchor.set(0.5);
   result.addChild(icon);
 
-  const text = GameText('BUST', { fontSize: 36 });
+  const text = GameText('BUST');
   text.anchor.set(0.5);
   text.position.set(0, 65);
   result.addChild(text);
