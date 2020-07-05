@@ -1,11 +1,10 @@
 import { Sprite, Container } from 'pixi.js';
-import RES from '../../assets';
 import { SEAT } from '../../../models';
-import { throttleBy } from '../../../utils';
-import services from '../../../services';
-import store from '../../../store';
-import { addBet } from '../../../store/actions';
-import GameText from '../text';
+import { createField, Field } from './field';
+import { observe } from '../../../store';
+import { createSeatService, SeatService, SeatState } from './state';
+import { pipe } from 'ramda';
+import RES from '../../assets';
 
 interface Prop {
   id: SEAT;
@@ -13,130 +12,82 @@ interface Prop {
   y: number;
 }
 
-export enum SeatState {
-  Empty,
-  Occupy,
-  OccupyByUser,
-  Turn,
+function updateSeat(seat: Sprite) {
+  return function onChange(state: SeatState) {
+    if (state.matches('empty')) {
+      seat.texture = RES.get('SELECT_SEAT_NORMAL').texture;
+    }
+
+    if (state.matches({ occupy: 'normal' })) {
+      seat.texture = RES.get('SEAT_NORMAL').texture;
+    }
+
+    if (state.matches({ occupy: 'betting' })) {
+      seat.texture = RES.get('SEAT_ENABLE').texture;
+    }
+
+    return state;
+  };
 }
 
-export default function Seat({ id, x, y }: Prop) {
-  //
-  const it = Object.assign(new Sprite(), {
-    buttonMode: true,
-    interactive: true,
-    name: SEAT[id],
-    x: x,
-    y: y,
-  });
-
-  it.anchor.set(0.5);
-  it.scale.set(0.75);
-
-  const field = Field();
-  field.y = 170;
-  it.addChild(field);
-
-  it.on('statechange', onStateChange(it, field, id));
-
-  return it;
-}
-
-function Field() {
-  const it = new Container();
-
-  const background = new Sprite(RES.get('FIELD').texture);
-  background.anchor.set(0.5);
-  background.tint = 0x333333;
-  it.addChild(background);
-
-  const field = GameText('');
-  field.anchor.set(0.5);
-  it.addChild(field);
-
-  it.on('update', (player: string) => {
-    field.text = player;
-  });
-
-  return it;
-}
-
-function onStateChange(it: Sprite, field: Container, id: SEAT) {
-  //
-  const select_normal = RES.get('SELECT_SEAT_NORMAL').texture;
-  const select_enable = RES.get('SELECT_SEAT_ENABLE').texture;
-  const seat_normal = RES.get('SEAT_NORMAL').texture;
-  const seat_enable = RES.get('SEAT_ENABLE').texture;
-
-  const onPlaceBet = placeBet(id);
-
-  const effect = new Sprite(seat_normal);
-  effect.scale.set(2);
-
-  return function (state: SeatState, player: string) {
-    //
-    it.off('pointerdown', onPlaceBet);
-
-    if (state === SeatState.Empty) {
-      it.texture = select_normal;
-
+function updateField(field: Field) {
+  return function onChange(state: SeatState) {
+    if (state.matches('empty')) {
       field.visible = false;
-
-      it.once('pointerdown', throttleBy(join(id)));
-
-      return;
     }
 
-    if (state === SeatState.Occupy) {
-      it.texture = seat_normal;
-
-      return;
-    }
-
-    if (state === SeatState.OccupyByUser) {
-      it.texture = seat_enable;
-
+    if (state.matches('occupy')) {
       field.visible = true;
-      field.emit('update', player);
 
-      it.on('pointerdown', onPlaceBet);
-
-      return;
+      field.text = state.context.owner;
     }
+
+    return state;
   };
 }
 
-function placeBet(id: SEAT) {
-  //
-  return function () {
-    const { game, bet, user, seat } = store.getState();
-
-    if (!bet.chosen) {
-      return;
-    }
-
-    if (game.countdown <= 1 || seat[id].commited) {
-      return;
-    }
-
-    if (user.totalBet + bet.chosen.amount > game.bet.max) {
-      return;
-    }
-
-    store.dispatch(
-      addBet({
-        ...bet.chosen,
-        time: new Date(),
-        seat: id,
-      })
-    );
-  };
+export interface Seat extends Container {
+  service: SeatService;
 }
 
-function join(id: SEAT) {
-  //
-  return async function () {
-    //
-    await services.joinSeat(id);
-  };
+export function createSeat({ id, x, y }: Prop): Seat {
+  const it = new Container();
+  it.name = SEAT[id];
+  it.buttonMode = true;
+  it.interactive = true;
+  it.x = x;
+  it.y = y;
+
+  const sprite = new Sprite();
+  sprite.anchor.set(0.5);
+  sprite.scale.set(0.75);
+  it.addChild(sprite);
+
+  const field = createField();
+  field.y = 130;
+  it.addChild(field);
+
+  const service = createSeatService(id);
+  service.onTransition(
+    pipe(
+      //
+      updateSeat(sprite),
+      updateField(field)
+    )
+  );
+
+  it.on('pointerdown', service.send);
+  it.on('added', () => service.start());
+  it.on('removed', () => service.stop());
+
+  observe(
+    (state) => state.seat[id].player,
+    (user) => service.send({ type: user ? 'JOIN' : 'LEAVE', user })
+  );
+  observe(
+    (state) => state.game.state,
+    (state) => service.send({ type: 'STATE' })
+  );
+
+  return Object.assign(it, { service });
 }
