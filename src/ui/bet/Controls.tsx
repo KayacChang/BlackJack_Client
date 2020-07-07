@@ -11,10 +11,9 @@ import { throttleBy } from '../../utils';
 
 type Props = {
   enable: boolean;
-  setCommited: (flag: boolean) => void;
 };
 
-export default function Controls({ enable, setCommited }: Props) {
+export default function Controls ({ enable }: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: AppState) => state.user);
   const seats = useSelector((state: AppState) => state.seat);
@@ -26,80 +25,90 @@ export default function Controls({ enable, setCommited }: Props) {
   const previous = useSelector((state: AppState) => state.bet.previous);
   const isRepeatable = previous.length > 0 && enable;
 
-  const isBetting = countdown > 1;
+  const onClear = useCallback(
+    throttleBy(async function () {
+      if (countdown <= 3) {
+        return;
+      }
 
-  async function onClear() {
-    if (!isBetting) {
-      return;
-    }
+      const tasks = Object.entries(seats)
+        .filter(([, seat]) => seat.player === user.name && !seat.commited)
+        .map(([id]) => services.leaveSeat(Number(id)));
 
-    const tasks = Object.entries(seats)
-      .filter(([, seat]) => seat.player === user.name && !seat.commited)
-      .map(([id]) => services.leaveSeat(Number(id)));
+      await Promise.all(tasks);
 
-    await Promise.all(tasks);
+      dispatch(clearBet(user));
+    }),
+    [countdown, user]
+  );
 
-    dispatch(clearBet(user));
-  }
+  const onUndo = useCallback(
+    function () {
+      if (countdown <= 2) {
+        return;
+      }
 
-  function onUndo() {
-    if (!isBetting) {
-      return;
-    }
+      const last = history[history.length - 1];
 
-    const last = history[history.length - 1];
-
-    last && dispatch(undoBet(last));
-  }
+      last && dispatch(undoBet(last));
+    },
+    [countdown, dispatch, history]
+  );
 
   const onDeal = useCallback(
     throttleBy(async function () {
-      if (!enable || !isBetting || history.length <= 0) {
+      if (!enable || countdown < 2 || history.length <= 0) {
         return;
       }
 
       await services.deal();
     }),
-    [enable, isBetting, history]
+    [enable, history, countdown]
   );
 
   useEffect(() => {
     enable && countdown === 2 && onDeal();
   }, [enable, countdown, onDeal]);
 
-  async function onRepeat() {
-    if (!enable) {
-      return;
-    }
-
-    dispatch(clearBet(user));
-
-    const tasks = previous.map(({ seat }) => {
-      if (!seat) {
-        return Promise.resolve();
+  const onRepeat = useCallback(
+    async function () {
+      if (!enable) {
+        return;
       }
 
-      if (seats[seat].player === user.name) {
-        return Promise.resolve();
+      dispatch(clearBet(user));
+
+      const tasks = previous.map(({ seat }) => {
+        if (!seat) {
+          return Promise.resolve();
+        }
+
+        if (seats[seat].player === user.name) {
+          return Promise.resolve();
+        }
+
+        return services.joinSeat(seat);
+      });
+
+      await Promise.all(tasks);
+
+      dispatch(replaceBet(previous));
+    },
+    [seats, dispatch, enable, user, previous]
+  );
+
+  const onDouble = useCallback(
+    function () {
+      if (countdown <= 2) {
+        return;
       }
 
-      return services.joinSeat(seat);
-    });
+      dispatch(clearBet(user));
 
-    await Promise.all(tasks);
-
-    dispatch(replaceBet(previous));
-  }
-
-  function onDouble() {
-    if (!isBetting) {
-      return;
-    }
-
-    dispatch(clearBet(user));
-
-    [...history, ...history].forEach((bet) => dispatch(addBet(bet)));
-  }
+      [...history, ...history].forEach(bet => dispatch(addBet(bet)));
+    },
+    [dispatch, countdown, user, history]
+  );
 
   return (
     <div className={styles.controls}>
