@@ -39,10 +39,5 @@ export interface Hand {
   id: SEAT;
   card: Card;
   points: number;
-}
-
-export interface Pair {
-  action?: string;
-  bet: number;
-  cards: Card[];
+  pair: PAIR;
 }

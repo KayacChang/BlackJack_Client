@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Timer from '../components/timer';
 import styles from './Bet.module.scss';
 import { GAME_STATE } from '../../models';
@@ -30,7 +30,7 @@ export default function Bet () {
     setCommited(isBetting && isCommited);
   }, [isBetting, seats, user]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isBetting && hasCommited) {
       setOpacity({ opacity: 0.3, display: 'block' });
       return;

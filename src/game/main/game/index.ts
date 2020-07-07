@@ -1,11 +1,12 @@
 import { Container } from 'pixi.js';
 import { observe } from '../../../store';
-import { Hand, Card, SEAT } from '../../../models';
+import { Hand, Card, SEAT, PAIR, GAME_STATE } from '../../../models';
 import Path from './Path';
 import Poker from './Poker';
 import gsap from 'gsap';
 import { whenVisibilityChange } from '../../../utils';
 import Score from './Score';
+import { createHandService } from './state';
 
 const dealPoint = { x: 2515, y: 160 };
 
@@ -18,7 +19,7 @@ const config = {
   [SEAT.DEALER]: { x: 1480, y: 330 },
 };
 
-export default function Game() {
+export default function Game () {
   const container = new Container();
   container.name = 'game';
 
@@ -31,6 +32,7 @@ export default function Game() {
 
     paths.addChild(path);
   }
+  container.addChild(paths);
 
   const pokers = new Container();
   pokers.name = 'pokers';
@@ -40,12 +42,37 @@ export default function Game() {
   scores.name = 'scores';
   container.addChild(scores);
 
-  observe((state) => state.hand, state(paths, pokers, scores));
+  const service = createHandService();
+
+  observe(
+    state => state.game.state,
+    state => {
+      //
+      if (state === GAME_STATE.DEALING) {
+        service.send({ type: 'START' });
+      }
+
+      if (state === GAME_STATE.BETTING) {
+        service.send({ type: 'CLEAR' });
+      }
+    }
+  );
+
+  observe(
+    state => state.hand,
+    hands => {
+      //
+    }
+  );
+
+  // service.send({ type: 'DEAL', hand });
+
+  observe(state => state.hand, state(paths, pokers, scores));
 
   return container;
 }
 
-function Hands(): Record<SEAT, Card[]> {
+function Hands (): Record<SEAT, Card[]> {
   return {
     [SEAT.A]: [],
     [SEAT.B]: [],
@@ -56,7 +83,7 @@ function Hands(): Record<SEAT, Card[]> {
   };
 }
 
-function Scores(): Record<SEAT, number> {
+function Scores (): Record<SEAT, number> {
   return {
     [SEAT.A]: 0,
     [SEAT.B]: 0,
@@ -67,7 +94,7 @@ function Scores(): Record<SEAT, number> {
   };
 }
 
-function getPath(paths: Container, id: SEAT, nextIdx: number) {
+function getPath (paths: Container, id: SEAT, pair: PAIR, nextIdx: number) {
   const path = paths.getChildByName(String(id)) as Path;
 
   const target = config[id];
@@ -85,13 +112,13 @@ function getPath(paths: Container, id: SEAT, nextIdx: number) {
   return path;
 }
 
-function state(paths: Container, pokers: Container, scoresGroup: Container) {
+function state (paths: Container, pokers: Container, scoresGroup: Container) {
   let pre = Hands();
   let scores = Scores();
 
   let outer: gsap.core.Timeline;
 
-  return async function update(hands: Hand[]) {
+  return async function update (hands: Hand[]) {
     //
     if (hands.length === 0) {
       pre = Hands();
@@ -108,7 +135,7 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
 
     outer = gsap.timeline();
 
-    for (const { id, card, points } of hands) {
+    for (const { id, card, points, pair } of hands) {
       const { suit, rank } = card;
 
       const poker = new Poker(suit, rank);
@@ -118,13 +145,13 @@ function state(paths: Container, pokers: Container, scoresGroup: Container) {
       pre[id].push(card);
       scores[id] = Math.max(scores[id], points);
 
-      const path = getPath(paths, id, pre[id].length - 1);
+      const path = getPath(paths, id, pair, pre[id].length - 1);
 
       outer.add(path.attach(poker));
       outer.add(gsap.to(poker, { alpha: 1 }), '<');
     }
 
-    const clear = whenVisibilityChange((pass) => outer.seek(pass / 1000, false));
+    const clear = whenVisibilityChange(pass => outer.seek(pass / 1000, false));
 
     await outer;
 

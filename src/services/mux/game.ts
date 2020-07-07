@@ -30,7 +30,7 @@ import {
 import { pipe } from 'ramda';
 import { wait, looper } from '../../utils';
 
-function onBetStart(service: Service, data: GameProp) {
+function onBetStart (service: Service, data: GameProp) {
   store.dispatch(
     betStart(
       toGame({
@@ -44,11 +44,11 @@ function onBetStart(service: Service, data: GameProp) {
   store.dispatch(updateSeats(toSeats(data.seats)));
 }
 
-function onCountDown(service: Service, { expire }: CountDownProp) {
+function onCountDown (service: Service, { expire }: CountDownProp) {
   store.dispatch(countdown(expire));
 }
 
-function onBetEnd(service: Service, { state }: GameProp) {
+function onBetEnd (service: Service, { state }: GameProp) {
   const { game } = store.getState();
 
   store.dispatch(
@@ -59,7 +59,7 @@ function onBetEnd(service: Service, { state }: GameProp) {
   );
 }
 
-function onSettle(service: Service, data: GameProp) {
+function onSettle (service: Service, data: GameProp) {
   const { game, user } = store.getState();
 
   for (const seat of data.seats) {
@@ -80,25 +80,26 @@ function onSettle(service: Service, data: GameProp) {
   store.dispatch(clearBet(user));
 }
 
-function prefix(prop: DealProp) {
+function prefix (prop: DealProp) {
   const cards = [...(prop.cards || []), prop.card];
 
   return { ...prop, cards };
 }
 
-function onBegin(service: Service, prop: DealProp[]) {
+function onBegin (service: Service, prop: DealProp[]) {
   const hands = prop.map(pipe(prefix, toHand));
 
   store.dispatch(dealCard(...hands));
 }
 
-function onDeal(service: Service, prop: DealProp) {
+function onDeal (service: Service, prop: DealProp) {
+  console.log(prop);
   store.dispatch(dealCard(toHand(prop)));
 }
 
 let cancel: () => void;
 
-function onTurn(service: Service, { no, pile }: TurnProp) {
+function onTurn (service: Service, { no, pile }: TurnProp) {
   const { game } = store.getState();
 
   if (cancel) {
@@ -116,7 +117,7 @@ function onTurn(service: Service, { no, pile }: TurnProp) {
   );
 }
 
-async function onAction(service: Service, { expire, options }: TurnProp) {
+async function onAction (service: Service, { expire, options }: TurnProp) {
   const { user } = store.getState();
 
   store.dispatch(

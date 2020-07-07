@@ -3,7 +3,7 @@ import { toCard } from './card';
 import { toSeatNum } from './seat';
 import { DealProp, GameStateProp, GameProp, RoomProp, OptionsProp } from './prop';
 
-export function toRoom({ id, max_bet, min_bet, history }: RoomProp): Room {
+export function toRoom ({ id, max_bet, min_bet, history }: RoomProp): Room {
   return {
     id: Number(id),
     history: history.map(String),
@@ -14,15 +14,16 @@ export function toRoom({ id, max_bet, min_bet, history }: RoomProp): Room {
   };
 }
 
-export function toHand({ no, card, points }: DealProp): Hand {
+export function toHand ({ no, card, points, pile }: DealProp): Hand {
   return {
     id: toSeatNum(no),
     card: toCard(card),
     points: Number(points),
+    pair: toPair(pile),
   };
 }
 
-export function toPair(pair: number): PAIR {
+export function toPair (pair: number): PAIR {
   switch (pair) {
     case -1:
     case 0:
@@ -34,7 +35,7 @@ export function toPair(pair: number): PAIR {
   throw new Error(`Not support pair type: ${pair}`);
 }
 
-export function toGameState([type]: GameStateProp): GAME_STATE {
+export function toGameState ([type]: GameStateProp): GAME_STATE {
   switch (type) {
     case S2C.ROUND.BET_START:
       return GAME_STATE.BETTING;
@@ -47,7 +48,7 @@ export function toGameState([type]: GameStateProp): GAME_STATE {
   throw new Error(`Game State not support ... ${type}`);
 }
 
-export function toTurn([, seat, pair]: GameStateProp): Turn | undefined {
+export function toTurn ([, seat, pair]: GameStateProp): Turn | undefined {
   if (!seat || !pair) {
     return undefined;
   }
@@ -58,7 +59,7 @@ export function toTurn([, seat, pair]: GameStateProp): Turn | undefined {
   };
 }
 
-export function toGame({ id, round, state, max_bet, min_bet }: GameProp): Game {
+export function toGame ({ id, round, state, max_bet, min_bet }: GameProp): Game {
   return {
     room: Number(id),
     round: String(round),
@@ -72,7 +73,7 @@ export function toGame({ id, round, state, max_bet, min_bet }: GameProp): Game {
   };
 }
 
-export function toDecision({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp) {
+export function toDecision ({ dbl, gvp, hit, ins, pay, spt, sty }: OptionsProp) {
   return [
     dbl && DECISION.DOUBLE,
     gvp && DECISION.SURRENDER,

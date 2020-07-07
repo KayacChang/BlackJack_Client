@@ -11,7 +11,7 @@ import './index.scss';
 import store from './store';
 import { getURLParam } from './utils';
 
-async function main() {
+async function main () {
   //
   await Promise.all([
     i18n.init(),
