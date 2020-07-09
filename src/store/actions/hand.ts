@@ -1,6 +1,10 @@
 import { HandAction, HAND } from '../types';
-import { Hand } from '../../models';
+import { Hand, SEAT } from '../../models';
 
-export function dealCard(...hands: Hand[]): HandAction {
-  return { type: HAND.DEAL, payload: hands };
+export function dealCard(payload: Hand[]): HandAction {
+  return { type: HAND.DEAL, payload };
+}
+
+export function updateHand(payload: Record<SEAT, Hand[]>): HandAction {
+  return { type: HAND.UPDATE, payload };
 }

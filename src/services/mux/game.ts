@@ -89,12 +89,11 @@ function prefix(prop: DealProp) {
 function onBegin(service: Service, prop: DealProp[]) {
   const hands = prop.map(pipe(prefix, toHand));
 
-  store.dispatch(dealCard(...hands));
+  store.dispatch(dealCard(hands));
 }
 
 function onDeal(service: Service, prop: DealProp) {
-  // console.log(prop);
-  store.dispatch(dealCard(toHand(prop)));
+  store.dispatch(dealCard([toHand(prop)]));
 }
 
 let cancel: () => void;

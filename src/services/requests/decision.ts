@@ -14,15 +14,12 @@ export default async function (service: Service, decision: DECISION) {
     throw new Error(`Not user's turn ...`);
   }
 
-  const pile = {
-    L: 0,
-    R: 1,
-  }[game.turn.pair];
-
   service.send({
     cmd: C2S.CLIENT.DECISION,
     data: {
       id: game.room,
+      no: game.turn.seat,
+
       action: {
         [DECISION.DOUBLE]: 'dbl',
         [DECISION.SURRENDER]: 'gvp',
@@ -32,24 +29,13 @@ export default async function (service: Service, decision: DECISION) {
         [DECISION.SPLIT]: 'spt',
         [DECISION.STAND]: 'sty',
       }[decision],
-      no: game.turn.seat,
-      pile,
+
+      pile: {
+        L: 0,
+        R: 1,
+      }[game.turn.pair],
     },
   });
 
-  return new Promise((resolve) => {
-    service.once(EVENT.DECISION, (action: 'dbl' | 'gvp' | 'ins' | 'pay' | 'spt' | 'sty') =>
-      resolve(
-        {
-          dbl: DECISION.DOUBLE,
-          gvp: DECISION.SURRENDER,
-          hit: DECISION.HIT,
-          ins: DECISION.INSURANCE,
-          pay: DECISION.PAY,
-          spt: DECISION.SPLIT,
-          sty: DECISION.STAND,
-        }[action]
-      )
-    );
-  });
+  return new Promise((resolve) => service.once(EVENT.DECISION, resolve));
 }

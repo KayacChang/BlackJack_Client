@@ -1,9 +1,8 @@
-import { S2C } from '../../models';
+import { S2C, PAIR, SEAT } from '../../models';
 import Service from '../service';
-import { EVENT, LoginProp, UpdateProp, ActionProp } from '../types';
-
+import { EVENT, LoginProp, UpdateProp, ActionProp, toSeatNum } from '../types';
 import store from '../../store';
-import { login, update, commitBet } from '../../store/actions';
+import { login, update, commitBet, updateSeats, updateHand } from '../../store/actions';
 
 function onLogin(service: Service, { user_name }: LoginProp) {
   store.dispatch(
@@ -38,7 +37,26 @@ function onBet(service: Service, data: any) {
   return service.emit(EVENT.BET);
 }
 
-function onAction(service: Service, data: ActionProp | undefined) {
+function onSplit(seatID: SEAT) {
+  const { seat, hand } = store.getState();
+
+  store.dispatch(updateSeats({ ...seat, [seatID]: { ...seat[seatID], split: true } }));
+
+  const [L, R] = hand[seatID];
+
+  store.dispatch(
+    updateHand({
+      ...hand,
+      [seatID]: [L, { ...R, pair: PAIR.R }],
+    })
+  );
+}
+
+function onAction(service: Service, data?: ActionProp) {
+  if (!data) {
+    return;
+  }
+
   const { user } = store.getState();
 
   store.dispatch(
@@ -48,7 +66,11 @@ function onAction(service: Service, data: ActionProp | undefined) {
     })
   );
 
-  return service.emit(EVENT.DECISION, data?.action);
+  if (data.action === 'spt') {
+    onSplit(toSeatNum(data.no));
+  }
+
+  return service.emit(EVENT.DECISION, data.action);
 }
 
 export default {

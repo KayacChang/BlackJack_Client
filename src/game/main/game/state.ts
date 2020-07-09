@@ -3,7 +3,8 @@ import store, { observe } from '../../../store';
 import { Hand, SEAT, GAME_STATE } from '../../../models';
 
 interface Context {
-  hands: Hand[];
+  latest?: Hand;
+  history: Hand[];
 }
 
 type Event = { type: 'START' } | { type: 'DEAL'; hand: Hand } | { type: 'SPLIT' } | { type: 'CLEAR' };
@@ -13,30 +14,13 @@ type Schema<T> = { value: 'idle'; context: T } | { value: 'normal'; context: T }
 export type HandsService = Interpreter<Context, any, Event, Schema<Context>>;
 export type HandsState = State<Context, Event, any, Schema<Context>>;
 
-function deal({ hands }: Context, event: Event) {
-  //
-  if (event.type === 'DEAL') {
-    return [...hands, event.hand];
-  }
-
-  return hands;
-}
-
-function clear({ hands }: Context, event: Event) {
-  //
-  if (event.type === 'CLEAR') {
-    return [];
-  }
-
-  return hands;
-}
-
 const machine = createMachine<Context, Event, Schema<Context>>(
   {
     initial: 'idle',
 
     context: {
-      hands: [],
+      latest: undefined,
+      history: [],
     },
 
     states: {
@@ -65,9 +49,43 @@ const machine = createMachine<Context, Event, Schema<Context>>(
   },
   {
     actions: {
-      deal: assign({ hands: deal }),
+      deal: assign({
+        latest: (context, event) => {
+          if (event.type === 'DEAL') {
+            return event.hand;
+          }
+
+          return context.latest;
+        },
+
+        history: (context, event) => {
+          if (event.type === 'DEAL') {
+            return [...context.history, event.hand];
+          }
+
+          return context.history;
+        },
+      }),
+
+      clear: assign({
+        latest: (context, event) => {
+          if (event.type === 'CLEAR') {
+            return undefined;
+          }
+
+          return context.latest;
+        },
+
+        history: (context, event) => {
+          if (event.type === 'CLEAR') {
+            return [];
+          }
+
+          return context.history;
+        },
+      }),
+
       split: (context, event) => {},
-      clear: assign({ hands: clear }),
     },
   }
 );
@@ -103,16 +121,14 @@ function onGameStateChange(service: HandsService, id: SEAT) {
 
 function onHandsChange(service: HandsService) {
   //
-  return function (hands: Hand[][]) {
+  return function (hands: Hand[]) {
     //
     const latest = hands[hands.length - 1];
     if (!latest) {
       return;
     }
 
-    for (const hand of latest) {
-      service.send({ type: 'DEAL', hand });
-    }
+    service.send({ type: 'DEAL', hand: latest });
   };
 }
 

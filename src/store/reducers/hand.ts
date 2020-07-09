@@ -1,8 +1,8 @@
 import { Hand, SEAT } from '../../models';
 import { HAND, HandAction, GAME } from '../types';
-import { groupBy, mergeWith, concat, pipe, map, mapObjIndexed, merge, append } from 'ramda';
+import { groupBy, mergeWith, concat } from 'ramda';
 
-const initialState: Record<SEAT, Hand[][]> = {
+const initialState: Record<SEAT, Hand[]> = {
   [SEAT.DEALER]: [],
   [SEAT.A]: [],
   [SEAT.B]: [],
@@ -13,7 +13,7 @@ const initialState: Record<SEAT, Hand[][]> = {
 
 const groupByID = groupBy(({ id }: Hand) => String(id));
 
-export default function handReducer(state = initialState, action: HandAction): Record<SEAT, Hand[][]> {
+export default function handReducer(state = initialState, action: HandAction): Record<SEAT, Hand[]> {
   const { type, payload } = action;
 
   if (type === HAND.DEAL) {
@@ -21,7 +21,11 @@ export default function handReducer(state = initialState, action: HandAction): R
 
     const grouped = groupByID(hands);
 
-    return mergeWith(append, grouped, state);
+    return mergeWith(concat, state, grouped);
+  }
+
+  if (type === HAND.UPDATE) {
+    return payload as Record<SEAT, Hand[]>;
   }
 
   if (type === GAME.BET_START) {

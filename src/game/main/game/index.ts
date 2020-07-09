@@ -1,6 +1,7 @@
 import { Container } from 'pixi.js';
-import { Hand, SEAT } from '../../../models';
+import { Hand, SEAT, PAIR } from '../../../models';
 import { createHandService, HandsState } from './state';
+import Poker from './Poker';
 
 // const dealPoint = { x: 2515, y: 160 };
 
@@ -18,9 +19,14 @@ export default function Game() {
   container.name = 'game';
 
   for (const [id, end] of Object.entries(config)) {
-    const service = createHandService(Number(id) as SEAT);
+    const seatID = Number(id) as SEAT;
 
-    service.onTransition(update(container));
+    const service = createHandService(seatID);
+
+    const hands = new Container();
+    container.addChild(hands);
+
+    service.onTransition(update(seatID, hands));
 
     service.start();
   }
@@ -28,117 +34,43 @@ export default function Game() {
   return container;
 }
 
-function update(scene: Container) {
+function update(id: SEAT, hands: Container) {
   //
+  let records: Record<PAIR, Poker[]> = {
+    [PAIR.L]: [],
+    [PAIR.R]: [],
+  };
+
   return function update(state: HandsState) {
     //
     if (!state.changed) {
       return;
     }
 
-    state.matches('idle');
+    if (state.matches('idle')) {
+      hands.removeChildren();
 
-    state.matches('normal');
+      records = {
+        [PAIR.L]: [],
+        [PAIR.R]: [],
+      };
 
-    state.matches('split');
+      return;
+    }
+
+    if (state.matches('normal')) {
+      //
+      // for (const { pair, card } of state.context.latest) {
+      // records[pair] = [...records[pair], new Poker(card.suit, card.rank)];
+      // }
+
+      // console.log(id, records);
+
+      return;
+    }
+
+    if (state.matches('split')) {
+      return;
+    }
   };
 }
-
-// function Hands(): Record<SEAT, Card[]> {
-//   return {
-//     [SEAT.A]: [],
-//     [SEAT.B]: [],
-//     [SEAT.C]: [],
-//     [SEAT.D]: [],
-//     [SEAT.E]: [],
-//     [SEAT.DEALER]: [],
-//   };
-// }
-
-// function Scores(): Record<SEAT, number> {
-//   return {
-//     [SEAT.A]: 0,
-//     [SEAT.B]: 0,
-//     [SEAT.C]: 0,
-//     [SEAT.D]: 0,
-//     [SEAT.E]: 0,
-//     [SEAT.DEALER]: 0,
-//   };
-// }
-
-// function getPath(paths: Container, id: SEAT, pair: PAIR, nextIdx: number) {
-//   const path = paths.getChildByName(String(id)) as Path;
-
-//   const target = config[id];
-
-//   const offsetX = -100;
-//   const nextX = 50;
-
-//   const end = {
-//     x: target.x + offsetX + nextX * nextIdx,
-//     y: target.y,
-//   };
-
-//   path.points = [dealPoint, end];
-
-//   return path;
-// }
-
-// function state(paths: Container, pokers: Container, scoresGroup: Container) {
-//   let pre = Hands();
-//   let scores = Scores();
-
-//   let outer: gsap.core.Timeline;
-
-//   return async function update(hands: Hand[]) {
-//     //
-//     if (hands.length === 0) {
-//       pre = Hands();
-//       scores = Scores();
-//       pokers.removeChildren();
-//       scoresGroup.removeChildren();
-
-//       return;
-//     }
-
-//     if (outer) {
-//       outer.seek(outer.endTime(), false);
-//     }
-
-//     outer = gsap.timeline();
-
-//     for (const { id, card, points, pair } of hands) {
-//       const { suit, rank } = card;
-
-//       const poker = new Poker(suit, rank);
-//       poker.alpha = 0;
-//       pokers.addChild(poker);
-
-//       pre[id].push(card);
-//       scores[id] = Math.max(scores[id], points);
-
-//       const path = getPath(paths, id, pair, pre[id].length - 1);
-
-//       outer.add(path.attach(poker));
-//       outer.add(gsap.to(poker, { alpha: 1 }), '<');
-//     }
-
-//     const clear = whenVisibilityChange((pass) => outer.seek(pass / 1000, false));
-
-//     await outer;
-
-//     clear();
-
-//     for (const [id, score] of Object.entries(scores)) {
-//       if (score === 0) continue;
-
-//       const view = Score(score);
-//       view.name = id;
-//       const { x, y } = config[Number(id) as SEAT];
-//       view.position.set(x, y + 75);
-
-//       scoresGroup.removeChild(scoresGroup.getChildByName(id));
-//       scoresGroup.addChild(view);
-//     }
-//   };
-// }
