@@ -1,17 +1,18 @@
 import { Container } from 'pixi.js';
-import { Hand, SEAT, PAIR } from '../../../models';
+import { SEAT } from '../../../models';
 import { createHandService, HandsState } from './state';
 import Poker from './Poker';
+import gsap from 'gsap';
 
-// const dealPoint = { x: 2515, y: 160 };
+const dealPoint = { x: 2515, y: 160 };
 
 const config = {
   [SEAT.A]: { x: 443, y: 630 },
   [SEAT.B]: { x: 888, y: 880 },
-  [SEAT.C]: { x: 1480, y: 980 },
+  [SEAT.C]: { x: 1460, y: 980 },
   [SEAT.D]: { x: 2072, y: 880 },
   [SEAT.E]: { x: 2515, y: 630 },
-  [SEAT.DEALER]: { x: 1480, y: 330 },
+  [SEAT.DEALER]: { x: 1460, y: 330 },
 };
 
 export default function Game() {
@@ -19,16 +20,12 @@ export default function Game() {
   container.name = 'game';
 
   for (const [id, end] of Object.entries(config)) {
-    const seatID = Number(id) as SEAT;
-
-    const service = createHandService(seatID);
-
     const hands = new Container();
     container.addChild(hands);
 
-    service.onTransition(update(seatID, hands));
+    const seatID = Number(id) as SEAT;
 
-    service.start();
+    createHandService(seatID).onTransition(update(seatID, hands)).start();
   }
 
   return container;
@@ -36,10 +33,20 @@ export default function Game() {
 
 function update(id: SEAT, hands: Container) {
   //
-  let records: Record<PAIR, Poker[]> = {
-    [PAIR.L]: [],
-    [PAIR.R]: [],
-  };
+  function add(poker: Poker) {
+    //
+    const { x, y } = config[id];
+    const offset = 50;
+
+    const mid = hands.children.length === 1 ? 0 : Math.round(hands.children.length / 2) - 0.5;
+
+    poker.position.set(dealPoint.x, dealPoint.y);
+    hands.addChild(poker);
+
+    hands.children.forEach((child, index) => {
+      gsap.to(child, { x: x + offset * (index - mid), y, duration: 0.8, ease: 'expo.out' });
+    });
+  }
 
   return function update(state: HandsState) {
     //
@@ -50,21 +57,20 @@ function update(id: SEAT, hands: Container) {
     if (state.matches('idle')) {
       hands.removeChildren();
 
-      records = {
-        [PAIR.L]: [],
-        [PAIR.R]: [],
-      };
-
       return;
     }
 
     if (state.matches('normal')) {
-      //
-      // for (const { pair, card } of state.context.latest) {
-      // records[pair] = [...records[pair], new Poker(card.suit, card.rank)];
-      // }
+      if (!state.context.latest) {
+        return;
+      }
+      console.log(id, state.context.latest);
 
-      // console.log(id, records);
+      const { suit, rank } = state.context.latest.card;
+
+      const poker = new Poker(suit, rank);
+
+      add(poker);
 
       return;
     }
