@@ -7,22 +7,24 @@ const dealer = {
   bet: 0,
   commited: false,
   pay: 0,
+  split: false,
 };
 
-const emptySeat = () => ({
+const Seat = () => ({
   player: '',
   bet: 0,
   commited: false,
   pay: 0,
+  split: false,
 });
 
 const initialState: Seats = {
   [SEAT_ID.DEALER]: dealer,
-  [SEAT_ID.A]: emptySeat(),
-  [SEAT_ID.B]: emptySeat(),
-  [SEAT_ID.C]: emptySeat(),
-  [SEAT_ID.D]: emptySeat(),
-  [SEAT_ID.E]: emptySeat(),
+  [SEAT_ID.A]: Seat(),
+  [SEAT_ID.B]: Seat(),
+  [SEAT_ID.C]: Seat(),
+  [SEAT_ID.D]: Seat(),
+  [SEAT_ID.E]: Seat(),
 };
 
 export default function seatReducer(state = initialState, action: SeatAction | BetAction): Seats {
@@ -46,7 +48,7 @@ export default function seatReducer(state = initialState, action: SeatAction | B
     const newState = {} as Seats;
 
     for (const [id, seat] of Object.entries(state)) {
-      newState[Number(id) as SEAT_ID] = { ...seat, commited: false };
+      newState[Number(id) as SEAT_ID] = { ...seat, commited: false, split: false };
     }
 
     return newState;

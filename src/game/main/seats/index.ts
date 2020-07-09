@@ -42,11 +42,11 @@ function updateResult(seats: Seat[]) {
     }
 
     if (game.state === GAME_STATE.DEALING) {
-      for (const { id, points } of hand) {
-        if (points > 21) {
-          addResult(id, Bust());
-        }
-      }
+      // for (const { id, points } of hand) {
+      //   if (points > 21) {
+      //     addResult(id, Bust());
+      //   }
+      // }
     }
 
     if (game.state === GAME_STATE.SETTLE) {

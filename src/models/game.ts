@@ -21,6 +21,7 @@ export interface Seat {
   player: string;
   bet: number;
   pay?: number;
+  split: boolean;
 }
 
 export interface Card {

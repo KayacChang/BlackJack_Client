@@ -15,14 +15,15 @@ export function isPlayerExist({ player }: SeatProp) {
 
 export function toSeats(seats: SeatProp[]): Seats {
   //
-  return seats.reduce((config, { no, player, total_bet, pay }) => {
-    //
-    config[toSeatNum(no)] = {
-      player: String(player),
-      bet: Number(total_bet),
-      pay: Number(pay || 0),
+  return seats.reduce((config, { no, player, total_bet, pay, piles }) => {
+    return {
+      ...config,
+      [toSeatNum(no)]: {
+        player: String(player),
+        bet: Number(total_bet),
+        pay: Number(pay || 0),
+        split: Boolean(piles && piles[piles.length - 1].bet),
+      },
     };
-
-    return config;
   }, {} as Seats);
 }

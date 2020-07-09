@@ -3,18 +3,6 @@ import Service from '../service';
 import { C2S, DECISION } from '../../models';
 import store from '../../store';
 
-function toDecision(decision: DECISION) {
-  return {
-    [DECISION.DOUBLE]: 'dbl',
-    [DECISION.SURRENDER]: 'gvp',
-    [DECISION.HIT]: 'hit',
-    [DECISION.INSURANCE]: 'ins',
-    [DECISION.PAY]: 'pay',
-    [DECISION.SPLIT]: 'spt',
-    [DECISION.STAND]: 'sty',
-  }[decision];
-}
-
 export default async function (service: Service, decision: DECISION) {
   const { game, user, seat } = store.getState();
 
@@ -35,13 +23,33 @@ export default async function (service: Service, decision: DECISION) {
     cmd: C2S.CLIENT.DECISION,
     data: {
       id: game.room,
-      action: toDecision(decision),
+      action: {
+        [DECISION.DOUBLE]: 'dbl',
+        [DECISION.SURRENDER]: 'gvp',
+        [DECISION.HIT]: 'hit',
+        [DECISION.INSURANCE]: 'ins',
+        [DECISION.PAY]: 'pay',
+        [DECISION.SPLIT]: 'spt',
+        [DECISION.STAND]: 'sty',
+      }[decision],
       no: game.turn.seat,
       pile,
     },
   });
 
   return new Promise((resolve) => {
-    service.once(EVENT.DECISION, resolve);
+    service.once(EVENT.DECISION, (action: 'dbl' | 'gvp' | 'ins' | 'pay' | 'spt' | 'sty') =>
+      resolve(
+        {
+          dbl: DECISION.DOUBLE,
+          gvp: DECISION.SURRENDER,
+          hit: DECISION.HIT,
+          ins: DECISION.INSURANCE,
+          pay: DECISION.PAY,
+          spt: DECISION.SPLIT,
+          sty: DECISION.STAND,
+        }[action]
+      )
+    );
   });
 }

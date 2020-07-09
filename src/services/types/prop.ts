@@ -10,7 +10,7 @@ export interface SeatProp {
   player: string;
   total_bet: number;
   pay?: number;
-  piles: PileProp[];
+  piles?: PileProp[];
 }
 
 export interface PileProp {

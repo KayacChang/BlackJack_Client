@@ -1,19 +1,27 @@
-import { Hand } from '../../models';
+import { Hand, SEAT } from '../../models';
 import { HAND, HandAction, GAME } from '../types';
+import { groupBy, mergeWith, concat, pipe, map, mapObjIndexed, merge, append } from 'ramda';
 
-const initialState: Hand[] = [];
+const initialState: Record<SEAT, Hand[][]> = {
+  [SEAT.DEALER]: [],
+  [SEAT.A]: [],
+  [SEAT.B]: [],
+  [SEAT.C]: [],
+  [SEAT.D]: [],
+  [SEAT.E]: [],
+};
 
-export default function handReducer(state = initialState, action: HandAction): Hand[] {
+const groupByID = groupBy(({ id }: Hand) => String(id));
+
+export default function handReducer(state = initialState, action: HandAction): Record<SEAT, Hand[][]> {
   const { type, payload } = action;
 
   if (type === HAND.DEAL) {
     const hands = payload as Hand[];
 
-    return hands.map((newHand) => {
-      const hand = state.find((hand) => newHand.id === hand.id);
+    const grouped = groupByID(hands);
 
-      return hand ? { ...hand, ...newHand } : newHand;
-    });
+    return mergeWith(append, grouped, state);
   }
 
   if (type === GAME.BET_START) {
