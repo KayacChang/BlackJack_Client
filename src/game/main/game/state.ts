@@ -117,12 +117,25 @@ function onHandsChange(service: HandsService) {
   };
 }
 
+function onSplit(service: HandsService) {
+  //
+  return function (split: boolean) {
+    if (!split) {
+      return;
+    }
+
+    service.send({ type: 'SPLIT' });
+  };
+}
+
 export function createHandService(id: SEAT): HandsService {
   const service = interpret(machine);
 
   observe((state) => state.game.state, onGameStateChange(service));
 
   observe((state) => state.hand[id], onHandsChange(service));
+
+  observe((state) => state.seat[id].split, onSplit(service));
 
   return service;
 }
