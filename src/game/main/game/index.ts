@@ -1,18 +1,18 @@
-import { Container } from 'pixi.js';
+import { Container, DisplayObject } from 'pixi.js';
 import { SEAT } from '../../../models';
 import { createHandService, HandsState } from './state';
 import Poker from './Poker';
 import gsap from 'gsap';
 
-const dealPoint = { x: 2515, y: 160 };
+const origin = { x: 2515, y: 160 };
 
 const config = {
   [SEAT.A]: { x: 443, y: 630 },
   [SEAT.B]: { x: 888, y: 880 },
-  [SEAT.C]: { x: 1460, y: 980 },
+  [SEAT.C]: { x: 1480, y: 980 },
   [SEAT.D]: { x: 2072, y: 880 },
   [SEAT.E]: { x: 2515, y: 630 },
-  [SEAT.DEALER]: { x: 1460, y: 330 },
+  [SEAT.DEALER]: { x: 1480, y: 330 },
 };
 
 export default function Game() {
@@ -31,25 +31,32 @@ export default function Game() {
   return container;
 }
 
-function update(id: SEAT, hands: Container) {
+function tween<T extends DisplayObject>(element: T, options = {}) {
+  return gsap.to(element, { duration: 0.8, ease: 'expo.out', ...options });
+}
+
+function dealTo(id: SEAT, hands: Container) {
   //
-  function add(poker: Poker) {
-    //
-    const { x, y } = config[id];
-    const offset = 50;
-
-    const mid = hands.children.length === 1 ? 0 : Math.round(hands.children.length / 2) - 0.5;
-
-    poker.position.set(dealPoint.x, dealPoint.y);
+  return function deal(poker: Poker) {
+    poker.position.set(origin.x, origin.y);
+    poker.alpha = 0;
     hands.addChild(poker);
 
-    hands.children.forEach((child, index) => {
-      gsap.to(child, { x: x + offset * (index - mid), y, duration: 0.8, ease: 'expo.out' });
-    });
-  }
+    const end = config[id];
+    const offset = 50;
+    const mid = hands.children.length === 1 ? 0 : Math.round(hands.children.length / 2) - 0.5;
+
+    return hands.children.map((child, index) =>
+      tween(child, { x: end.x + offset * (index - mid), y: end.y, alpha: 1 })
+    );
+  };
+}
+
+function update(id: SEAT, hands: Container) {
+  //
+  const deal = dealTo(id, hands);
 
   return function update(state: HandsState) {
-    //
     if (!state.changed) {
       return;
     }
@@ -60,17 +67,14 @@ function update(id: SEAT, hands: Container) {
       return;
     }
 
-    if (state.matches('normal')) {
-      if (!state.context.latest) {
-        return;
+    if (state.matches('normal') && state.context.latest) {
+      for (const hand of state.context.latest) {
+        const { suit, rank } = hand.card;
+
+        const poker = new Poker(suit, rank);
+
+        deal(poker);
       }
-      console.log(id, state.context.latest);
-
-      const { suit, rank } = state.context.latest.card;
-
-      const poker = new Poker(suit, rank);
-
-      add(poker);
 
       return;
     }

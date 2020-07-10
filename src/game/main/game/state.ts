@@ -1,16 +1,13 @@
 import { createMachine, interpret, assign, Interpreter, State } from 'xstate';
-import store, { observe } from '../../../store';
+import { observe } from '../../../store';
 import { Hand, SEAT, GAME_STATE } from '../../../models';
 
 interface Context {
-  latest?: Hand;
+  latest: Hand[];
   history: Hand[];
 }
-
-type Event = { type: 'START' } | { type: 'DEAL'; hand: Hand } | { type: 'SPLIT' } | { type: 'CLEAR' };
-
+type Event = { type: 'START' } | { type: 'DEAL'; hand: Hand[] } | { type: 'SPLIT' } | { type: 'CLEAR' };
 type Schema<T> = { value: 'idle'; context: T } | { value: 'normal'; context: T } | { value: 'split'; context: T };
-
 export type HandsService = Interpreter<Context, any, Event, Schema<Context>>;
 export type HandsState = State<Context, Event, any, Schema<Context>>;
 
@@ -19,7 +16,7 @@ const machine = createMachine<Context, Event, Schema<Context>>(
     initial: 'idle',
 
     context: {
-      latest: undefined,
+      latest: [],
       history: [],
     },
 
@@ -60,7 +57,7 @@ const machine = createMachine<Context, Event, Schema<Context>>(
 
         history: (context, event) => {
           if (event.type === 'DEAL') {
-            return [...context.history, event.hand];
+            return [...context.history, ...event.hand];
           }
 
           return context.history;
@@ -70,7 +67,7 @@ const machine = createMachine<Context, Event, Schema<Context>>(
       clear: assign({
         latest: (context, event) => {
           if (event.type === 'CLEAR') {
-            return undefined;
+            return [];
           }
 
           return context.latest;
@@ -90,17 +87,9 @@ const machine = createMachine<Context, Event, Schema<Context>>(
   }
 );
 
-function hasJoin(id: SEAT) {
-  const { seat } = store.getState();
-
-  const target = seat[id];
-
-  return target.player && target.bet;
-}
-
-function onGameStateChange(service: HandsService, id: SEAT) {
+function onGameStateChange(service: HandsService) {
   //
-  function send(state: GAME_STATE) {
+  return function (state: GAME_STATE) {
     if (state === GAME_STATE.DEALING) {
       service.send({ type: 'START' });
     }
@@ -108,23 +97,19 @@ function onGameStateChange(service: HandsService, id: SEAT) {
     if (state === GAME_STATE.BETTING) {
       service.send({ type: 'CLEAR' });
     }
-  }
-
-  if (id === SEAT.DEALER) {
-    return send;
-  }
-
-  return function onChange(state: GAME_STATE) {
-    return hasJoin(id) && send(state);
   };
 }
 
 function onHandsChange(service: HandsService) {
   //
+  let last: Hand[] = [];
+
   return function (hands: Hand[]) {
     //
-    const latest = hands[hands.length - 1];
-    if (!latest) {
+    const latest = hands.slice(last.length);
+    last = hands;
+
+    if (latest.length <= 0) {
       return;
     }
 
@@ -135,7 +120,7 @@ function onHandsChange(service: HandsService) {
 export function createHandService(id: SEAT): HandsService {
   const service = interpret(machine);
 
-  observe((state) => state.game.state, onGameStateChange(service, id));
+  observe((state) => state.game.state, onGameStateChange(service));
 
   observe((state) => state.hand[id], onHandsChange(service));
 
