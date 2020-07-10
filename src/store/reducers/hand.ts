@@ -11,7 +11,7 @@ const initialState: Record<SEAT, Hand[]> = {
   [SEAT.E]: [],
 };
 
-const groupByID = groupBy(({ id }: Hand) => String(id));
+const groupByID = groupBy(({ seat }: Hand) => String(seat));
 
 export default function handReducer(state = initialState, action: HandAction): Record<SEAT, Hand[]> {
   const { type, payload } = action;

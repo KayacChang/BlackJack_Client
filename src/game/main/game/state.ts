@@ -1,12 +1,12 @@
 import { createMachine, interpret, assign, Interpreter, State } from 'xstate';
-import { observe } from '../../../store';
+import store, { observe } from '../../../store';
 import { Hand, SEAT, GAME_STATE } from '../../../models';
 
 interface Context {
   latest: Hand[];
   history: Hand[];
 }
-type Event = { type: 'START' } | { type: 'DEAL'; hand: Hand[] } | { type: 'SPLIT' } | { type: 'CLEAR' };
+type Event = { type: 'START' } | { type: 'DEAL'; hands: Hand[] } | { type: 'SPLIT'; hands: Hand[] } | { type: 'CLEAR' };
 type Schema<T> = { value: 'idle'; context: T } | { value: 'normal'; context: T } | { value: 'split'; context: T };
 export type HandsService = Interpreter<Context, any, Event, Schema<Context>>;
 export type HandsState = State<Context, Event, any, Schema<Context>>;
@@ -49,7 +49,7 @@ const machine = createMachine<Context, Event, Schema<Context>>(
       deal: assign({
         latest: (context, event) => {
           if (event.type === 'DEAL') {
-            return event.hand;
+            return event.hands;
           }
 
           return context.latest;
@@ -57,7 +57,7 @@ const machine = createMachine<Context, Event, Schema<Context>>(
 
         history: (context, event) => {
           if (event.type === 'DEAL') {
-            return [...context.history, ...event.hand];
+            return [...context.history, ...event.hands];
           }
 
           return context.history;
@@ -82,7 +82,22 @@ const machine = createMachine<Context, Event, Schema<Context>>(
         },
       }),
 
-      split: (context, event) => {},
+      split: assign({
+        latest: (context, event) => {
+          if (event.type === 'SPLIT') {
+            return [];
+          }
+          return context.latest;
+        },
+
+        history: (context, event) => {
+          if (event.type === 'SPLIT') {
+            return event.hands;
+          }
+
+          return context.history;
+        },
+      }),
     },
   }
 );
@@ -113,18 +128,20 @@ function onHandsChange(service: HandsService) {
       return;
     }
 
-    service.send({ type: 'DEAL', hand: latest });
+    service.send({ type: 'DEAL', hands: latest });
   };
 }
 
-function onSplit(service: HandsService) {
+function onSplit(service: HandsService, id: SEAT) {
   //
   return function (split: boolean) {
     if (!split) {
       return;
     }
 
-    service.send({ type: 'SPLIT' });
+    const { hand } = store.getState();
+
+    service.send({ type: 'SPLIT', hands: hand[id] });
   };
 }
 
@@ -135,7 +152,7 @@ export function createHandService(id: SEAT): HandsService {
 
   observe((state) => state.hand[id], onHandsChange(service));
 
-  observe((state) => state.seat[id].split, onSplit(service));
+  observe((state) => state.seat[id].split, onSplit(service, id));
 
   return service;
 }

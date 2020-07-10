@@ -1,8 +1,8 @@
-import { Container, DisplayObject } from "pixi.js";
-import { SEAT, PAIR } from "../../../models";
-import { createHandService, HandsState } from "./state";
-import Poker from "./Poker";
-import gsap from "gsap";
+import { Container, DisplayObject } from 'pixi.js';
+import { SEAT, PAIR } from '../../../models';
+import { createHandService, HandsState } from './state';
+import Poker from './Poker';
+import gsap from 'gsap';
 
 const origin = { x: 2515, y: 160 };
 
@@ -17,24 +17,24 @@ const config = {
   },
   split: {
     [SEAT.A]: {
-      [PAIR.L]: { x: 243, y: 630 },
-      [PAIR.R]: { x: 643, y: 630 },
+      [PAIR.L]: { x: 263, y: 630 },
+      [PAIR.R]: { x: 623, y: 630 },
     },
     [SEAT.B]: {
-      [PAIR.L]: { x: 688, y: 880 },
-      [PAIR.R]: { x: 1088, y: 880 },
+      [PAIR.L]: { x: 708, y: 880 },
+      [PAIR.R]: { x: 1068, y: 880 },
     },
     [SEAT.C]: {
-      [PAIR.L]: { x: 1280, y: 980 },
-      [PAIR.R]: { x: 1680, y: 980 },
+      [PAIR.L]: { x: 1300, y: 980 },
+      [PAIR.R]: { x: 1660, y: 980 },
     },
     [SEAT.D]: {
-      [PAIR.L]: { x: 1872, y: 880 },
-      [PAIR.R]: { x: 2272, y: 880 },
+      [PAIR.L]: { x: 1892, y: 880 },
+      [PAIR.R]: { x: 2252, y: 880 },
     },
     [SEAT.E]: {
-      [PAIR.L]: { x: 2315, y: 630 },
-      [PAIR.R]: { x: 2715, y: 630 },
+      [PAIR.L]: { x: 2335, y: 630 },
+      [PAIR.R]: { x: 2695, y: 630 },
     },
     [SEAT.DEALER]: {
       [PAIR.L]: { x: 1480, y: 330 },
@@ -45,7 +45,7 @@ const config = {
 
 export default function Game() {
   const container = new Container();
-  container.name = "game";
+  container.name = 'game';
 
   for (const id in SEAT) {
     if (isNaN(Number(id))) {
@@ -63,63 +63,99 @@ export default function Game() {
 }
 
 function tween<T extends DisplayObject>(element: T, options = {}) {
-  return gsap.to(element, { duration: 0.8, ease: "expo.out", ...options });
+  return gsap.to(element, { duration: 0.8, ease: 'expo.out', ...options });
 }
 
-function dealTo(hands: Container) {
+function move(pokers: Poker[], end: { x: number; y: number }) {
+  const offset = 50;
+  const mid = pokers.length === 1 ? 0 : Math.round(pokers.length / 2) - 0.5;
+
+  return pokers.map((child, index) => tween(child, { x: end.x + offset * (index - mid), y: end.y, alpha: 1 }));
+}
+
+function update(id: SEAT, layer: Container) {
   //
-  return function deal(poker: Poker, end: { x: number; y: number }) {
-    poker.position.set(origin.x, origin.y);
-    poker.alpha = 0;
-    hands.addChild(poker);
+  const mapping = new Map<string, Poker>();
 
-    const offset = 50;
-    const mid =
-      hands.children.length === 1
-        ? 0
-        : Math.round(hands.children.length / 2) - 0.5;
-
-    return hands.children.map((child, index) =>
-      tween(child, { x: end.x + offset * (index - mid), y: end.y, alpha: 1 })
-    );
+  let hands: Record<PAIR, Poker[]> = {
+    [PAIR.L]: [],
+    [PAIR.R]: [],
   };
-}
-
-function update(id: SEAT, hands: Container) {
-  //
-  const deal = dealTo(hands);
 
   return function update(state: HandsState) {
     if (!state.changed) {
       return;
     }
 
-    if (state.matches("idle")) {
-      hands.removeChildren();
+    if (state.matches('idle')) {
+      layer.removeChildren();
+      hands = {
+        [PAIR.L]: [],
+        [PAIR.R]: [],
+      };
+      mapping.clear();
 
       return;
     }
 
-    if (state.matches("normal") && state.context.latest) {
+    if (state.matches('normal') && state.context.latest.length > 0) {
+      //
       for (const hand of state.context.latest) {
         const { suit, rank } = hand.card;
 
         const poker = new Poker(suit, rank);
+        poker.alpha = 0;
+        poker.position.set(origin.x, origin.y);
+        layer.addChild(poker);
 
-        deal(poker, config["normal"][id]);
+        mapping.set(hand.id, poker);
+        hands[hand.pair] = [...hands[hand.pair], poker];
       }
+
+      move(hands[PAIR.L], config['normal'][id]);
 
       return;
     }
 
-    if (state.matches("split") && state.context.latest) {
+    if (state.matches('split') && state.context.latest.length === 0) {
+      //
+      hands = {
+        [PAIR.L]: [],
+        [PAIR.R]: [],
+      };
+
+      for (const hand of state.context.history) {
+        //
+        const poker = mapping.get(hand.id);
+        if (!poker) {
+          continue;
+        }
+
+        hands[hand.pair] = [...hands[hand.pair], poker];
+      }
+
+      move(hands[PAIR.L], config['split'][id][PAIR.L]);
+      move(hands[PAIR.R], config['split'][id][PAIR.R]);
+
+      return;
+    }
+
+    if (state.matches('split') && state.context.latest.length > 0) {
+      //
       for (const hand of state.context.latest) {
         const { suit, rank } = hand.card;
 
         const poker = new Poker(suit, rank);
+        poker.alpha = 0;
+        poker.position.set(origin.x, origin.y);
+        layer.addChild(poker);
 
-        deal(poker, config["split"][id][hand.pair]);
+        mapping.set(hand.id, poker);
+        hands[hand.pair] = [...hands[hand.pair], poker];
       }
+
+      move(hands[PAIR.L], config['split'][id][PAIR.L]);
+      move(hands[PAIR.R], config['split'][id][PAIR.R]);
 
       return;
     }

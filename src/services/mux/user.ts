@@ -40,8 +40,6 @@ function onBet(service: Service, data: any) {
 function onSplit(seatID: SEAT) {
   const { seat, hand } = store.getState();
 
-  store.dispatch(updateSeats({ ...seat, [seatID]: { ...seat[seatID], split: true } }));
-
   const [L, R] = hand[seatID];
 
   store.dispatch(
@@ -50,6 +48,8 @@ function onSplit(seatID: SEAT) {
       [seatID]: [L, { ...R, pair: PAIR.R }],
     })
   );
+
+  store.dispatch(updateSeats({ ...seat, [seatID]: { ...seat[seatID], split: true } }));
 }
 
 function onAction(service: Service, data?: ActionProp) {
