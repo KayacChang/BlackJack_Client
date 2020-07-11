@@ -1,20 +1,73 @@
-import { Container, Graphics } from 'pixi.js';
-import GameText from '../text';
+import { Container } from "pixi.js";
+import { SEAT, PAIR, Hand } from "../../../models";
+import { HandsState } from "./state";
+import Score from "./Field";
+import { config } from "./static";
+import { propEq } from "ramda";
+import { Bust } from "./icon";
+import { tween } from "./anim";
 
-export default function Score(score: number) {
-  const [width, height] = [108, 76];
+export default function updateScore(id: SEAT, layer: Container) {
+  //
+  const scores = new Container();
+  layer.addChild(scores);
 
-  const it = new Container();
+  const results = new Container();
+  layer.addChild(results);
 
-  const background = new Graphics();
-  background.beginFill(0x000, 0.7);
-  background.drawRoundedRect(-0.5 * width, -0.5 * height, width, height, 16);
-  background.endFill();
-  it.addChild(background);
+  function setScore(pos: { x: number; y: number }, hands: Hand[]) {
+    const score = Math.max(...hands.map(({ points }) => points));
 
-  const field = GameText(String(score));
-  field.anchor.set(0.5);
-  it.addChild(field);
+    const field = new Score();
 
-  return it;
+    const offsetY = 70;
+    field.position.set(pos.x, pos.y + offsetY);
+
+    field.text = String(score);
+
+    scores.addChild(field);
+
+    if (score > 21) {
+      const bust = Bust();
+
+      bust.position.set(pos.x, pos.y);
+
+      tween(bust, { y: pos.y - 200 });
+
+      results.addChild(bust);
+    }
+  }
+
+  return function update(state: HandsState) {
+    if (!state.changed) {
+      return state;
+    }
+
+    scores.removeChildren();
+
+    if (state.matches("idle")) {
+      results.removeChildren();
+
+      return state;
+    }
+
+    if (state.matches("normal") && state.context.latest.length > 0) {
+      setScore(config["normal"][id], state.context.history);
+
+      return state;
+    }
+
+    if (state.matches("split") && state.context.latest.length > 0) {
+      [PAIR.L, PAIR.R].forEach((pair) =>
+        setScore(
+          config["split"][id][pair],
+          state.context.history.filter(propEq("pair", pair))
+        )
+      );
+
+      return state;
+    }
+
+    return state;
+  };
 }
