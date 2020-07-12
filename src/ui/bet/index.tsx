@@ -8,7 +8,7 @@ import Controls from './Controls';
 import Chips from './Chips';
 import { animated, useSpring } from 'react-spring';
 
-export default function Bet () {
+export default function Bet() {
   const user = useSelector((state: AppState) => state.user);
   const seats = useSelector((state: AppState) => state.seat);
   const { state, countdown } = useSelector((state: AppState) => state.game);
@@ -31,13 +31,13 @@ export default function Bet () {
   }, [isBetting, seats, user]);
 
   useEffect(() => {
-    if (isBetting && hasCommited) {
-      setOpacity({ opacity: 0.3, display: 'block' });
+    if (isBetting && isUserJoin) {
+      setOpacity({ opacity: 1, display: 'block' });
       return;
     }
 
-    if (isBetting && isUserJoin) {
-      setOpacity({ opacity: 1, display: 'block' });
+    if (isBetting) {
+      setOpacity({ opacity: 0.3, display: 'block' });
       return;
     }
 
