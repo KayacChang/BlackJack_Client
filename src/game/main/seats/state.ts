@@ -34,6 +34,12 @@ function updateOwner(context: Context, event: Event) {
   return context.owner;
 }
 
+function canJoin(context: Context, event: Event) {
+  const { user, seat } = store.getState();
+
+  return Object.values(seat).filter(({ player }) => player === user.name).length < 3;
+}
+
 function join(context: Context, event: Event) {
   services.joinSeat(context.id);
 }
@@ -89,6 +95,7 @@ export function createSeatService(id: SEAT) {
           on: {
             pointerdown: {
               target: 'fetching',
+              cond: 'canJoin',
               actions: 'join',
             },
           },
@@ -133,7 +140,7 @@ export function createSeatService(id: SEAT) {
       },
     },
     {
-      guards: { canBet },
+      guards: { canBet, canJoin },
       actions: { updateOwner, join, placeBet },
     }
   );
