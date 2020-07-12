@@ -1,7 +1,7 @@
 import React, { ReactNode, MouseEvent, PropsWithChildren, HTMLAttributes } from 'react';
 import styles from './Drawer.module.scss';
 import { useSpring, animated } from 'react-spring';
-import {Cubic} from 'gsap'
+import { Cubic } from 'gsap';
 import { Option as OptionButton } from './Button';
 
 type Div<T> = PropsWithChildren<T & HTMLAttributes<HTMLDivElement>>;
