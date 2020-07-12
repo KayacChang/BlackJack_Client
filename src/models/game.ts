@@ -15,13 +15,14 @@ export interface Game {
   turn?: Turn;
 }
 
-export type Seats = Record<SEAT, Seat & { commited?: boolean; pay?: number }>;
+export type Seats = Record<SEAT, Seat>;
 
 export interface Seat {
   player: string;
   bet: number;
-  pay?: number;
+  commited?: boolean;
   split: boolean;
+  pays: Record<PAIR, number>;
 }
 
 export interface Card {

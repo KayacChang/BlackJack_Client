@@ -1,48 +1,52 @@
-import { Container, Sprite } from 'pixi.js';
+import { Container, Sprite, Texture } from 'pixi.js';
 import RES from '../../assets';
 import GameText from '../text';
 
-export function Win() {
-  const result = new Container();
+type Props = {
+  texture: Texture;
+  msg: string;
+  style?: {};
+  textPos: { x: number; y: number };
+};
 
-  const icon = new Sprite(RES.get('ICON_WIN').texture);
+function Icon({ texture, msg, style = {}, textPos }: Props) {
+  const it = new Container();
+
+  const icon = new Sprite(texture);
   icon.anchor.set(0.5);
-  result.addChild(icon);
 
-  const text = GameText('WIN', { fill: 0x000000 });
+  const text = GameText(msg, style);
   text.anchor.set(0.5);
-  text.position.set(0, 76);
-  result.addChild(text);
+  text.position.set(textPos.x, textPos.y);
 
-  return result;
+  it.addChild(icon, text);
+
+  it.scale.set(0.8);
+
+  return it;
+}
+
+export function Win() {
+  return Icon({
+    texture: RES.get('ICON_WIN').texture,
+    msg: 'WIN',
+    style: { fill: 0x000000 },
+    textPos: { x: 0, y: 76 },
+  });
 }
 
 export function Lose() {
-  const result = new Container();
-
-  const icon = new Sprite(RES.get('ICON_LOSE').texture);
-  icon.anchor.set(0.5);
-  result.addChild(icon);
-
-  const text = GameText('LOSE');
-  text.anchor.set(0.5);
-  text.position.set(0, 65);
-  result.addChild(text);
-
-  return result;
+  return Icon({
+    texture: RES.get('ICON_LOSE').texture,
+    msg: 'LOSE',
+    textPos: { x: 0, y: 65 },
+  });
 }
 
 export function Bust() {
-  const result = new Container();
-
-  const icon = new Sprite(RES.get('ICON_BUST').texture);
-  icon.anchor.set(0.5);
-  result.addChild(icon);
-
-  const text = GameText('BUST');
-  text.anchor.set(0.5);
-  text.position.set(0, 65);
-  result.addChild(text);
-
-  return result;
+  return Icon({
+    texture: RES.get('ICON_BUST').texture,
+    msg: 'BUST',
+    textPos: { x: 0, y: 65 },
+  });
 }

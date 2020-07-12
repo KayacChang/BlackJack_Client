@@ -59,3 +59,9 @@ export enum DECISION {
   SPLIT = 'split',
   STAND = 'stand',
 }
+
+export enum RESULT {
+  LOSE,
+  WIN,
+  BUST,
+}

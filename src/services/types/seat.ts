@@ -1,4 +1,4 @@
-import { SEAT, Seats } from '../../models';
+import { SEAT, Seats, PAIR } from '../../models';
 import { SeatProp } from './prop';
 
 export function toSeatNum(no: number): SEAT {
@@ -21,8 +21,11 @@ export function toSeats(seats: SeatProp[]): Seats {
       [toSeatNum(no)]: {
         player: String(player),
         bet: Number(total_bet),
-        pay: Number(pay || 0),
         split: Boolean(piles && piles[piles.length - 1].bet),
+        pays: {
+          [PAIR.L]: piles?.[0]?.pay || 0,
+          [PAIR.R]: piles?.[1]?.pay || 0,
+        },
       },
     };
   }, {} as Seats);

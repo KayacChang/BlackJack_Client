@@ -1,9 +1,9 @@
-import { Container } from "pixi.js";
-import { SEAT, PAIR } from "../../../models";
-import { HandsState } from "./state";
-import Poker from "./Poker";
-import { config, origin } from "./static";
-import { move } from "./anim";
+import { Container } from 'pixi.js';
+import { SEAT, PAIR } from '../../../models';
+import { HandsState } from './state';
+import Poker from './Poker';
+import { config, origin } from './static';
+import { move } from './anim';
 
 export default function updateHand(id: SEAT, layer: Container) {
   //
@@ -19,7 +19,7 @@ export default function updateHand(id: SEAT, layer: Container) {
       return state;
     }
 
-    if (state.matches("idle")) {
+    if (state.matches({ normal: 'idle' }) && state.matches({ split: 'idle' })) {
       mapping.forEach((poker) => poker.parent.removeChild(poker));
       hands = {
         [PAIR.L]: [],
@@ -30,26 +30,7 @@ export default function updateHand(id: SEAT, layer: Container) {
       return state;
     }
 
-    if (state.matches("normal") && state.context.latest.length > 0) {
-      //
-      for (const hand of state.context.latest) {
-        const { suit, rank } = hand.card;
-
-        const poker = new Poker(suit, rank);
-        poker.alpha = 0;
-        poker.position.set(origin.x, origin.y);
-        layer.addChild(poker);
-
-        mapping.set(hand.id, poker);
-        hands[hand.pair] = [...hands[hand.pair], poker];
-      }
-
-      move(hands[PAIR.L], config["normal"][id]);
-
-      return state;
-    }
-
-    if (state.matches("split") && state.context.latest.length === 0) {
+    if (state.matches({ split: 'deal' }) && state.context.latest.length === 0) {
       //
       hands = {
         [PAIR.L]: [],
@@ -66,13 +47,13 @@ export default function updateHand(id: SEAT, layer: Container) {
         hands[hand.pair] = [...hands[hand.pair], poker];
       }
 
-      move(hands[PAIR.L], config["split"][id][PAIR.L]);
-      move(hands[PAIR.R], config["split"][id][PAIR.R]);
+      move(hands[PAIR.L], config['split'][id][PAIR.L]);
+      move(hands[PAIR.R], config['split'][id][PAIR.R]);
 
       return state;
     }
 
-    if (state.matches("split") && state.context.latest.length > 0) {
+    if (state.matches({ normal: 'deal' }) && state.matches({ split: 'deal' }) && state.context.latest.length > 0) {
       //
       for (const hand of state.context.latest) {
         const { suit, rank } = hand.card;
@@ -86,8 +67,27 @@ export default function updateHand(id: SEAT, layer: Container) {
         hands[hand.pair] = [...hands[hand.pair], poker];
       }
 
-      move(hands[PAIR.L], config["split"][id][PAIR.L]);
-      move(hands[PAIR.R], config["split"][id][PAIR.R]);
+      move(hands[PAIR.L], config['split'][id][PAIR.L]);
+      move(hands[PAIR.R], config['split'][id][PAIR.R]);
+
+      return state;
+    }
+
+    if (state.matches({ split: 'idle' }) && state.matches({ normal: 'deal' }) && state.context.latest.length > 0) {
+      //
+      for (const hand of state.context.latest) {
+        const { suit, rank } = hand.card;
+
+        const poker = new Poker(suit, rank);
+        poker.alpha = 0;
+        poker.position.set(origin.x, origin.y);
+        layer.addChild(poker);
+
+        mapping.set(hand.id, poker);
+        hands[hand.pair] = [...hands[hand.pair], poker];
+      }
+
+      move(hands[PAIR.L], config['normal'][id]);
 
       return state;
     }
