@@ -1,9 +1,6 @@
 import { Container } from 'pixi.js';
 import { SEAT } from '../../../models';
 import { createHandService } from './state';
-import updateHand from './Hand';
-import updateScore from './Score';
-import { pipe } from 'ramda';
 
 export default function Game() {
   const container = new Container();
@@ -19,9 +16,7 @@ export default function Game() {
     }
 
     const seatID = Number(id) as SEAT;
-    const service = createHandService(seatID);
-    service.onTransition(pipe(updateHand(seatID, pokers), updateScore(seatID, container, service)));
-    service.start();
+    createHandService(seatID, container).start();
   }
 
   return container;
