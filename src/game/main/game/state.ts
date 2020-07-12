@@ -86,7 +86,10 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
 
             result: {
               on: {
-                CLEAR: { target: 'idle', actions: ['updateHistory', 'updatePokers', 'updateScores', 'updateResults'] },
+                CLEAR: {
+                  target: 'idle',
+                  actions: ['updateHistory', 'updatePokers', 'updateScores', 'updateResults', 'updateSplit'],
+                },
               },
             },
           },
@@ -111,7 +114,10 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
 
             result: {
               on: {
-                CLEAR: { target: 'idle', actions: ['updateHistory', 'updatePokers', 'updateScores', 'updateResults'] },
+                CLEAR: {
+                  target: 'idle',
+                  actions: ['updateHistory', 'updatePokers', 'updateScores', 'updateResults', 'updateSplit'],
+                },
               },
             },
           },
@@ -161,6 +167,10 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
               }
 
               return true;
+            }
+
+            if (event.type === 'CLEAR') {
+              return false;
             }
 
             return context.split;
