@@ -11,7 +11,7 @@ import './index.scss';
 import store from './store';
 import { getURLParam } from './utils';
 
-async function main () {
+async function main() {
   //
   await Promise.all([
     i18n.init(),
@@ -35,10 +35,10 @@ async function main () {
   );
   ReactDOM.render(Root, document.getElementById('root'));
 
-  setTimeout(async () => {
-    await service.joinRoom(1);
-    // console.log(game);
-  }, 1000);
+  // setTimeout(async () => {
+  //   await service.joinRoom(1);
+  //   // console.log(game);
+  // }, 1000);
 }
 
 main();
