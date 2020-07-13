@@ -60,6 +60,8 @@ function onBetEnd(service: Service, { state }: GameProp) {
 }
 
 function onSettle(service: Service, data: GameProp) {
+  console.log(data);
+
   const { game, user } = store.getState();
 
   for (const seat of data.seats) {
@@ -146,10 +148,8 @@ export default {
   [S2C.ROUND.COUNT_DOWN]: onCountDown,
   [S2C.ROUND.BET_END]: onBetEnd,
   [S2C.ROUND.SETTLE]: onSettle,
-
   [S2C.ROUND.BEGIN]: onBegin,
   [S2C.ROUND.DEAL]: onDeal,
-
   [S2C.ROUND.TURN]: onTurn,
   [S2C.ROUND.ACTION]: onAction,
 };

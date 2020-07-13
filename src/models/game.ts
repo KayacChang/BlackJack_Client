@@ -1,5 +1,5 @@
 import { Range } from './base';
-import { SEAT, PAIR, GAME_STATE, SUIT, RANK, CHIP } from './enum';
+import { SEAT, PAIR, GAME_STATE, SUIT, RANK, CHIP, RESULT } from './enum';
 
 export interface Turn {
   seat: SEAT;
@@ -23,6 +23,7 @@ export interface Seat {
   commited?: boolean;
   split: boolean;
   pays: Record<PAIR, number>;
+  results: Record<PAIR, RESULT>;
 }
 
 export interface Card {

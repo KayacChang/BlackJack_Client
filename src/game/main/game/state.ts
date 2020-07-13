@@ -34,12 +34,18 @@ type Schema<T> =
 export type HandsService = Interpreter<Context, any, Event, Schema<Context>>;
 export type HandsState = State<Context, Event, any, Schema<Context>>;
 
-function toIcon(result: RESULT) {
-  return {
-    [RESULT.LOSE]: Lose(),
-    [RESULT.WIN]: Win(),
-    [RESULT.BUST]: Bust(),
-  }[result];
+function toIcon(result: RESULT): Container | undefined {
+  if (result === RESULT.LOSE) {
+    return Lose();
+  }
+
+  if (result === RESULT.WIN) {
+    return Win();
+  }
+
+  if (result === RESULT.BUST) {
+    return Bust();
+  }
 }
 
 type Elements = {
@@ -274,6 +280,9 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
 
           if (event.type === 'RESULT_NORMAL') {
             const icon = toIcon(event.result);
+            if (!icon) {
+              return;
+            }
 
             const pos = !context.split ? config['normal'][id] : config['split'][id][PAIR.L];
             icon.position.set(pos.x, pos.y);
@@ -285,6 +294,9 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
 
           if (event.type === 'RESULT_SPLIT') {
             const icon = toIcon(event.result);
+            if (!icon) {
+              return;
+            }
 
             const pos = config['split'][id][PAIR.R];
             icon.position.set(pos.x, pos.y);
@@ -329,13 +341,8 @@ function onGameStateChange(service: HandsService, id: SEAT) {
     }
 
     if (state === GAME_STATE.SETTLE) {
-      if (seat[id].split) {
-        const result = seat[id].pays.R > 0 ? RESULT.WIN : RESULT.LOSE;
-        service.send({ type: 'RESULT_SPLIT', result });
-      }
-
-      const result = seat[id].pays.L > 0 ? RESULT.WIN : RESULT.LOSE;
-      service.send({ type: 'RESULT_NORMAL', result });
+      service.send({ type: 'RESULT_SPLIT', result: seat[id].results.R });
+      service.send({ type: 'RESULT_NORMAL', result: seat[id].results.L });
 
       return;
     }

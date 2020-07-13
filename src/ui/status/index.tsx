@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode, PropsWithChildren, HTMLAttributes, useRef } from 'react';
+import React, { ReactNode, PropsWithChildren, HTMLAttributes } from 'react';
 import style from './Status.module.scss';
 import { currency } from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +18,7 @@ type FieldProps = ButtonProps<{
 
 function Field({ icon, title, value }: FieldProps) {
   const props = useSpring({
-    to: [{ color: '#FEFAA3' }, { color: '#ffffff' }],
+    to: [{ color: 'rgb(255, 159, 10)' }, { color: '#ffffff' }],
     config: { duration: 250, easing: Expo.easeInOut.easeInOut },
   });
 

@@ -64,4 +64,7 @@ export enum RESULT {
   LOSE,
   WIN,
   BUST,
+  PAID,
+  TIE,
+  SURRENDER,
 }

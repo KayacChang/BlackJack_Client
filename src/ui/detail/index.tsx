@@ -5,7 +5,8 @@ import styles from './Detail.module.scss';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { currency } from '../../utils';
-
+import { useSpring, animated } from 'react-spring';
+import { Expo } from 'gsap';
 function Back() {
   return (
     <Button className={styles.back}>
@@ -20,10 +21,15 @@ type Props = {
 };
 
 function Field({ title, value }: Props) {
+  const props = useSpring({
+    to: [{ color: 'rgb(255, 159, 10)' }, { color: '#ffffff' }],
+    config: { duration: 250, easing: Expo.easeInOut.easeInOut },
+  });
+
   return (
     <div className={styles.field}>
       <h5>{title}</h5>
-      <span>{value}</span>
+      <animated.span style={props}>{value}</animated.span>
     </div>
   );
 }

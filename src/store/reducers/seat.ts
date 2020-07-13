@@ -1,4 +1,4 @@
-import { SEAT as SEAT_ID, Bet, Seats, User, PAIR } from '../../models';
+import { SEAT as SEAT_ID, Bet, Seats, User, PAIR, RESULT } from '../../models';
 import { SeatAction, SEAT, BET, BetAction, GAME } from '../types';
 import { v4 } from 'uuid';
 
@@ -12,6 +12,11 @@ const dealer = {
     [PAIR.L]: 0,
     [PAIR.R]: 0,
   },
+
+  results: {
+    [PAIR.L]: RESULT.LOSE,
+    [PAIR.R]: RESULT.LOSE,
+  },
 };
 
 const Seat = () => ({
@@ -23,6 +28,11 @@ const Seat = () => ({
   pays: {
     [PAIR.L]: 0,
     [PAIR.R]: 0,
+  },
+
+  results: {
+    [PAIR.L]: RESULT.LOSE,
+    [PAIR.R]: RESULT.LOSE,
   },
 });
 
