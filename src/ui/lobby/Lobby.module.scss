@@ -121,3 +121,19 @@
     min-height: 2vw;
   }
 }
+
+.control {
+  @include element();
+
+  width: 6vw;
+  pointer-events: all;
+  cursor: pointer;
+
+  img {
+    @include fit();
+  }
+}
+
+.reverse {
+  transform: scaleX(-1);
+}

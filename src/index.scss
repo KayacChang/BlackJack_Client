@@ -31,6 +31,12 @@ code {
 }
 
 // == default layout ==
+* {
+  color: white;
+  pointer-events: none;
+  user-select: none;
+}
+
 html,
 body,
 #root {
@@ -39,10 +45,6 @@ body,
 
 body {
   background-color: #111111;
-
-  * {
-    color: white;
-  }
 }
 
 h1,

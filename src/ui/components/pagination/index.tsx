@@ -31,6 +31,10 @@ export default function usePagination<T>(data: T[], itemsPerPage: number) {
       return current;
     },
 
+    get range() {
+      return { max, min };
+    },
+
     next,
     prev,
     jump,
