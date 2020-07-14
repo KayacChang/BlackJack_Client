@@ -35,6 +35,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^6.0.0-beta.0",
     "react-spring": "^9.0.0-rc.3",
+    "react-use-gesture": "^7.0.15",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",

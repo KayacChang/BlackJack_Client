@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import React, { PropsWithChildren, HTMLAttributes, useState, CSSProperties, useCallback, useEffect } from 'react';
 import styles from './Lobby.module.scss';
 import BG from './assets/background.jpg';
 import { useSelector } from 'react-redux';
@@ -7,7 +7,8 @@ import useCarousel from '../components/carousel';
 import Room from './Room';
 import ARROW from './assets/arrow.png';
 import clsx from 'clsx';
-import { animated } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
+import { Room as Model } from '../../models';
 
 type ArrowProps = {
   reverse?: boolean;
@@ -21,22 +22,93 @@ function Arrow({ style, reverse = false, onClick }: ArrowProps) {
   );
 }
 
-export default function Lobby() {
-  const room = useSelector((state: AppState) => state.room);
+type RoomButtonProps = {
+  data: Model;
+  style: CSSProperties;
+  onClick: () => void;
+};
 
-  const { data, page, range, transitions, next, prev } = useCarousel(room, 4);
+function RoomButton({ style, data, onClick }: RoomButtonProps) {
+  const props = useSpring(style);
 
   return (
-    <div className={styles.lobby}>
+    <animated.div className={styles.room} style={props} onClick={onClick}>
+      <Room data={data} />
+    </animated.div>
+  );
+}
+
+function toStyle(left: number, top: number, scale: number) {
+  return {
+    left: `${left}%`,
+    top: `${top}%`,
+    transform: `translate(-50%, -50%) scale(${scale})`,
+  };
+}
+
+const origin = [
+  { left: 30, top: 35, scale: 1 },
+  { left: 70, top: 35, scale: 1 },
+  { left: 30, top: 75, scale: 1 },
+  { left: 70, top: 75, scale: 1 },
+];
+
+export default function Lobby() {
+  const room = useSelector((state: AppState) => state.room);
+  const { data, page, range, transitions, next, prev, bind } = useCarousel(room, 4);
+
+  const [focus, setFocus] = useState(false);
+  const [config, setConfig] = useState(origin);
+
+  const onClick = useCallback((target) => {
+    const focus = { left: 50, top: 50, scale: 1.3 };
+
+    const offset = {
+      left: focus.left - origin[target].left,
+      top: focus.top - origin[target].top,
+    };
+
+    const config = origin.map((style) => {
+      const left = style.left + offset.left;
+      const top = style.top + offset.top;
+
+      return {
+        left: left + (left - focus.left) * 1.3,
+        top: top + (top - focus.top) * 1.3,
+        scale: 1.3,
+      };
+    });
+
+    setConfig(config);
+    setFocus(true);
+  }, []);
+
+  const cancelFocus = useCallback(() => {
+    if (!focus) {
+      return;
+    }
+
+    setConfig(origin);
+    setFocus(false);
+  }, [focus]);
+
+  useEffect(cancelFocus, [page]);
+
+  return (
+    <div className={styles.lobby} onClick={cancelFocus} style={{ pointerEvents: focus ? 'all' : 'none' }} {...bind()}>
       <div>
         <img className={styles.background} src={BG} alt={BG} />
 
         {transitions((prop) => (
           <animated.div className={styles.rooms} style={prop}>
-            <Room style={{ left: `${30}%`, top: `${35}%` }} data={data[0]} />
-            <Room style={{ left: `${70}%`, top: `${35}%` }} data={data[1]} />
-            <Room style={{ left: `${30}%`, top: `${75}%` }} data={data[2]} />
-            <Room style={{ left: `${70}%`, top: `${75}%` }} data={data[3]} />
+            {config.map(({ left, top, scale }, index) => (
+              <RoomButton
+                key={String(index)}
+                style={toStyle(left, top, scale)}
+                data={data[index]}
+                onClick={() => onClick(index)}
+              />
+            ))}
           </animated.div>
         ))}
 

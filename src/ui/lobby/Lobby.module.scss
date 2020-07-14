@@ -19,6 +19,7 @@
 
   > div {
     position: relative;
+    overflow: hidden;
   }
 }
 
@@ -41,6 +42,9 @@
   @include element();
 
   width: 38vw;
+
+  pointer-events: painted;
+  cursor: pointer;
 }
 
 .historyImg {

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import React from 'react';
 import styles from './Lobby.module.scss';
 import Table from './assets/table.png';
 import Detail from './assets/detail.png';
@@ -6,9 +6,9 @@ import RoomNum from './assets/room_number.png';
 import { times, identity } from 'ramda';
 import { Room as Model } from '../../models';
 
-type Props = { data: Model } & PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
+type Props = { data: Model };
 
-export default function Room({ style, data }: Props) {
+export default function Room({ data }: Props) {
   const roomNum = String(data?.id || '').padStart(2, '0');
   const history = data?.history.slice(0, 20) || [];
 
@@ -17,7 +17,7 @@ export default function Room({ style, data }: Props) {
   const people = data?.people || 0;
 
   return (
-    <div className={styles.room} style={style}>
+    <>
       <img className={styles.table} src={Table} alt={Table} />
       <img className={styles.detailImg} src={Detail} alt={Detail} />
 
@@ -49,6 +49,6 @@ export default function Room({ style, data }: Props) {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
