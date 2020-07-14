@@ -31,12 +31,14 @@ export default function useCarousel<T>(source: T[], itemsPerPage: number) {
     prev();
   }, [prev, block]);
 
-  const bind = useDrag(({ args: [index], down, movement: [mx], distance, direction: [xDir], velocity }) => {
+  const bind = useDrag(({ down, movement: [mx], direction: [xDir] }) => {
     const trigger = Math.abs(mx) > 50;
 
-    if (!down && trigger) {
-      xDir < 0 ? _next() : _prev();
+    if (down || !trigger) {
+      return;
     }
+
+    xDir < 0 ? _next() : _prev();
   });
 
   return {
