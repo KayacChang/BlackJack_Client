@@ -34,8 +34,6 @@ export default function useCarousel<T>(source: T[], itemsPerPage: number) {
   const bind = useDrag(({ args: [index], down, movement: [mx], distance, direction: [xDir], velocity }) => {
     const trigger = Math.abs(mx) > 50;
 
-    // console.log(down, mx, xDir);
-
     if (!down && trigger) {
       xDir < 0 ? _next() : _prev();
     }
