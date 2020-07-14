@@ -2,7 +2,7 @@
   background: #212121;
   z-index: 1;
 
-  width: 100%;
+  width: 90%;
 
   & > div {
     display: flex;
@@ -13,7 +13,8 @@
 }
 
 .hidden {
-  visibility: hidden;
+  opacity: 0;
+  pointer-events: all;
 }
 
 .menu {

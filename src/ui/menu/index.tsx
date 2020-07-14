@@ -43,8 +43,13 @@ export default function Menu() {
     <>
       <Trigger style={{ right: 0 }} open={isDrawerOpen} onClick={onTrigger} />
 
-      <div className={styles.menu}>
-        <div className={clsx(styles.page, page || styles.hidden)}>{page}</div>
+      <div className={styles.menu} style={{ pointerEvents: isDrawerOpen ? 'all' : 'none' }}>
+        {isDrawerOpen && (
+          <div className={clsx(styles.page, page || styles.hidden)} onClick={onTrigger}>
+            {page}
+          </div>
+        )}
+
         <Drawer options={options} open={isDrawerOpen} />
       </div>
     </>

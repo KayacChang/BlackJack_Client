@@ -10,33 +10,33 @@ type Props = {
   ui: ReactNode;
 };
 
-function Frame({ children }: PropsWithChildren<{}>) {
-  return <Center style={{ width: '100%', height: '100%' }}>{children}</Center>;
-}
-
-function Game({ game, ui }: Props) {
+function Frame({ children, ui }: PropsWithChildren<{ ui: ReactNode }>) {
   const mobile = useResize(isMobile);
 
   return (
-    <>
+    <Center style={{ width: '100%', height: '100%' }}>
       <Flex style={{ position: 'relative' }}>
-        <Canvas>{game}</Canvas>
+        {children}
         {!mobile && ui}
       </Flex>
       {mobile && ui}
-    </>
+    </Center>
   );
+}
+
+function Game({ game }: Props) {
+  return <Canvas>{game}</Canvas>;
 }
 
 export default function App({ ui, game }: Props) {
   return (
-    <Frame>
-      <Router>
+    <Router>
+      <Frame ui={ui}>
         <Routes>
           <Route path="/" element={<Game game={game} ui={ui} />} />
           <Route path="lobby" element={<Lobby />} />
         </Routes>
-      </Router>
-    </Frame>
+      </Frame>
+    </Router>
   );
 }
