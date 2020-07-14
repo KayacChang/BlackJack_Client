@@ -3,6 +3,7 @@ export interface RoomProp {
   max_bet: number;
   min_bet: number;
   history: (number | string)[];
+  occupied: number;
 }
 
 export interface SeatProp {

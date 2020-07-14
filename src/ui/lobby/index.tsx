@@ -1,49 +1,23 @@
-import React, { PropsWithChildren, HTMLAttributes } from 'react';
+import React from 'react';
 import styles from './Lobby.module.scss';
-import Table from './assets/table.png';
-import Detail from './assets/detail.png';
-import RoomNum from './assets/room_number.png';
-import History from './assets/history.png';
-
-function Room({ style }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
-  return (
-    <div className={styles.room} style={style}>
-      <img className={styles.table} src={Table} alt={Table} />
-      <img className={styles.detailImg} src={Detail} alt={Detail} />
-      <img className={styles.numberImg} src={RoomNum} alt={RoomNum} />
-      <img className={styles.history} src={History} alt={History} style={{ left: `${50}%`, top: `${22}%` }} />
-      <img className={styles.history} src={History} alt={History} style={{ left: `${50}%`, top: `${40}%` }} />
-
-      <h3 className={styles.number}>02</h3>
-
-      <div className={styles.detail}>
-        <div>
-          <h5>MAX</h5>
-          <span>10000</span>
-        </div>
-        <div>
-          <h5>MIN</h5>
-          <span>10</span>
-        </div>
-        <div>
-          <h5>PEOPLE</h5>
-          <span>10</span>
-        </div>
-      </div>
-
-      <div></div>
-    </div>
-  );
-}
+import BG from './assets/background.jpg';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
+import usePagination from '../components/pagination';
+import Room from './Room';
 
 export default function Lobby() {
+  const room = useSelector((state: AppState) => state.room);
+  const { data } = usePagination(room, 4);
+
   return (
     <div className={styles.lobby}>
       <div>
-        <Room style={{ left: `${30}%`, top: `${35}%` }} />
-        <Room style={{ left: `${70}%`, top: `${35}%` }} />
-        <Room style={{ left: `${30}%`, top: `${75}%` }} />
-        <Room style={{ left: `${70}%`, top: `${75}%` }} />
+        <img className={styles.background} src={BG} alt={BG} />
+        <Room style={{ left: `${30}%`, top: `${35}%` }} data={data[0]} />
+        <Room style={{ left: `${70}%`, top: `${35}%` }} data={data[1]} />
+        <Room style={{ left: `${30}%`, top: `${75}%` }} data={data[2]} />
+        <Room style={{ left: `${70}%`, top: `${75}%` }} data={data[3]} />
       </div>
     </div>
   );

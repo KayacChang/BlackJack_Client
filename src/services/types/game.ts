@@ -4,7 +4,7 @@ import { toSeatNum } from './seat';
 import { DealProp, GameStateProp, GameProp, RoomProp, OptionsProp } from './prop';
 import { v4 } from 'uuid';
 
-export function toRoom({ id, max_bet, min_bet, history }: RoomProp): Room {
+export function toRoom({ id, max_bet, min_bet, history, occupied }: RoomProp): Room {
   return {
     id: Number(id),
     history: history.map(String),
@@ -12,6 +12,7 @@ export function toRoom({ id, max_bet, min_bet, history }: RoomProp): Room {
       max: Number(max_bet),
       min: Number(min_bet),
     },
+    people: Number(occupied),
   };
 }
 

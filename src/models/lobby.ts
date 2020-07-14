@@ -18,4 +18,5 @@ export interface Room {
   id: number;
   history: string[];
   bet: Range;
+  people: number;
 }
