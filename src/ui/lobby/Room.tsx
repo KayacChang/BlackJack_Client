@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styles from './Lobby.module.scss';
 import Table from './assets/table.png';
 import Detail from './assets/detail.png';
 import RoomNum from './assets/room_number.png';
 import { times, identity } from 'ramda';
 import { Room as Model } from '../../models';
+import { animated, useSpring } from 'react-spring';
 
-type Props = { data: Model };
+type Props = {
+  data: Model;
+  style: CSSProperties;
+  onClick: () => void;
+};
 
-export default function Room({ data }: Props) {
+export default function Room({ style, data, onClick }: Props) {
   const roomNum = String(data?.id || '').padStart(2, '0');
   const history = data?.history.slice(0, 20) || [];
 
@@ -16,8 +21,10 @@ export default function Room({ data }: Props) {
   const min = data?.bet.min || '';
   const people = data?.people || 0;
 
+  const props = useSpring(style);
+
   return (
-    <>
+    <animated.div className={styles.room} style={props} onClick={onClick}>
       <img className={styles.table} src={Table} alt={Table} />
       <img className={styles.detailImg} src={Detail} alt={Detail} />
 
@@ -49,6 +56,6 @@ export default function Room({ data }: Props) {
           </div>
         ))}
       </div>
-    </>
+    </animated.div>
   );
 }

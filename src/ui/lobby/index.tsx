@@ -1,42 +1,19 @@
-import React, { PropsWithChildren, HTMLAttributes, useState, CSSProperties, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styles from './Lobby.module.scss';
 import BG from './assets/background.jpg';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import useCarousel from '../components/carousel';
+import Arrow from './Arrow';
+import { animated } from 'react-spring';
 import Room from './Room';
-import ARROW from './assets/arrow.png';
-import clsx from 'clsx';
-import { animated, useSpring } from 'react-spring';
-import { Room as Model } from '../../models';
 
-type ArrowProps = {
-  reverse?: boolean;
-} & PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
-
-function Arrow({ style, reverse = false, onClick }: ArrowProps) {
-  return (
-    <div className={styles.control} style={style} onClick={onClick}>
-      <img className={clsx(reverse && styles.reverse)} src={ARROW} alt={ARROW} />
-    </div>
-  );
-}
-
-type RoomButtonProps = {
-  data: Model;
-  style: CSSProperties;
-  onClick: () => void;
-};
-
-function RoomButton({ style, data, onClick }: RoomButtonProps) {
-  const props = useSpring(style);
-
-  return (
-    <animated.div className={styles.room} style={props} onClick={onClick}>
-      <Room data={data} />
-    </animated.div>
-  );
-}
+const origin = [
+  { left: 30, top: 35, scale: 1 },
+  { left: 70, top: 35, scale: 1 },
+  { left: 30, top: 75, scale: 1 },
+  { left: 70, top: 75, scale: 1 },
+];
 
 function toStyle(left: number, top: number, scale: number) {
   return {
@@ -46,16 +23,9 @@ function toStyle(left: number, top: number, scale: number) {
   };
 }
 
-const origin = [
-  { left: 30, top: 35, scale: 1 },
-  { left: 70, top: 35, scale: 1 },
-  { left: 30, top: 75, scale: 1 },
-  { left: 70, top: 75, scale: 1 },
-];
-
 export default function Lobby() {
   const room = useSelector((state: AppState) => state.room);
-  const { data, page, range, transitions, next, prev, bind } = useCarousel(room, 4);
+  const { data, page, range, transitions, next, prev, gesture } = useCarousel(room, 4);
 
   const [focus, setFocus] = useState(false);
   const [config, setConfig] = useState(origin);
@@ -73,9 +43,9 @@ export default function Lobby() {
       const top = style.top + offset.top;
 
       return {
-        left: left + (left - focus.left) * 1.3,
-        top: top + (top - focus.top) * 1.3,
-        scale: 1.3,
+        left: left + (left - focus.left) * focus.scale,
+        top: top + (top - focus.top) * focus.scale,
+        scale: focus.scale,
       };
     });
 
@@ -95,14 +65,20 @@ export default function Lobby() {
   useEffect(cancelFocus, [page]);
 
   return (
-    <div className={styles.lobby} onClick={cancelFocus} style={{ pointerEvents: focus ? 'all' : 'none' }} {...bind()}>
+    <div className={styles.lobby} {...gesture()}>
       <div>
-        <img className={styles.background} src={BG} alt={BG} />
+        <img
+          className={styles.background}
+          src={BG}
+          alt={BG}
+          onClick={cancelFocus}
+          style={{ pointerEvents: focus ? 'all' : 'none' }}
+        />
 
         {transitions((prop) => (
           <animated.div className={styles.rooms} style={prop}>
             {config.map(({ left, top, scale }, index) => (
-              <RoomButton
+              <Room
                 key={String(index)}
                 style={toStyle(left, top, scale)}
                 data={data[index]}
@@ -113,9 +89,17 @@ export default function Lobby() {
         ))}
 
         <div>
-          {page > range.min && <Arrow style={{ left: `${7}%`, top: `${50}%` }} onClick={prev} />}
+          {page > range.min && (
+            <Arrow style={{ left: `${7}%`, top: `${50}%` }} onClick={() => (focus ? cancelFocus() : prev())} />
+          )}
 
-          {page < range.max && <Arrow reverse={true} style={{ left: `${93}%`, top: `${50}%` }} onClick={next} />}
+          {page < range.max && (
+            <Arrow
+              reverse={true}
+              style={{ left: `${93}%`, top: `${50}%` }}
+              onClick={() => (focus ? cancelFocus() : next())}
+            />
+          )}
         </div>
       </div>
     </div>

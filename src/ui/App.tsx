@@ -32,7 +32,7 @@ export default function App({ ui, game }: Props) {
   return (
     <Router>
       <Frame ui={ui}>
-        <Routes>
+        <Routes basename={process.env.PUBLIC_URL}>
           <Route path="/" element={<Game game={game} ui={ui} />} />
           <Route path="lobby" element={<Lobby />} />
         </Routes>

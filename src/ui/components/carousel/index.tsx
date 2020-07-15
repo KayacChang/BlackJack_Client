@@ -31,7 +31,7 @@ export default function useCarousel<T>(source: T[], itemsPerPage: number) {
     prev();
   }, [prev, block]);
 
-  const bind = useDrag(({ down, movement: [mx], direction: [xDir] }) => {
+  const gesture = useDrag(({ down, movement: [mx], direction: [xDir] }) => {
     const trigger = Math.abs(mx) > 50;
 
     if (down || !trigger) {
@@ -46,7 +46,7 @@ export default function useCarousel<T>(source: T[], itemsPerPage: number) {
     page,
     range,
     transitions,
-    bind,
+    gesture,
     next: _next,
     prev: _prev,
   };

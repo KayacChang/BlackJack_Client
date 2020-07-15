@@ -4,10 +4,12 @@ import Status from './status';
 import Detail from './detail';
 import Bet from './bet';
 import Decision from './decision';
-import { useMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function UI() {
-  const inLobby = useMatch('/lobby');
+  const location = useLocation();
+
+  const inLobby = location.pathname.includes('lobby');
 
   return (
     <div className="fixedPage" style={{ pointerEvents: 'none' }}>
