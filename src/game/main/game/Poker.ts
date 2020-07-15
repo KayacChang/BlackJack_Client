@@ -1,6 +1,6 @@
 import Res from '../../assets';
 import POKER from '../../assets/poker';
-import { Sprite, SimpleMesh, Container } from 'pixi.js';
+import { Sprite, SimpleMesh, Container, Texture } from 'pixi.js';
 import gsap from 'gsap';
 import { Power0 } from 'gsap/gsap-core';
 import { SUIT, RANK } from '../../../models';
@@ -8,6 +8,7 @@ import { SUIT, RANK } from '../../../models';
 export default class Poker extends Container {
   //
   duration = 0.5;
+  front: Face;
 
   constructor(suit: SUIT, rank: RANK) {
     super();
@@ -16,28 +17,48 @@ export default class Poker extends Container {
     const front = new Face(`${suit}_${rank}` as keyof typeof POKER);
     this.addChild(back, front);
 
-    this.on('pointerdown', () => this.onClick());
+    this.front = front;
   }
 
-  private fliping = false;
+  _faceUp = true;
 
-  async onClick() {
-    if (this.fliping) return;
+  get faceUp() {
+    return this._faceUp;
+  }
+  set faceUp(flag: boolean) {
+    const [face1, face2] = this.children;
 
-    this.fliping = true;
+    this.swapChildren(face2, face1);
+
+    this._faceUp = flag;
+  }
+
+  private _fliping = false;
+
+  async flip(suit: SUIT, rank: RANK) {
+    if (this._fliping) return;
+
+    this._fliping = true;
 
     const [front, back] = this.children as SimpleMesh[];
 
-    await flip(back, front, this.duration);
+    front.texture = Res.get(`${suit}_${rank}` as keyof typeof POKER).texture;
+    await flip(back, front, this.duration, suit, rank);
 
-    this.swapChildren(back, front);
+    this.faceUp = !this.faceUp;
 
-    this.fliping = false;
+    this._fliping = false;
   }
 }
 
 class Face extends SimpleMesh {
   //
+  sprite: Sprite;
+
+  set texture(texture: Texture) {
+    this.sprite.texture = texture;
+  }
+
   constructor(res: keyof typeof POKER) {
     super();
 
@@ -45,13 +66,15 @@ class Face extends SimpleMesh {
     this.addChild(sprite);
     sprite.anchor.set(0.5);
 
-    requestAnimationFrame(() => {
+    this.sprite = sprite;
+
+    this.once('added', () => {
       this.vertices = (sprite as any)['vertexData'];
     });
   }
 }
 
-function flip(back: SimpleMesh, front: SimpleMesh, duration: number) {
+function flip(back: SimpleMesh, front: SimpleMesh, duration: number, suit: SUIT, rank: RANK) {
   //
   const origin = Array.from(back.vertices);
   const [x1, y1, x2, y2, , y3, ,] = origin;
@@ -65,22 +88,23 @@ function flip(back: SimpleMesh, front: SimpleMesh, duration: number) {
   const c = [x1 + width * 0.5, y1 + height * 1];
   const d = [x1 + width * 0.5, y1 + height * 0.9];
 
-  Object.assign(front.vertices, [...b, ...a, ...d, ...c]);
-
   return gsap
     .timeline()
-    .add(tween(back, [...a, ...b, ...c, ...d], duration / 2))
-    .add(tween(front, origin, duration / 2))
+    .add(tween(back, origin, [...a, ...b, ...c, ...d], duration / 2))
+    .add(tween(front, [...b, ...a, ...d, ...c], origin, duration / 2))
     .then();
 
-  function tween(card: SimpleMesh, vertices: number[], duration: number) {
+  function tween(card: SimpleMesh, from: number[], to: number[], duration: number) {
     //
-    const state = vertices as any;
 
-    return gsap.to(card.vertices, {
-      ...state,
-      duration,
-      ease: Power0.easeIn,
-    });
+    return gsap.fromTo(
+      card.vertices,
+      { ...(from as any) },
+      {
+        ...(to as any),
+        duration,
+        ease: Power0.easeIn,
+      }
+    );
   }
 }

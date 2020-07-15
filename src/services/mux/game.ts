@@ -60,8 +60,6 @@ function onBetEnd(service: Service, { state }: GameProp) {
 }
 
 function onSettle(service: Service, data: GameProp) {
-  console.log(data);
-
   const { game, user } = store.getState();
 
   for (const seat of data.seats) {

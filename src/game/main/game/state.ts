@@ -189,6 +189,38 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
             [PAIR.R]: handR,
           };
 
+          if (id === SEAT.DEALER && event.type === 'DEAL_NORMAL') {
+            const { card, pair } = event.hand;
+
+            const fold = mapping[pair].children.find((poker) => !(poker as Poker).faceUp);
+            if (fold) {
+              const poker = fold as Poker;
+              poker.flip(card.suit, card.rank);
+
+              return;
+            }
+
+            const poker = new Poker(card.suit, card.rank);
+            poker.name = event.hand.id;
+            poker.alpha = 0;
+            poker.position.set(origin.x, origin.y);
+            mapping[pair].addChild(poker);
+
+            if (context.history.length === 1) {
+              const fold = new Poker(card.suit, card.rank);
+
+              fold.faceUp = false;
+              fold.alpha = 0;
+              fold.position.set(origin.x, origin.y);
+              mapping[pair].addChild(fold);
+            }
+
+            const pos = !context.split ? config['normal'][id] : config['split'][id][pair];
+            move(mapping[pair].children, pos);
+
+            return;
+          }
+
           if (event.type === 'DEAL_NORMAL') {
             const { card, pair } = event.hand;
 
@@ -200,6 +232,8 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
 
             const pos = !context.split ? config['normal'][id] : config['split'][id][pair];
             move(mapping[pair].children, pos);
+
+            return;
           }
 
           if (event.type === 'DEAL_SPLIT') {
@@ -212,11 +246,15 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
             mapping[pair].addChild(poker);
 
             move(mapping[pair].children, config['split'][id][pair]);
+
+            return;
           }
 
           if (event.type === 'CLEAR') {
             mapping[PAIR.L].removeChildren();
             mapping[PAIR.R].removeChildren();
+
+            return;
           }
         },
 

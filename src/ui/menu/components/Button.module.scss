@@ -1,13 +1,13 @@
 @mixin icon {
   svg {
-    width: 8vmin;
-    height: 8vmin;
+    width: 4vw;
+    height: 4vw;
   }
 
-  @media screen and (min-device-width: 1200px) {
+  @media (min-width: 1200px) {
     svg {
-      width: 4vmin;
-      height: 4vmin;
+      width: 48px;
+      height: 48px;
     }
   }
 }
