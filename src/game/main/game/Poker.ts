@@ -88,23 +88,22 @@ function flip(back: SimpleMesh, front: SimpleMesh, duration: number, suit: SUIT,
   const c = [x1 + width * 0.5, y1 + height * 1];
   const d = [x1 + width * 0.5, y1 + height * 0.9];
 
+  front.alpha = 0;
+
   return gsap
     .timeline()
-    .add(tween(back, origin, [...a, ...b, ...c, ...d], duration / 2))
-    .add(tween(front, [...b, ...a, ...d, ...c], origin, duration / 2))
+    .add(tween(back, [...a, ...b, ...c, ...d], duration / 2))
+    .call(() => (front.alpha = 1))
+    .call(() => Object.assign(front, [...b, ...a, ...d, ...c]))
+    .add(tween(front, origin, duration / 2))
     .then();
 
-  function tween(card: SimpleMesh, from: number[], to: number[], duration: number) {
+  function tween(card: SimpleMesh, to: number[], duration: number) {
     //
-
-    return gsap.fromTo(
-      card.vertices,
-      { ...(from as any) },
-      {
-        ...(to as any),
-        duration,
-        ease: Power0.easeIn,
-      }
-    );
+    return gsap.to(card.vertices, {
+      ...(to as any),
+      duration,
+      ease: Power0.easeIn,
+    });
   }
 }
