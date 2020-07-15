@@ -23,6 +23,26 @@ function toStyle(left: number, top: number, scale: number) {
   };
 }
 
+function toFocusStyle(index: number) {
+  const focus = { left: 50, top: 50, scale: 1.3 };
+
+  const offset = {
+    left: focus.left - origin[index].left,
+    top: focus.top - origin[index].top,
+  };
+
+  return origin.map((style) => {
+    const left = style.left + offset.left;
+    const top = style.top + offset.top;
+
+    return {
+      left: left + (left - focus.left) * focus.scale,
+      top: top + (top - focus.top) * focus.scale,
+      scale: focus.scale,
+    };
+  });
+}
+
 export default function Lobby() {
   const room = useSelector((state: AppState) => state.room);
   const { data, page, range, transitions, next, prev, gesture } = useCarousel(room, 4);
@@ -30,28 +50,18 @@ export default function Lobby() {
   const [focus, setFocus] = useState(false);
   const [config, setConfig] = useState(origin);
 
-  const onClick = useCallback((target) => {
-    const focus = { left: 50, top: 50, scale: 1.3 };
+  const onClick = useCallback(
+    (index) => {
+      if (!focus) {
+        setConfig(toFocusStyle(index));
+        setFocus(true);
+        return;
+      }
 
-    const offset = {
-      left: focus.left - origin[target].left,
-      top: focus.top - origin[target].top,
-    };
-
-    const config = origin.map((style) => {
-      const left = style.left + offset.left;
-      const top = style.top + offset.top;
-
-      return {
-        left: left + (left - focus.left) * focus.scale,
-        top: top + (top - focus.top) * focus.scale,
-        scale: focus.scale,
-      };
-    });
-
-    setConfig(config);
-    setFocus(true);
-  }, []);
+      console.log(data[index]);
+    },
+    [focus, data]
+  );
 
   const cancelFocus = useCallback(() => {
     if (!focus) {
