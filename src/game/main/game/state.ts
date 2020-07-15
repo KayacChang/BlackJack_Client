@@ -194,8 +194,13 @@ function createHandMachine(id: SEAT, { handL, handR, fieldL, fieldR, results }: 
 
             const fold = mapping[pair].children.find((poker) => !(poker as Poker).faceUp);
             if (fold) {
-              const poker = fold as Poker;
-              poker.flip(card.suit, card.rank);
+              const poker = new Poker(card.suit, card.rank);
+
+              poker.faceUp = false;
+              poker.position.set(fold.position.x, fold.position.y);
+              mapping[pair].addChild(poker);
+              mapping[pair].removeChild(fold);
+              poker.flip();
 
               return;
             }

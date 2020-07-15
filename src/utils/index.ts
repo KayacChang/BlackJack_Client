@@ -29,6 +29,10 @@ export function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export function nextFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
 export function throttleBy<T>(func: () => Promise<T>) {
   //
   let fetching = false;
