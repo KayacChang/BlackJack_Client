@@ -7,8 +7,8 @@ const Quad_HD = Object.freeze({
 });
 
 const Dynamic = Object.freeze({
-  width: window.innerHeight * Quad_HD.ratio,
-  height: window.innerHeight,
+  width: Quad_HD.width / 2,
+  height: Quad_HD.height / 2,
 });
 
 export function getSize() {

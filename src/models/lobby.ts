@@ -8,11 +8,7 @@ export interface User {
   decisions: DECISION[];
 }
 
-export interface Token {
-  token: string;
-  game_token?: string;
-  game_id?: string;
-}
+export type Token = string;
 
 export interface Room {
   id: number;

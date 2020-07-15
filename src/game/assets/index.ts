@@ -18,6 +18,10 @@ const loader = new Loader();
 
 async function load() {
   for (const [name, url] of Object.entries(PKG)) {
+    if (loader.resources[name]) {
+      continue;
+    }
+
     loader.add(name, url);
   }
 

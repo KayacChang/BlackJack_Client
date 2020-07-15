@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Home } from 'react-feather';
 import { Button } from '../components/button/Button';
 import styles from './Detail.module.scss';
@@ -7,9 +7,20 @@ import { AppState } from '../../store';
 import { currency } from '../../utils';
 import { useSpring, animated } from 'react-spring';
 import { Expo } from 'gsap';
+import { useNavigate } from 'react-router-dom';
+import services from '../../services';
+
 function Back() {
+  const navTo = useNavigate();
+
+  const onClick = useCallback(() => {
+    services.leaveRoom();
+
+    navTo(`${process.env.PUBLIC_URL}/lobby`, { replace: true });
+  }, [navTo]);
+
   return (
-    <Button className={styles.back}>
+    <Button className={styles.back} onClick={onClick}>
       <Home />
     </Button>
   );

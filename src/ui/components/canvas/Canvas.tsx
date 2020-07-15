@@ -8,6 +8,10 @@ function Canvas({ children, ...props }: Props) {
   //
   function init(canvas: HTMLCanvasElement) {
     //
+    if (!canvas) {
+      return;
+    }
+
     if (children && typeof children === 'function') {
       return children(canvas);
     }

@@ -19,10 +19,22 @@ export default class Service extends EventEmitter {
     this.socket = new WebSocket(host);
   }
 
-  async connect(token: Token) {
-    this.token = token;
+  async connect(token?: Token) {
+    if (!token) {
+      //
+      const cache = localStorage.getItem('token');
+      if (!cache) {
+        throw new Error(`service required token, please connect first`);
+      }
+
+      token = cache;
+    }
+
+    this.token = `Bearer ${token}`;
 
     await new Promise((resolve) => (this.socket.onopen = resolve));
+
+    localStorage.setItem('token', token);
 
     this.socket.onmessage = (event) => this.onMessage(event);
 
@@ -40,7 +52,7 @@ export default class Service extends EventEmitter {
     this.socket.send(
       btoa(
         JSON.stringify({
-          ...token,
+          token,
           ...data,
         })
       )
@@ -53,10 +65,6 @@ export default class Service extends EventEmitter {
     }
 
     const message = JSON.parse(atob(event.data)) as Frame;
-
-    if (message.data?.game_token) {
-      this.token.game_token = message.data.game_token;
-    }
 
     const handler = MUX[message.cmd];
 

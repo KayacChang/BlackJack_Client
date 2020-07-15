@@ -4,7 +4,7 @@ import { currency } from './format';
 export function getURLParam(key: string) {
   const url = new URL(window.location.href);
 
-  return url.searchParams.get(key);
+  return url.searchParams.get(key) || undefined;
 }
 
 export async function getToken() {

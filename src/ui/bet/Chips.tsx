@@ -26,14 +26,6 @@ export default function Chips({ enable }: Props) {
   const min = useSelector((state: AppState) => state.game.bet.min);
   const chip = useSelector((state: AppState) => state.bet.chosen?.chip);
 
-  function onSelect(chip: CHIP, amount: number) {
-    return function () {
-      if (!enable) return;
-
-      dispatch(choose({ chip, amount }));
-    };
-  }
-
   return (
     <div className={styles.section}>
       <div className={styles.field}>
@@ -44,7 +36,11 @@ export default function Chips({ enable }: Props) {
             selected={type === chip}
             src={src}
             bet={type * min}
-            onClick={onSelect(type, type * min)}
+            onClick={() => {
+              if (!enable) return;
+
+              dispatch(choose({ chip: type, amount: type * min }));
+            }}
           />
         ))}
       </div>

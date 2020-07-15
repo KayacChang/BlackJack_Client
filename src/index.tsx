@@ -13,18 +13,7 @@ import { getURLParam } from './utils';
 
 async function main() {
   //
-  await Promise.all([
-    i18n.init(),
-    gsap.init(),
-    service.init({
-      token: `Bearer ${
-        // await getToken()
-        getURLParam('token')
-      }`,
-      game_token: ``,
-      game_id: `209B407F0F9751E3B87751FD8C99EDC9`,
-    }),
-  ]);
+  await Promise.all([i18n.init(), gsap.init(), service.init(getURLParam('token'))]);
 
   const Root = (
     <React.StrictMode>
@@ -34,11 +23,6 @@ async function main() {
     </React.StrictMode>
   );
   ReactDOM.render(Root, document.getElementById('root'));
-
-  // setTimeout(async () => {
-  //   await service.joinRoom(1);
-  //   // console.log(game);
-  // }, 1000);
 }
 
 main();

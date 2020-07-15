@@ -30,6 +30,9 @@
   @include icon();
 
   padding: 8px;
+
+  pointer-events: all;
+  cursor: pointer;
 }
 
 $unit: 16px;

@@ -4,12 +4,18 @@ import { getSize, resize } from './screen';
 import * as PIXI from 'pixi.js';
 window.PIXI = PIXI;
 
+let app: Application | undefined = undefined;
+
 export default function (view: HTMLCanvasElement) {
   //
-  const app = new Application({
+  if (app) {
+    app.destroy();
+  }
+
+  app = new Application({
     view,
     ...getSize(),
-    resolution: window.devicePixelRatio || 1,
+    resolution: 1,
   });
 
   app.ticker.add(resize(app));

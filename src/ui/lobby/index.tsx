@@ -7,6 +7,7 @@ import useCarousel from '../components/carousel';
 import Arrow from './Arrow';
 import { animated } from 'react-spring';
 import Room from './Room';
+import { useNavigate } from 'react-router-dom';
 
 const origin = [
   { left: 30, top: 35, scale: 1 },
@@ -44,6 +45,8 @@ function toFocusStyle(index: number) {
 }
 
 export default function Lobby() {
+  const navTo = useNavigate();
+
   const room = useSelector((state: AppState) => state.room);
   const { data, page, range, transitions, next, prev, gesture } = useCarousel(room, 4);
 
@@ -58,9 +61,9 @@ export default function Lobby() {
         return;
       }
 
-      console.log(data[index]);
+      navTo(`${process.env.PUBLIC_URL}/game/${data[index].id}`, { replace: true });
     },
-    [focus, data]
+    [focus, data, navTo]
   );
 
   const cancelFocus = useCallback(() => {
