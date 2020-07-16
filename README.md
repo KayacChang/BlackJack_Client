@@ -1,3 +1,7 @@
+## Backend
+- ws://35.184.168.53:8881/ws
+- wss://blackjack-stg.ulgplay.com:8881/ws
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

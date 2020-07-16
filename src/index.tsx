@@ -1,17 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import Game from './game';
+import { App, UI } from './ui';
+import { i18n, gsap } from './plugins';
+import service from './services';
+import './index.scss';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import store from './store';
+import { getURLParam } from './utils';
+
+async function main() {
+  //
+  await Promise.all([i18n.init(), gsap.init(), service.init(getURLParam('token'))]);
+
+  const Root = (
+    <React.StrictMode>
+      <Provider store={store}>
+        <App game={Game} ui={<UI />} />
+      </Provider>
+    </React.StrictMode>
+  );
+  ReactDOM.render(Root, document.getElementById('root'));
+}
+
+main();
