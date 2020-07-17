@@ -68,9 +68,6 @@ $unit: 16px;
   position: absolute;
   top: 30%;
 
-  cursor: pointer;
-  pointer-events: all;
-
   display: flex;
 }
 
@@ -87,6 +84,9 @@ $unit: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  cursor: pointer;
+  pointer-events: all;
 
   h5 {
     color: rgb(255, 159, 10);
@@ -125,4 +125,7 @@ $unit: 16px;
 
   overflow: hidden;
   transition: width 0.25s ease-out;
+
+  cursor: pointer;
+  pointer-events: all;
 }
