@@ -1,9 +1,9 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Home } from 'react-feather';
 import { Button } from '../components/button/Button';
 import styles from './Detail.module.scss';
 import { useSelector } from 'react-redux';
-import store, { AppState } from '../../store';
+import { AppState } from '../../store';
 import { currency } from '../../utils';
 import { useSpring, animated } from 'react-spring';
 import { Expo } from 'gsap';
