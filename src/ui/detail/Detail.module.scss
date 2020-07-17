@@ -13,6 +13,8 @@
 }
 
 .detail {
+  width: 100%;
+  height: 100%;
 }
 
 .header {
@@ -64,24 +66,27 @@ $unit: 16px;
 
 .history {
   position: absolute;
-  top: 30vh;
+  top: 30%;
 
   cursor: pointer;
   pointer-events: all;
 
   display: flex;
-  flex-direction: row-reverse;
 }
 
 .toggle {
   padding: 8px;
 
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 0.9);
   border: 0 solid;
   border-radius: 0 8px 8px 0;
 
   writing-mode: vertical-lr;
   text-orientation: upright;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   h5 {
     color: rgb(255, 159, 10);
@@ -92,13 +97,13 @@ $unit: 16px;
   display: flex;
 
   > * {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     font-family: monospace;
 
     padding: 2px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   h5 {
@@ -116,4 +121,8 @@ $unit: 16px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 1fr);
+  grid-auto-flow: column;
+
+  overflow: hidden;
+  transition: width 0.25s ease-out;
 }
