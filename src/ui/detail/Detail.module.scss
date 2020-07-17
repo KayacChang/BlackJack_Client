@@ -13,6 +13,9 @@
 }
 
 .detail {
+}
+
+.header {
   position: absolute;
   top: 0;
 
@@ -57,4 +60,60 @@ $unit: 16px;
   h5 {
     color: rgb(255, 159, 10);
   }
+}
+
+.history {
+  position: absolute;
+  top: 30vh;
+
+  cursor: pointer;
+  pointer-events: all;
+
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.toggle {
+  padding: 8px;
+
+  background-color: rgba(0, 0, 0, 1);
+  border: 0 solid;
+  border-radius: 0 8px 8px 0;
+
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+
+  h5 {
+    color: rgb(255, 159, 10);
+  }
+}
+
+.record {
+  display: flex;
+
+  > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: monospace;
+
+    padding: 2px;
+  }
+
+  h5 {
+    background-color: rgba(0, 0, 0, 1);
+    font-size: 1.4vw;
+  }
+
+  h4 {
+    font-size: 2.6vw;
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
 }

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Home } from 'react-feather';
 import { Button } from '../components/button/Button';
 import styles from './Detail.module.scss';
@@ -9,6 +9,7 @@ import { useSpring, animated } from 'react-spring';
 import { Expo } from 'gsap';
 import { useNavigate } from 'react-router-dom';
 import services from '../../services';
+import { times, identity } from 'ramda';
 
 function Back() {
   const navTo = useNavigate();
@@ -45,6 +46,33 @@ function Field({ title, value }: Props) {
   );
 }
 
+function History() {
+  const [isOpen, toggle] = useState(false);
+
+  const onToggle = useCallback(() => {
+    toggle((isOpen) => !isOpen);
+  }, [toggle]);
+
+  return (
+    <div className={styles.history} onClick={onToggle}>
+      <div className={styles.toggle}>
+        <h5>History</h5>
+      </div>
+
+      {isOpen && (
+        <div className={styles.content}>
+          {times(identity, 20).map((num) => (
+            <div className={styles.record}>
+              <h5>{String(num + 1).padStart(2, '0')}</h5>
+              <h4>25</h4>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function RoomDetail() {
   const roomID = useSelector((state: AppState) => state.game.room);
   const roundID = useSelector((state: AppState) => state.game.round);
@@ -52,10 +80,14 @@ export default function RoomDetail() {
 
   return (
     <div className={styles.detail}>
-      <Back />
-      <Field title={'room'} value={String(roomID)} />
-      <Field title={'round'} value={roundID} />
-      <Field title={'bet'} value={`${currency(min)} - ${currency(max)}`} />
+      <div className={styles.header}>
+        <Back />
+        <Field title={'room'} value={String(roomID)} />
+        <Field title={'round'} value={roundID} />
+        <Field title={'bet'} value={`${currency(min)} - ${currency(max)}`} />
+      </div>
+
+      <History />
     </div>
   );
 }
