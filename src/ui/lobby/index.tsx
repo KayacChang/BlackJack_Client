@@ -1,13 +1,13 @@
-import React, { useState, useCallback, useEffect } from "react";
-import styles from "./Lobby.module.scss";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store";
-import useCarousel from "../components/carousel";
-import Arrow from "./Arrow";
-import { animated } from "react-spring";
-import Room from "./Room";
-import { useNavigate } from "react-router-dom";
-import RES from "../../assets";
+import React, { useState, useCallback, useEffect } from 'react';
+import styles from './Lobby.module.scss';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
+import useCarousel from '../components/carousel';
+import Arrow from './Arrow';
+import { animated, useSpring } from 'react-spring';
+import Room from './Room';
+import { useNavigate } from 'react-router-dom';
+import RES from '../../assets';
 
 const origin = [
   { left: 30, top: 35, scale: 1 },
@@ -48,10 +48,7 @@ export default function Lobby() {
   const navTo = useNavigate();
 
   const room = useSelector((state: AppState) => state.room);
-  const { data, page, range, transitions, next, prev, gesture } = useCarousel(
-    room,
-    4
-  );
+  const { data, page, range, transitions, next, prev, gesture } = useCarousel(room, 4);
 
   const [focus, setFocus] = useState(false);
   const [config, setConfig] = useState(origin);
@@ -87,10 +84,10 @@ export default function Lobby() {
       <div>
         <img
           className={styles.background}
-          src={RES.getBase64("BG")}
-          alt={"BG"}
+          src={RES.getBase64('BG')}
+          alt={'BG'}
           onClick={cancelFocus}
-          style={{ pointerEvents: focus ? "all" : "none" }}
+          style={{ pointerEvents: focus ? 'all' : 'none' }}
         />
 
         {transitions((prop) => (
@@ -107,12 +104,28 @@ export default function Lobby() {
         ))}
 
         <div>
+          {focus && (
+            <div
+              className={styles.moveUp}
+              style={{
+                left: `${50}%`,
+                position: 'absolute',
+              }}
+            >
+              <Arrow
+                style={{
+                  transform: `translate(-50%, -50%) rotate(90deg)`,
+                }}
+              />
+            </div>
+          )}
+
           {page > range.min && (
             <Arrow
               style={{
                 left: `${5}%`,
                 top: `${50}%`,
-                position: "absolute",
+                position: 'absolute',
                 transform: `translate(-50%, -50%)`,
               }}
               onClick={() => (focus ? cancelFocus() : prev())}
@@ -124,7 +137,7 @@ export default function Lobby() {
               style={{
                 left: `${95}%`,
                 top: `${50}%`,
-                position: "absolute",
+                position: 'absolute',
                 transform: `translate(-50%, -50%) scaleX(-1)`,
               }}
               onClick={() => (focus ? cancelFocus() : next())}

@@ -142,3 +142,18 @@
     @include fit();
   }
 }
+
+.moveUp {
+  animation: moveUp 0.8s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+}
+
+@keyframes moveUp {
+  from {
+    opacity: 0;
+    top: 85%;
+  }
+  to {
+    opacity: 1;
+    top: 83%;
+  }
+}
