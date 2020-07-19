@@ -8,7 +8,7 @@ import { currency } from '../../utils';
 import { useSpring, animated } from 'react-spring';
 import { Expo } from 'gsap';
 import { useNavigate } from 'react-router-dom';
-import services from '../../services';
+import services from '../../service';
 
 function Back() {
   const navTo = useNavigate();

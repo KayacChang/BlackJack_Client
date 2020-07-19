@@ -2,7 +2,7 @@ import React, { ReactNode, PropsWithChildren, useEffect, useState } from 'react'
 import { Center, Flex, Canvas } from './components';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import Lobby from './lobby';
-import services from '../services';
+import services from '../service';
 import Loading from './loading';
 
 type Props = {

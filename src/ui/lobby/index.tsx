@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import useCarousel from '../components/carousel';
 import Arrow from './Arrow';
-import { animated, useSpring } from 'react-spring';
+import { animated } from 'react-spring';
 import Room from './Room';
 import { useNavigate } from 'react-router-dom';
 import RES from '../../assets';

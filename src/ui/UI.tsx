@@ -30,5 +30,5 @@ export default function UI() {
     );
   }
 
-  return <div className="fixedPage"></div>;
+  return <></>;
 }
