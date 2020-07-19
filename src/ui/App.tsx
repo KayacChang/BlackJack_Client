@@ -55,7 +55,7 @@ function Game({ game }: { game: (canvas: HTMLCanvasElement) => void }) {
     return <Canvas>{game}</Canvas>;
   }
 
-  return <div>loading...</div>;
+  return <></>;
 }
 
 export default function App({ ui, game }: Props) {

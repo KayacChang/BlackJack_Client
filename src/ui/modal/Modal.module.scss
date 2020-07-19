@@ -5,6 +5,7 @@
   top: 0;
   width: 100vw;
   height: 100vh;
+
   background-color: rgba(0, 0, 0, 0.5);
 
   pointer-events: all;
@@ -16,7 +17,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  background-color: black;
+  background: #111111;
   padding: 24px;
   border-radius: 8px;
 
