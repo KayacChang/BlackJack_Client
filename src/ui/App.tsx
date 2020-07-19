@@ -1,9 +1,10 @@
 import React, { ReactNode, PropsWithChildren, useEffect, useState } from 'react';
 import { Center, Flex, Canvas } from './components';
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useParams, useLocation, Navigate } from 'react-router-dom';
 import Lobby from './lobby';
 import services from '../service';
 import Loading from './loading';
+import RES from '../assets';
 
 type Props = {
   game: (canvas: HTMLCanvasElement) => void;
@@ -11,6 +12,18 @@ type Props = {
 };
 
 function Frame({ children, ui }: PropsWithChildren<{ ui: ReactNode }>) {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes('lobby') || location.pathname.includes('game')) {
+      const bg = RES.getSound('BG_MUSIC');
+
+      if (!bg.playing()) {
+        bg.loop(true).play();
+      }
+    }
+  }, [location]);
+
   return (
     <Center style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
       <Flex style={{ position: 'relative' }}>
@@ -50,6 +63,8 @@ export default function App({ ui, game }: Props) {
           <Route path="/" element={<Loading />} />
           <Route path="lobby" element={<Lobby />} />
           <Route path="game/:id" element={<Game game={game} />} />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Frame>
     </Router>

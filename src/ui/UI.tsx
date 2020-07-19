@@ -12,8 +12,8 @@ export default function UI() {
   if (location.pathname.includes('lobby')) {
     return (
       <div className="fixedPage">
-        <Menu />
         <Status />
+        <Menu />
       </div>
     );
   }
@@ -21,11 +21,11 @@ export default function UI() {
   if (location.pathname.includes('game')) {
     return (
       <div className="fixedPage">
-        <Menu />
-        <Status />
-        <Detail />
         <Decision />
         <Bet />
+        <Status />
+        <Detail />
+        <Menu />
       </div>
     );
   }

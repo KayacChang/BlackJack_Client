@@ -71,9 +71,14 @@ function getTexture(res: keyof typeof PKG) {
   return resource.texture;
 }
 
+function getSound(res: keyof typeof PKG) {
+  return loader.resources[res].data as Howl;
+}
+
 export default {
   load,
   getBase64,
   getTexture,
+  getSound,
   PKG,
 };
