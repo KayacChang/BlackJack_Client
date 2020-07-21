@@ -4,6 +4,10 @@
 
   width: 90%;
 
+  overflow: auto;
+  pointer-events: all;
+  user-select: auto;
+
   & > div {
     display: flex;
     flex-direction: column;

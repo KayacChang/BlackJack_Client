@@ -17,7 +17,7 @@ function Modal({ open, title, msg, onConfirm, onClose, dispatch }: State & { dis
     onClose && onClose();
 
     dispatch({ type: 'close' });
-  }, [onClose]);
+  }, [onClose, dispatch]);
 
   if (!open) {
     return <></>;
