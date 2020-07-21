@@ -16,11 +16,13 @@ export default function Toggle({ id, value = false, onChange }: Props) {
     function (event: ChangeEvent<HTMLInputElement>) {
       onChange && onChange(event);
 
-      setFlag((flag) => !flag);
+      const flag = event.target.checked;
 
-      !flag && dispatch(play({ type: 'sfx', name: 'SFX_TOGGLE' }));
+      setFlag(flag);
+
+      dispatch(play({ type: 'sfx', name: 'SFX_TOGGLE' }));
     },
-    [onChange, flag, setFlag, dispatch]
+    [onChange, setFlag, dispatch]
   );
 
   return (

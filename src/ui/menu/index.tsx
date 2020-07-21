@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useCallback } from 'react';
 import styles from './Menu.module.scss';
 import Drawer from './components/Drawer';
 import { Trigger } from './components/Button';
@@ -15,7 +15,7 @@ export default function Menu() {
   const navTo = useNavigate();
   const showModel = useModelDispatch();
 
-  const options = [
+  const [options] = useState([
     {
       icon: <Info />,
       title: 'rules',
@@ -44,12 +44,12 @@ export default function Menu() {
           },
         }),
     },
-  ];
+  ]);
 
-  function onTrigger() {
-    setDrawerOpen(!isDrawerOpen);
+  const onTrigger = useCallback(() => {
+    setDrawerOpen((flag) => !flag);
     setPage(undefined);
-  }
+  }, [setDrawerOpen, setPage]);
 
   return (
     <>

@@ -109,7 +109,6 @@ $unit: 16px;
   h5 {
     background-color: rgba(0, 0, 0, 1);
     font-size: 1.4vw;
-
     @media (min-width: 1200px) {
       font-size: 0.8vw;
     }
@@ -120,7 +119,9 @@ $unit: 16px;
     @media (min-width: 1200px) {
       font-size: 1.4vw;
     }
-    background: rgba(0, 0, 0, 0.3);
+
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
   }
 }
 

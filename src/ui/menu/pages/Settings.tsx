@@ -48,12 +48,12 @@ export default function Settings() {
 
         <div className={styles.toggle}>
           <h4>sound effects</h4>
-          <Toggle id={'sound-effects'} value={state.canPlayBGM} onChange={onToggleSFX} />
+          <Toggle id={'sound-effects'} value={state.canPlaySFX} onChange={onToggleSFX} />
         </div>
 
         <div className={styles.toggle}>
           <h4>ambience sound</h4>
-          <Toggle id={'ambience-sound'} value={state.canPlaySFX} onChange={onToggleBGM} />
+          <Toggle id={'ambience-sound'} value={state.canPlayBGM} onChange={onToggleBGM} />
         </div>
       </section>
     </div>

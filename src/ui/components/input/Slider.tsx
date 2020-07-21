@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useCallback, HTMLAttributes } from 'react';
+import React, { useState, ChangeEvent, useCallback, HTMLAttributes, memo } from 'react';
 import styles from './Slider.module.scss';
 import clsx from 'clsx';
 
@@ -9,7 +9,7 @@ type Props = {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 } & HTMLAttributes<HTMLDivElement>;
 
-export default function Slider({ min = 0, max = 100, value = min, onChange, className }: Props) {
+export default memo(function Slider({ min = 0, max = 100, value = min, onChange, className }: Props) {
   const [val, setValue] = useState(value);
 
   const handleChange = useCallback(
@@ -29,7 +29,7 @@ export default function Slider({ min = 0, max = 100, value = min, onChange, clas
       </output>
     </div>
   );
-}
+});
 
 function interpret([min, max]: [number, number], value: number) {
   const percentage = Number(((value - min) * 100) / (max - min));
