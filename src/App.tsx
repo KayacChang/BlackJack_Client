@@ -1,11 +1,11 @@
 import React, { ReactNode, PropsWithChildren, useEffect, useState } from 'react';
-import { Center, Flex, Canvas } from './components';
+import { Center, Flex, Canvas } from './ui/components';
 import { BrowserRouter as Router, Routes, Route, useParams, Navigate } from 'react-router-dom';
-import Lobby from './lobby';
-import services from '../service';
-import Loading from './loading';
-import { ModalProvider } from './modal';
-import { SoundProvider } from '../sound';
+import Lobby from './ui/lobby';
+import services from './service';
+import Loading from './ui/loading';
+import { ModalProvider } from './ui/modal';
+import { SoundProvider } from './sound';
 
 type Props = {
   game: (canvas: HTMLCanvasElement) => void;

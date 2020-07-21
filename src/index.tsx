@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-
+import App from './App';
 import Game from './game';
-import { App, UI } from './ui';
+import UI from './ui';
 import { i18n, gsap } from './plugins';
 import service from './service';
 import './index.scss';
-
 import store from './store';
 import { getURLParam } from './utils';
-
 import RES from './assets';
 
 async function main() {
