@@ -39,8 +39,7 @@ import TABLE_RED from './table/table_red.jpg';
 import TABLE_GRAY from './table/gray.jpg';
 
 import POKER from './poker';
-
-import BG_MUSIC from './sound/bg.webm';
+import { BGM, SFX } from './sound';
 
 export default Object.freeze({
   CHIP_FLAT_RED,
@@ -84,5 +83,7 @@ export default Object.freeze({
   TABLE_GRAY,
   //
   ...POKER,
-  BG_MUSIC,
+  //
+  ...BGM,
+  ...SFX,
 });

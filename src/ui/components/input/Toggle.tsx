@@ -1,18 +1,26 @@
-import React, { PropsWithChildren, HTMLAttributes, useState, ChangeEvent, useCallback } from 'react';
+import React, { useState, ChangeEvent, useCallback } from 'react';
 import styles from './Toggle.module.scss';
+import { useSoundState, play } from '../../../sound';
 
-type Props = PropsWithChildren<HTMLAttributes<HTMLInputElement>>;
+type Props = {
+  id?: string;
+  value?: boolean;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+};
 
-export default function Toggle({ id, onChange }: Props) {
-  const [flag, setFlag] = useState(false);
+export default function Toggle({ id, value = false, onChange }: Props) {
+  const [flag, setFlag] = useState(value);
+  const { dispatch } = useSoundState();
 
   const handleChange = useCallback(
     function (event: ChangeEvent<HTMLInputElement>) {
       onChange && onChange(event);
 
       setFlag((flag) => !flag);
+
+      !flag && dispatch(play({ type: 'sfx', name: 'SFX_TOGGLE' }));
     },
-    [onChange, setFlag]
+    [onChange, flag, setFlag, dispatch]
   );
 
   return (
