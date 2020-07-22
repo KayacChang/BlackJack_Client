@@ -1,4 +1,4 @@
-import BG_MUSIC from './sound/bg.webm';
+import BG_MUSIC from './sound/bg.mp3';
 
 import SFX_NAV_OPEN from './sound/Secondary_System_Sounds/navigation_transition-left.wav';
 import SFX_NAV_CLOSE from './sound/Secondary_System_Sounds/navigation_transition-right.wav';

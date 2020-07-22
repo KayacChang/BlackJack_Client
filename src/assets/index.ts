@@ -29,9 +29,9 @@ function SoundHandler(resource: LoaderResource, next: () => void) {
   }
 
   function onloaderror(soundId: number, error: any) {
-    resource.abort(error);
+    // resource.abort(error);
 
-    console.error(error);
+    // console.error(error);
 
     next();
   }

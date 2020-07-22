@@ -1,7 +1,6 @@
 .frame {
   width: 100%;
   height: 100%;
-  overflow: hidden;
 
   display: flex;
   justify-content: center;
@@ -9,9 +8,6 @@
 }
 
 .rotation {
-  position: absolute;
-  transform: translate(-50%, -50%);
-
   animation: rotation 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
 
   @media (orientation: landscape) {
@@ -29,8 +25,45 @@
   }
 }
 
+.mask {
+  width: 100%;
+  height: 400vh;
+  z-index: 1;
+
+  background: rgba($color: #000000, $alpha: 0.9);
+
+  pointer-events: all;
+
+  @media (orientation: portrait) {
+    display: none;
+  }
+}
+
+.scroll {
+  position: absolute;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+
+  animation: move 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+}
+
+@keyframes move {
+  from {
+    top: 55vh;
+  }
+
+  to {
+    top: 50vh;
+  }
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .main {
-  position: relative;
+  position: fixed;
   display: flex;
 
   @media (orientation: portrait) {
