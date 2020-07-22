@@ -24,13 +24,10 @@
 }
 
 .placeholder {
-  height: 32px;
-  margin-bottom: 32px;
+  margin-top: 8px;
+  height: 4vw;
+  padding: 8px;
 
   display: flex;
   align-items: center;
-
-  @media screen and (min-device-width: 1200px) {
-    margin-bottom: 48px;
-  }
 }
