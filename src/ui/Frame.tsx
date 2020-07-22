@@ -1,4 +1,4 @@
-import React, { ReactNode, useLayoutEffect, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import styles from './Frame.module.scss';
 import { IconContext } from 'react-icons';
 import { MdScreenRotation, MdTouchApp } from 'react-icons/md';
