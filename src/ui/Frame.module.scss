@@ -1,0 +1,39 @@
+.frame {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rotation {
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+  animation: rotation 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+
+  @media (orientation: landscape) {
+    display: none;
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-45deg);
+  }
+}
+
+.main {
+  position: relative;
+  display: flex;
+
+  @media (orientation: portrait) {
+    display: none;
+  }
+}

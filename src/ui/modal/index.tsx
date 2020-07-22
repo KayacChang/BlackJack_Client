@@ -1,5 +1,7 @@
-import React, { PropsWithChildren, createContext, useReducer, useCallback } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import styles from './Modal.module.scss';
+import { ContextProvider } from '../../utils';
+import { animated, useTransition } from 'react-spring';
 
 type State = {
   open: boolean;
@@ -10,68 +12,58 @@ type State = {
   onClose?: () => void;
 };
 type Action = { type: 'show'; state: Omit<State, 'open'> } | { type: 'close' };
-type Dispatch = (action: Action) => void;
 
-function Modal({ open, title, msg, onConfirm, onClose, dispatch }: State & { dispatch: Dispatch }) {
+const initialState = { open: false, title: '', msg: '' };
+const { Provider, useState: useModelState } = ContextProvider(initialState, reducer);
+
+function Modal() {
+  const { state, dispatch } = useModelState();
+
   const onCloseClick = useCallback(() => {
-    onClose && onClose();
+    state.onClose && state.onClose();
 
     dispatch({ type: 'close' });
-  }, [onClose, dispatch]);
+  }, [state, dispatch]);
 
-  if (!open) {
-    return <></>;
-  }
+  const transitions = useTransition(state.open, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { duration: 150 },
+  });
 
-  return (
-    <div className={styles.modal} onClick={onCloseClick}>
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <h3>{title}</h3>
-        </div>
-        <div className={styles.body}>
-          <p>{msg}</p>
-        </div>
-        <div className={styles.footer}>
-          {onConfirm && (
-            <button className={styles.confirm} onClick={onConfirm}>
-              confirm
+  return transitions((prop, item) => {
+    if (!item) {
+      return <></>;
+    }
+
+    return (
+      <animated.div className={styles.modal} onClick={onCloseClick} style={prop}>
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <h3>{state.title}</h3>
+          </div>
+          <div className={styles.body}>
+            <p>{state.msg}</p>
+          </div>
+          <div className={styles.footer}>
+            {state.onConfirm && (
+              <button className={styles.confirm} onClick={state.onConfirm}>
+                confirm
+              </button>
+            )}
+
+            <button className={styles.close} onClick={onCloseClick}>
+              close
             </button>
-          )}
-
-          <button className={styles.close} onClick={onCloseClick}>
-            close
-          </button>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      </animated.div>
+    );
+  });
 }
 
-const ModalStateContext = createContext<State | undefined>(undefined);
-const ModalDispatchContext = createContext<Dispatch | undefined>(undefined);
-
-function useModelState() {
-  const context = React.useContext(ModalStateContext);
-
-  if (context === undefined) {
-    throw new Error('useModelState must be used within a ModalProvider');
-  }
-
-  return context;
-}
-
-function useModelDispatch() {
-  const context = React.useContext(ModalDispatchContext);
-
-  if (context === undefined) {
-    throw new Error('useModelDispatch must be used within a ModalProvider');
-  }
-
-  return context;
-}
-
-function modelReducer(state: State, action: Action) {
+function reducer(state: State, action: Action) {
   switch (action.type) {
     case 'close': {
       return { ...state, open: false };
@@ -83,16 +75,12 @@ function modelReducer(state: State, action: Action) {
 }
 
 function ModalProvider({ children }: PropsWithChildren<{}>) {
-  const [state, dispatch] = useReducer(modelReducer, { open: false, title: '', msg: '' });
-
   return (
-    <ModalStateContext.Provider value={state}>
-      <ModalDispatchContext.Provider value={dispatch}>
-        {children}
-        <Modal {...state} dispatch={dispatch} />
-      </ModalDispatchContext.Provider>
-    </ModalStateContext.Provider>
+    <Provider>
+      {children}
+      <Modal />
+    </Provider>
   );
 }
 
-export { ModalProvider, useModelState, useModelDispatch };
+export { ModalProvider, useModelState };

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
 import Game from './game';
-import UI from './ui';
 import { i18n, gsap } from './plugins';
 import service from './service';
 import './index.scss';
@@ -17,7 +16,7 @@ async function main() {
   const Root = (
     <React.StrictMode>
       <Provider store={store}>
-        <App game={Game} ui={<UI />} />
+        <App game={Game} />
       </Provider>
     </React.StrictMode>
   );

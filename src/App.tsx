@@ -1,27 +1,16 @@
-import React, { ReactNode, PropsWithChildren, useEffect, useState } from 'react';
-import { Center, Flex, Canvas } from './ui/components';
+import React, { useEffect, useState } from 'react';
+import { Canvas } from './ui/components';
 import { BrowserRouter as Router, Routes, Route, useParams, Navigate } from 'react-router-dom';
 import Lobby from './ui/lobby';
 import services from './service';
 import Loading from './ui/loading';
 import { ModalProvider } from './ui/modal';
 import { SoundProvider } from './sound';
+import Frame from './ui/Frame';
 
 type Props = {
   game: (canvas: HTMLCanvasElement) => void;
-  ui: ReactNode;
 };
-
-function Frame({ children, ui }: PropsWithChildren<{ ui: ReactNode }>) {
-  return (
-    <Center style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-      <Flex style={{ position: 'relative' }}>
-        {children}
-        {ui}
-      </Flex>
-    </Center>
-  );
-}
 
 function useJoin() {
   const params = useParams();
@@ -34,7 +23,7 @@ function useJoin() {
   return hasJoin;
 }
 
-function Game({ game }: { game: (canvas: HTMLCanvasElement) => void }) {
+function Game({ game }: Props) {
   const join = useJoin();
 
   if (join) {
@@ -44,12 +33,12 @@ function Game({ game }: { game: (canvas: HTMLCanvasElement) => void }) {
   return <></>;
 }
 
-export default function App({ ui, game }: Props) {
+export default function App({ game }: Props) {
   return (
     <ModalProvider>
       <SoundProvider>
         <Router>
-          <Frame ui={ui}>
+          <Frame>
             <Routes basename={process.env.PUBLIC_URL}>
               <Route path="/" element={<Loading />} />
               <Route path="lobby" element={<Lobby />} />
