@@ -4,7 +4,7 @@ import { IconContext } from 'react-icons';
 import { MdScreenRotation, MdTouchApp } from 'react-icons/md';
 import UI from './UI';
 import clsx from 'clsx';
-import { isBarHidden } from '../utils';
+import { isBarHidden, isMobile, isFullScreenSupport } from '../utils';
 
 type Props = {
   children: ReactNode;
@@ -59,9 +59,8 @@ function Scroll() {
 export default function Frame({ children }: Props) {
   return (
     <div className={styles.frame}>
-      <Rotation />
-
-      <Scroll />
+      {isMobile() && <Rotation />}
+      {isMobile() && !isFullScreenSupport() && <Scroll />}
       <div className={styles.main}>
         {children}
         <UI />

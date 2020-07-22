@@ -37,12 +37,12 @@ export function inIframe() {
   return window.self !== window.top;
 }
 
-export function isFullScreenSupport(target: HTMLElement) {
-  return target.requestFullscreen;
+export function isFullScreenSupport() {
+  return window.document.body.requestFullscreen;
 }
 
 export async function requestFullScreen(element: HTMLElement) {
-  if (!isFullScreenSupport(element)) return;
+  if (!isFullScreenSupport()) return;
 
   await element.requestFullscreen({
     navigationUI: 'hide',
