@@ -59,8 +59,10 @@ function Scroll() {
 export default function Frame({ children }: Props) {
   return (
     <div className={styles.frame}>
-      {isMobile() && <Rotation />}
+      <Rotation />
+
       {isMobile() && !isFullScreenSupport() && <Scroll />}
+
       <div className={styles.main}>
         {children}
         <UI />
