@@ -32,12 +32,7 @@ import SEAT_ENABLE from './seat/Seat_On.png';
 import FIELD from './seat/Field.png';
 import JOIN from './seat/Join.png';
 
-import TABLE_TITLE from './table/blackjack.png';
-import TABLE_GREEN from './table/green.jpg';
-import TABLE_BLUE from './table/table_blue.jpg';
-import TABLE_RED from './table/table_red.jpg';
-import TABLE_GRAY from './table/gray.jpg';
-
+import TABLES from './table';
 import POKER from './poker';
 import { BGM, SFX } from './sound';
 
@@ -76,12 +71,7 @@ export default Object.freeze({
   FIELD,
   JOIN,
   //
-  TABLE_TITLE,
-  TABLE_GREEN,
-  TABLE_BLUE,
-  TABLE_RED,
-  TABLE_GRAY,
-  //
+  ...TABLES,
   ...POKER,
   //
   ...BGM,
