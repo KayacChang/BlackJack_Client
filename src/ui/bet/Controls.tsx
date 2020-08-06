@@ -4,7 +4,7 @@ import Control from '../components/button/Control';
 import styles from './Bet.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../store';
-import { clearBet, undoBet, replaceBet, addBet } from '../../store/actions';
+import { clearBet, undoBet, replaceBet } from '../../store/actions';
 import services from '../../service';
 import { throttleBy } from '../../utils';
 import RES from '../../assets';
@@ -66,10 +66,6 @@ export default function Controls({ enable }: Props) {
     }),
     [enable, history, countdown]
   );
-
-  useEffect(() => {
-    enable && countdown === 2 && onDeal();
-  }, [enable, countdown, onDeal]);
 
   const onRepeat = useCallback(
     async function () {
